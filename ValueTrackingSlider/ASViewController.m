@@ -9,7 +9,7 @@
 #import "ASViewController.h"
 
 @interface ASViewController ()
-
+@property (weak, nonatomic) IBOutlet UISlider *slider;
 @end
 
 @implementation ASViewController
@@ -17,7 +17,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    self.slider.minimumValue = 0.0;
+    self.slider.maximumValue = 255.0;
 }
 
 - (void)didReceiveMemoryWarning
