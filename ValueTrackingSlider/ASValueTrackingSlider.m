@@ -179,9 +179,9 @@
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    [formatter setMaximumFractionDigits:0];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     self.numberFormatter = formatter;
+    [self setMaxFractionDigitsDisplayed:2];
     
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpView.alpha = 0.0;
