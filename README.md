@@ -11,6 +11,10 @@ It’s designed for use with iOS7 (though with a few alterations, it should be s
 * Set your own NSNumberFormatter to control the displayed values
 * Wholesome springy animation
 
+![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.png)
+
+----
+
 ### What do you need?
 Just include these two files in your project:
 
