@@ -54,8 +54,8 @@
 		E742B0AD1812EC4E005B188F /* ValueTrackingSliderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ValueTrackingSliderTests-Info.plist"; sourceTree = "<group>"; };
 		E742B0AF1812EC4E005B188F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValueTrackingSliderTests.m; sourceTree = "<group>"; };
-		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTrackingSlider.h; sourceTree = "<group>"; };
-		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTrackingSlider.m; sourceTree = "<group>"; };
+		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASValueTrackingSlider.h; path = ../ASValueTrackingSlider.h; sourceTree = "<group>"; };
+		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASValueTrackingSlider.m; path = ../ASValueTrackingSlider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -467,6 +467,7 @@
 				E742B0B71812EC4E005B188F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E742B0B81812EC4E005B188F /* Build configuration list for PBXNativeTarget "ValueTrackingSliderTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +476,7 @@
 				E742B0BA1812EC4E005B188F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
