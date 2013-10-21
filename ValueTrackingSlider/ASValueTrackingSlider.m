@@ -107,7 +107,7 @@
 @property (strong, nonatomic) NSMutableAttributedString *attributedString;
 @end
 
-#define MIN_POPUPVIEW_WIDTH 30.0
+#define MIN_POPUPVIEW_WIDTH 36.0
 #define POPUPVIEW_WIDTH_INSET 10.0
 
 @implementation ASValueTrackingSlider
@@ -191,6 +191,8 @@
                                                                    attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22.0f]}];
     self.textColor = [UIColor whiteColor];
     self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+    
+    [self calculateMinPopUpViewWidth];
 }
 
 - (void)showPopUp
@@ -223,9 +225,9 @@
     CGRect thumbRect = self.thumbRect;
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
-    
-    CGRect offsetRect = CGRectOffset(thumbRect, 0, - thumbH + thumbH - _popUpViewHeight);
-    CGRect popUpRect = CGRectInset(offsetRect, (thumbW - _popUpViewWidth - POPUPVIEW_WIDTH_INSET)/2, (thumbH -_popUpViewHeight)/2);
+
+    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth - POPUPVIEW_WIDTH_INSET)/2, (thumbH -_popUpViewHeight)/2);
+    popUpRect.origin.y = thumbRect.origin.y - _popUpViewHeight;
     
     // determine if popUpRect extends beyond the frame of the UISlider
     // if so adjust frame and set the center offset of the PopUpView's arrow
