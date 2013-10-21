@@ -13,24 +13,39 @@
                         <viewControllerLayoutGuide type="bottom" id="L3G-dh-kJM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dlN-b3-P3n" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="268" width="284" height="34"/>
+                                <rect key="frame" x="18" y="70" width="284" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NLb-U4-kLt" customClass="ASValueTrackingSlider">
+                                <rect key="frame" x="18" y="153" width="284" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rqf-uQ-zqb" customClass="ASValueTrackingSlider">
+                                <rect key="frame" x="18" y="236" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="dlN-b3-P3n" secondAttribute="bottom" constant="50" id="1tG-uh-wsk"/>
                             <constraint firstAttribute="trailing" secondItem="dlN-b3-P3n" secondAttribute="trailing" constant="20" symbolic="YES" id="BMb-tW-EOw"/>
-                            <constraint firstAttribute="centerX" secondItem="dlN-b3-P3n" secondAttribute="centerX" id="Dt9-Hj-WDV"/>
+                            <constraint firstAttribute="trailing" secondItem="NLb-U4-kLt" secondAttribute="trailing" constant="20" symbolic="YES" id="BUV-ed-N1Z"/>
                             <constraint firstItem="dlN-b3-P3n" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="EVF-Kb-toL"/>
-                            <constraint firstAttribute="centerY" secondItem="dlN-b3-P3n" secondAttribute="centerY" id="uE1-DM-sKb"/>
+                            <constraint firstItem="rqf-uQ-zqb" firstAttribute="top" secondItem="NLb-U4-kLt" secondAttribute="bottom" constant="50" id="Hze-oe-8k7"/>
+                            <constraint firstItem="rqf-uQ-zqb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Jth-3T-KdA"/>
+                            <constraint firstItem="NLb-U4-kLt" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="bDz-Sx-QdW"/>
+                            <constraint firstAttribute="trailing" secondItem="rqf-uQ-zqb" secondAttribute="trailing" constant="20" symbolic="YES" id="eWt-c4-Heh"/>
+                            <constraint firstItem="dlN-b3-P3n" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="50" id="kOR-iA-pqQ"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="slider" destination="dlN-b3-P3n" id="acb-eB-yPE"/>
+                        <outlet property="slider1" destination="dlN-b3-P3n" id="u2E-Pc-UmR"/>
+                        <outlet property="slider2" destination="NLb-U4-kLt" id="9gi-2d-zaJ"/>
+                        <outlet property="slider3" destination="rqf-uQ-zqb" id="QPf-il-Cxb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -40,6 +55,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>
