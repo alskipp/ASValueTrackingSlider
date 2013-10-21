@@ -14,7 +14,8 @@ It’s designed for use with iOS7 (though with a few alterations, it should be s
 ### What do you need?
 Just include these two files in your project:
 
-* ASValueTrackingSlider.m and .h
+* ASValueTrackingSlider.h
+* ASValueTrackingSlider.m
 
 ### How to use it
 
@@ -23,11 +24,8 @@ The examples below demonstrates how to customize the appearance and value displa
 ```objective-c
 
 self.slider.maximumValue = 255.0;
-
 [self.slider setMaxFractionDigitsDisplayed:0];
-
 [self.slider setPopUpViewColor:[UIColor colorWithHue:0.55 saturation:0.5 brightness:0.9 alpha:0.8]];
-
 [self.slider setTextColor:[UIColor colorWithHue:0.55 saturation:1 brightness:0.4 alpha:1]];
 ```
 
@@ -37,11 +35,8 @@ self.slider.maximumValue = 255.0;
 ```objective-c
 
 NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-
 [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-
 [self.slider setNumberFormatter:formatter];
-
 [self.slider setPopUpViewColor:[UIColor colorWithHue:0.4 saturation:0.9 brightness:0.7 alpha:1]];
 
 ```
