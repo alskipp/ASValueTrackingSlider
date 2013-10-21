@@ -21,6 +21,7 @@
 		E742B0A81812EC4E005B188F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B08A1812EC4E005B188F /* UIKit.framework */; };
 		E742B0B01812EC4E005B188F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E742B0AE1812EC4E005B188F /* InfoPlist.strings */; };
 		E742B0B21812EC4E005B188F /* ValueTrackingSliderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */; };
+		E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		E742B0AD1812EC4E005B188F /* ValueTrackingSliderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ValueTrackingSliderTests-Info.plist"; sourceTree = "<group>"; };
 		E742B0AF1812EC4E005B188F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValueTrackingSliderTests.m; sourceTree = "<group>"; };
+		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTrackingSlider.h; sourceTree = "<group>"; };
+		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTrackingSlider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 				E742B0981812EC4E005B188F /* Main.storyboard */,
 				E742B09B1812EC4E005B188F /* ASViewController.h */,
 				E742B09C1812EC4E005B188F /* ASViewController.m */,
+				E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */,
+				E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */,
 				E742B09E1812EC4E005B188F /* Images.xcassets */,
 				E742B08D1812EC4E005B188F /* Supporting Files */,
 			);
@@ -251,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E742B0971812EC4E005B188F /* ASAppDelegate.m in Sources */,
+				E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */,
 				E742B09D1812EC4E005B188F /* ASViewController.m in Sources */,
 				E742B0931812EC4E005B188F /* main.m in Sources */,
 			);
