@@ -21,6 +21,8 @@
     self.slider.minimumValue = 0.0;
     self.slider.maximumValue = 255.0;
     [self.slider setMaxFractionDigitsDisplayed:2];
+    [self.slider setPopUpViewColor:[UIColor colorWithHue:0.55 saturation:0.5 brightness:0.9 alpha:0.8]];
+    [self.slider setTextColor:[UIColor colorWithHue:0.55 saturation:1 brightness:0.4 alpha:1]];
 }
 
 - (void)didReceiveMemoryWarning

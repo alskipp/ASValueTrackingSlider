@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ASValueTrackingSlider : UISlider
+@property (strong, nonatomic) UIColor *textColor;
+@property (strong, nonatomic) UIColor *popUpViewColor;
+
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
 
 // when setting max FractionDigits the min value is automatically set to the same value

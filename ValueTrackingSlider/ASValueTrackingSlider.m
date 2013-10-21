@@ -12,6 +12,7 @@
 
 @interface ASValuePopUpView : UIView
 - (void)setString:(NSAttributedString *)string;
+- (void)setPopUpViewColour:(UIColor *)color;
 @end
 
 @implementation ASValuePopUpView
@@ -29,7 +30,6 @@
         self.userInteractionEnabled = NO;
         _backgroundLayer = [CAShapeLayer layer];
         _backgroundLayer.anchorPoint = CGPointMake(0, 0);
-        _backgroundLayer.fillColor = [UIColor colorWithWhite:0.0 alpha:0.7].CGColor;
         
         _textLayer = [CATextLayer layer];
         _textLayer.alignmentMode = kCAAlignmentCenter;
@@ -46,6 +46,11 @@
 - (void)setString:(NSAttributedString *)string
 {
     _textLayer.string = string;
+}
+
+- (void)setPopUpViewColour:(UIColor *)color;
+{
+    _backgroundLayer.fillColor = color.CGColor;
 }
 
 - (void)setArrowCenterOffset:(CGFloat)offset
@@ -131,6 +136,20 @@
 
 #pragma mark - public methods
 
+- (void)setTextColor:(UIColor *)color
+{
+    _textColor = color;
+    [self.attributedString addAttribute:NSForegroundColorAttributeName
+                                  value:(id)color.CGColor
+                                  range:NSMakeRange(0, [_attributedString length])];
+}
+
+- (void)setPopUpViewColor:(UIColor *)color;
+{
+    _popUpViewColor = color;
+    [self.popUpView setPopUpViewColour:color];
+}
+
 // when either the max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
@@ -164,12 +183,14 @@
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     self.numberFormatter = formatter;
     
-    self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" "
-                                                                   attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22.0f], NSForegroundColorAttributeName : (id)[UIColor whiteColor].CGColor}];
-    
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpView.alpha = 0.0;
     [self addSubview:self.popUpView];
+    
+    self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" "
+                                                                   attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22.0f]}];
+    self.textColor = [UIColor whiteColor];
+    self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
 }
 
 - (void)showPopUp
