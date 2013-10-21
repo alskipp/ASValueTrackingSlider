@@ -19,7 +19,7 @@ Just include these two files in your project:
 ### How to use it
 
 It’s very simple. Just drag a UISlider into your Storyboard/nib and set it’s class to ASValueTrackingSlider.
-The example below demonstrates how to customize the appearance and value displayed
+The examples below demonstrates how to customize the appearance and value displayed
 ```objective-c
 
 self.slider.maximumValue = 255.0;
@@ -31,3 +31,19 @@ self.slider.maximumValue = 255.0;
 [self.slider setTextColor:[UIColor colorWithHue:0.55 saturation:1 brightness:0.4 alpha:1]];
 ```
 
+![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot2.png)
+
+
+```objective-c
+
+NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+
+[formatter setNumberStyle:NSNumberFormatterPercentStyle];
+
+[self.slider setNumberFormatter:formatter];
+
+[self.slider setPopUpViewColor:[UIColor colorWithHue:0.4 saturation:0.9 brightness:0.7 alpha:1]];
+
+```
+
+![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot3.png)
