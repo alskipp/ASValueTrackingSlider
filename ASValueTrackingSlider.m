@@ -157,17 +157,17 @@
     [self calculateMinPopUpViewWidth];
 }
 
-- (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
-{
-    _numberFormatter = numberFormatter;
-    [self calculateMinPopUpViewWidth];
-}
-
 // set max and min digits to same value to keep string length consistent
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
 {
     [self.numberFormatter setMaximumFractionDigits:maxDigits];
     [self.numberFormatter setMinimumFractionDigits:maxDigits];
+    [self calculateMinPopUpViewWidth];
+}
+
+- (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
+{
+    _numberFormatter = numberFormatter;
     [self calculateMinPopUpViewWidth];
 }
 

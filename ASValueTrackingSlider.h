@@ -12,9 +12,11 @@
 @property (strong, nonatomic) UIColor *textColor;
 @property (strong, nonatomic) UIColor *popUpViewColor;
 
+// when setting max FractionDigits the min value is automatically set to the same value
+// this ensures that the PopUpView frame maintains a consistent width
+- (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
+
+// take full control of the format dispayed with a custom NSNumberFormatter
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
 
-// when setting max FractionDigits the min value is automatically set to the same value
-// this ensures that the PopView frame maintains a consistent width
-- (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
 @end
