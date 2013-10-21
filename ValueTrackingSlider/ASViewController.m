@@ -20,6 +20,7 @@
     [super viewDidLoad];
     self.slider.minimumValue = 0.0;
     self.slider.maximumValue = 255.0;
+    [self.slider setMaxFractionDigitsDisplayed:2];
 }
 
 - (void)didReceiveMemoryWarning

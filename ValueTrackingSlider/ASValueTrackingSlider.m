@@ -19,6 +19,7 @@
     CAShapeLayer *_backgroundLayer;
     CATextLayer *_textLayer;
     CGSize _oldSize;
+    CGFloat _arrowCenterOffset;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -47,6 +48,15 @@
     _textLayer.string = string;
 }
 
+- (void)setArrowCenterOffset:(CGFloat)offset
+{
+    // only redraw if the offset has changed
+    if (_arrowCenterOffset != offset) {
+        _arrowCenterOffset = offset;
+        [self drawPath];
+    }
+}
+
 - (void)drawPath
 {
     // Create rounded rect
@@ -56,11 +66,11 @@
     
     // Create arrow path
     UIBezierPath *arrowPath = [UIBezierPath bezierPath];
-    CGFloat midX = CGRectGetMidX(self.bounds);
-    CGPoint p0 = CGPointMake(midX, CGRectGetMaxY(self.bounds));
+    CGFloat arrowX = CGRectGetMidX(self.bounds) + _arrowCenterOffset;
+    CGPoint p0 = CGPointMake(arrowX, CGRectGetMaxY(self.bounds));
     [arrowPath moveToPoint:p0];
-    [arrowPath addLineToPoint:CGPointMake((midX - 6.0), CGRectGetMaxY(roundedRect))];
-    [arrowPath addLineToPoint:CGPointMake((midX + 6.0), CGRectGetMaxY(roundedRect))];
+    [arrowPath addLineToPoint:CGPointMake((arrowX - 6.0), CGRectGetMaxY(roundedRect))];
+    [arrowPath addLineToPoint:CGPointMake((arrowX + 6.0), CGRectGetMaxY(roundedRect))];
     [arrowPath closePath];
     
     // combine arrow path and rounded rect
@@ -194,8 +204,26 @@
     CGFloat thumbH = thumbRect.size.height;
     
     CGRect offsetRect = CGRectOffset(thumbRect, 0, - thumbH + thumbH - _popUpViewHeight);
-    self.popUpView.frame = CGRectInset(offsetRect, (thumbW - _popUpViewWidth - POPUPVIEW_WIDTH_INSET)/2, (thumbH -_popUpViewHeight)/2);;
+    CGRect popUpRect = CGRectInset(offsetRect, (thumbW - _popUpViewWidth - POPUPVIEW_WIDTH_INSET)/2, (thumbH -_popUpViewHeight)/2);
     
+    // determine if popUpRect extends beyond the frame of the UISlider
+    // if so adjust frame and set the center offset of the PopUpView's arrow
+    CGFloat minOffsetX = CGRectGetMinX(popUpRect);
+    CGFloat maxOffsetX = CGRectGetMaxX(popUpRect) - self.bounds.size.width;
+    
+    if (minOffsetX < 0.0) {
+        popUpRect.origin.x -= minOffsetX;
+        [self.popUpView setArrowCenterOffset:minOffsetX];
+    }
+    else if (maxOffsetX > 0.0) {
+        popUpRect.origin.x -= maxOffsetX;
+        [self.popUpView setArrowCenterOffset:maxOffsetX];
+    }
+    else {
+        [self.popUpView setArrowCenterOffset:0.0];
+    }
+    
+    self.popUpView.frame = popUpRect;
     [self.popUpView setString:self.attributedString];
 }
 
