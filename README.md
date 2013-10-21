@@ -1,10 +1,15 @@
-## ValueTrackingSlider
-----
-### What is it?
+ValueTrackingSlider
+========
+
+What is it?
+---
+
 A UISlider Subclass that displays live values in a popUpView. It’s inspired by the implementation found [here](https://github.com/mneuwert/iOS-Custom-Controls), but this version is built using CALayers.
 It’s designed for use with iOS7 (though with a few alterations, it should be simple enough to get working on iOS6 and below).
 
-### Features
+
+Features
+---
 
 * Live updating of UISlider value
 * Customizable text color and popUpView color
@@ -13,15 +18,17 @@ It’s designed for use with iOS7 (though with a few alterations, it should be s
 
 ![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.png)
 
-----
 
-### What do you need?
+What do you need?
+---
+
 Just include these two files in your project:
 
 * ASValueTrackingSlider.h
 * ASValueTrackingSlider.m
 
-### How to use it
+How to use it
+---
 
 It’s very simple. Just drag a UISlider into your Storyboard/nib and set it’s class to ASValueTrackingSlider.
 The examples below demonstrates how to customize the appearance and value displayed
