@@ -27,6 +27,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.layer.anchorPoint = CGPointMake(0.5, 1);
+
         self.userInteractionEnabled = NO;
         _backgroundLayer = [CAShapeLayer layer];
         _backgroundLayer.anchorPoint = CGPointMake(0, 0);
@@ -59,6 +61,7 @@
     // only redraw if the offset has changed
     if (_arrowCenterOffset != offset) {
         _arrowCenterOffset = offset;
+        self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
 }
@@ -226,9 +229,27 @@
 
 - (void)hidePopUp
 {
-    [UIView animateWithDuration:0.5 animations:^{
-        self.popUpView.alpha = 0.0;
-    }];
+    [UIView animateWithDuration:0.1
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.popUpView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+                     } completion:^(BOOL finished) {
+                         [UIView  animateWithDuration:0.4
+                                                delay:0.1
+                               usingSpringWithDamping:0.4
+                                initialSpringVelocity:0.5
+                                              options:UIViewAnimationOptionCurveLinear
+                                           animations:^{
+                                               self.popUpView.transform = CGAffineTransformMakeScale(0.6, 0.6);
+                                           } completion:^(BOOL finished) {
+                                               [UIView animateWithDuration:0.4 animations:^{
+                                                   self.popUpView.alpha = 0.0;
+                                               }completion:^(BOOL finished) {
+                                                   self.popUpView.transform = CGAffineTransformIdentity;
+                                               }];
+                                           }];
+                     }];
 }
 
 - (void)positionAndUpdatePopUpView
