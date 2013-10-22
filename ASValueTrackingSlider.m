@@ -35,7 +35,8 @@
         _textLayer.alignmentMode = kCAAlignmentCenter;
         _textLayer.anchorPoint = CGPointMake(0, 0);
         _textLayer.contentsScale = [UIScreen mainScreen].scale;
-        _textLayer.actions = @{@"bounds" : [NSNull null]}; // prevent implicit animation of bounds
+        _textLayer.actions = @{@"bounds" : [NSNull null],   // prevent implicit animation of bounds
+                               @"position" : [NSNull null]};// and position
 
         [self.layer addSublayer:_backgroundLayer];
         [self.layer addSublayer:_textLayer];
@@ -90,10 +91,15 @@
     
     // only redraw if the view size has changed
     if (!CGSizeEqualToSize(self.bounds.size, _oldSize)) {
-        _textLayer.bounds = self.bounds;
-        _backgroundLayer.bounds = self.bounds;
-        [self drawPath];
         _oldSize = self.bounds.size;
+        _backgroundLayer.bounds = self.bounds;
+
+        CGFloat textHeight = [_textLayer.string size].height;
+        CGRect textRect = CGRectMake(self.bounds.origin.x,
+                                     (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
+                                     self.bounds.size.width, textHeight);
+        _textLayer.frame = textRect;
+        [self drawPath];
     }
 }
 
@@ -108,6 +114,7 @@
 @end
 
 #define MIN_POPUPVIEW_WIDTH 36.0
+#define MIN_POPUPVIEW_HEIGHT 27.0
 #define POPUPVIEW_WIDTH_INSET 10.0
 
 @implementation ASValueTrackingSlider
@@ -144,6 +151,15 @@
                                   range:NSMakeRange(0, [_attributedString length])];
 }
 
+- (void)setFont:(UIFont *)font
+{
+    _font = font;
+    [self.attributedString addAttribute:NSFontAttributeName
+                                  value:font
+                                  range:NSMakeRange(0, [_attributedString length])];
+    [self calculatePopUpViewSize];
+}
+
 - (void)setPopUpViewColor:(UIColor *)color;
 {
     _popUpViewColor = color;
@@ -154,7 +170,7 @@
 - (void)setMaximumValue:(float)maximumValue
 {
     [super setMaximumValue:maximumValue];
-    [self calculateMinPopUpViewWidth];
+    [self calculatePopUpViewSize];
 }
 
 // set max and min digits to same value to keep string length consistent
@@ -162,21 +178,19 @@
 {
     [self.numberFormatter setMaximumFractionDigits:maxDigits];
     [self.numberFormatter setMinimumFractionDigits:maxDigits];
-    [self calculateMinPopUpViewWidth];
+    [self calculatePopUpViewSize];
 }
 
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
 {
     _numberFormatter = numberFormatter;
-    [self calculateMinPopUpViewWidth];
+    [self calculatePopUpViewSize];
 }
 
 #pragma mark - private methods
 
 - (void)setup
 {
-    _popUpViewHeight = 40.0;
-    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
@@ -187,12 +201,12 @@
     self.popUpView.alpha = 0.0;
     [self addSubview:self.popUpView];
     
-    self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" "
-                                                                   attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:22.0f]}];
+    self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
+    self.font = [UIFont boldSystemFontOfSize:22.0f];
     self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
     
-    [self calculateMinPopUpViewWidth];
+    [self calculatePopUpViewSize];
 }
 
 - (void)showPopUp
@@ -250,11 +264,12 @@
     [self.popUpView setString:self.attributedString];
 }
 
-- (void)calculateMinPopUpViewWidth
+- (void)calculatePopUpViewSize
 {
     NSString *string = [_numberFormatter stringFromNumber:@(self.maximumValue)];
     [[self.attributedString mutableString] setString:string];
     _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH));
+    _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
 }
 
 - (CGRect)thumbRect
