@@ -27,6 +27,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.layer.anchorPoint = CGPointMake(0.5, 1);
+
         self.userInteractionEnabled = NO;
         _backgroundLayer = [CAShapeLayer layer];
         _backgroundLayer.anchorPoint = CGPointMake(0, 0);
@@ -59,6 +61,10 @@
     // only redraw if the offset has changed
     if (_arrowCenterOffset != offset) {
         _arrowCenterOffset = offset;
+        
+        // the arrow tip should be the origin of any scale animations
+        // to achieve this, position the anchorPoint at the tip of the arrow
+        self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
 }
@@ -211,24 +217,50 @@
 
 - (void)showPopUp
 {
-    self.popUpView.transform = CGAffineTransformMakeScale(0.25, 0.25);
-    self.popUpView.alpha = 1.0;
-    
-    [UIView  animateWithDuration:0.5
-                           delay:0
-          usingSpringWithDamping:0.4
-           initialSpringVelocity:0.5
-                         options:UIViewAnimationOptionCurveLinear
-                      animations:^{
-                          self.popUpView.transform = CGAffineTransformIdentity;
-                      } completion:nil];
+    [CATransaction begin]; {
+        // if the transfrom animation hasn't run yet then set a default fromValue
+        NSValue *fromValue = [self.popUpView.layer animationForKey:@"transform"] ?
+        [self.popUpView.layer.presentationLayer valueForKey:@"transform"] :
+        [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = fromValue;
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        scaleAnim.duration = 0.4;
+        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeInAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
+        fadeInAnim.duration = 0.1;
+        fadeInAnim.toValue = @1.0;
+        [self.popUpView.layer addAnimation:fadeInAnim forKey:@"opacity"];
+        self.popUpView.layer.opacity = 1.0;
+        
+    } [CATransaction commit];
 }
 
 - (void)hidePopUp
 {
-    [UIView animateWithDuration:0.5 animations:^{
-        self.popUpView.alpha = 0.0;
-    }];
+    [CATransaction begin]; {
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"transform"];
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        scaleAnim.duration = 0.6;
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:.1 :-2 :0.3 :2.25]];
+        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeOutAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
+        fadeOutAnim.toValue = @0.0;
+        fadeOutAnim.duration = 0.8;
+        [self.popUpView.layer addAnimation:fadeOutAnim forKey:@"opacity"];
+        self.popUpView.layer.opacity = 0.0;
+    } [CATransaction commit];
 }
 
 - (void)positionAndUpdatePopUpView
