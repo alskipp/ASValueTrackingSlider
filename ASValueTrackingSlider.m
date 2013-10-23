@@ -269,7 +269,7 @@
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
 
-    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth - POPUPVIEW_WIDTH_INSET)/2, (thumbH -_popUpViewHeight)/2);
+    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth)/2, (thumbH -_popUpViewHeight)/2);
     popUpRect.origin.y = thumbRect.origin.y - _popUpViewHeight;
     
     // determine if popUpRect extends beyond the frame of the UISlider
@@ -300,7 +300,7 @@
 {
     NSString *string = [_numberFormatter stringFromNumber:@(self.maximumValue)];
     [[self.attributedString mutableString] setString:string];
-    _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH));
+    _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
     _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
 }
 
