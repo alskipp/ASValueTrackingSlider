@@ -265,9 +265,6 @@
 
 - (void)positionAndUpdatePopUpView
 {
-    NSString *string = [_numberFormatter stringFromNumber:@(self.value)];
-    [[self.attributedString mutableString] setString:string];
-    
     CGRect thumbRect = self.thumbRect;
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
@@ -293,6 +290,9 @@
     }
     
     self.popUpView.frame = popUpRect;
+    
+    NSString *string = [_numberFormatter stringFromNumber:@(self.value)];
+    [[self.attributedString mutableString] setString:string];
     [self.popUpView setString:self.attributedString];
 }
 
