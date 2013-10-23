@@ -302,6 +302,8 @@
     [[self.attributedString mutableString] setString:string];
     _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
     _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
+    
+    [self positionAndUpdatePopUpView];
 }
 
 - (CGRect)thumbRect
