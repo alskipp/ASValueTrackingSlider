@@ -277,18 +277,10 @@
     CGFloat minOffsetX = CGRectGetMinX(popUpRect);
     CGFloat maxOffsetX = CGRectGetMaxX(popUpRect) - self.bounds.size.width;
     
-    if (minOffsetX < 0.0) {
-        popUpRect.origin.x -= minOffsetX;
-        [self.popUpView setArrowCenterOffset:minOffsetX];
-    }
-    else if (maxOffsetX > 0.0) {
-        popUpRect.origin.x -= maxOffsetX;
-        [self.popUpView setArrowCenterOffset:maxOffsetX];
-    }
-    else {
-        [self.popUpView setArrowCenterOffset:0.0];
-    }
-    
+    CGFloat offset = minOffsetX < 0.0 ? minOffsetX : (maxOffsetX > 0.0 ? maxOffsetX : 0.0);
+    popUpRect.origin.x -= offset;
+    [self.popUpView setArrowCenterOffset:offset];
+
     self.popUpView.frame = popUpRect;
     
     NSString *string = [_numberFormatter stringFromNumber:@(self.value)];
