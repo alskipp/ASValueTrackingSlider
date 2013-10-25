@@ -172,10 +172,16 @@
     [self.popUpView setPopUpViewColour:color];
 }
 
-// when either the max value or number formatter changes, recalculate the popUpView width
+// when either the min/max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
     [super setMaximumValue:maximumValue];
+    [self calculatePopUpViewSize];
+}
+
+- (void)setMinimumValue:(float)minimumValue
+{
+    [super setMinimumValue:minimumValue];
     [self calculatePopUpViewSize];
 }
 
@@ -290,7 +296,9 @@
 
 - (void)calculatePopUpViewSize
 {
-    NSString *string = [_numberFormatter stringFromNumber:@(self.maximumValue)];
+    // if the abs of minimumValue is the same or larger than maximumValue, use it to calculate size
+    CGFloat value = ABS(self.minimumValue) >= self.maximumValue ? self.minimumValue : self.maximumValue;
+    NSString *string = [_numberFormatter stringFromNumber:@(value)];
     [[self.attributedString mutableString] setString:string];
     _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
     _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
