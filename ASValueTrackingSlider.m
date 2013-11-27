@@ -12,7 +12,9 @@
 
 @interface ASValuePopUpView : UIView
 - (void)setString:(NSAttributedString *)string;
-- (void)setPopUpViewColour:(UIColor *)color;
+- (void)setPopUpViewColor:(UIColor *)color;
+- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
+- (void)setAnimationOffset:(CGFloat)offset;
 @end
 
 @implementation ASValuePopUpView
@@ -51,9 +53,33 @@
     _textLayer.string = string;
 }
 
-- (void)setPopUpViewColour:(UIColor *)color;
+- (void)setPopUpViewColor:(UIColor *)color;
 {
+    [_backgroundLayer removeAnimationForKey:@"fillColor"];
     _backgroundLayer.fillColor = color.CGColor;
+}
+
+- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
+{
+    NSMutableArray *cgColors = [NSMutableArray array];
+    for (UIColor *col in animatedColors) {
+        [cgColors addObject:(id)col.CGColor];
+    }
+    
+    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:@"fillColor"];
+    colorAnim.values = cgColors;
+    colorAnim.fillMode = kCAFillModeBoth;
+    colorAnim.duration = 1.0;
+    [_backgroundLayer addAnimation:colorAnim forKey:@"fillColor"];
+    
+    _backgroundLayer.speed = 0.0;
+    _backgroundLayer.beginTime = offset;
+    _backgroundLayer.timeOffset = 0.0;
+}
+
+- (void)setAnimationOffset:(CGFloat)offset
+{
+    _backgroundLayer.timeOffset = offset;
 }
 
 - (void)setArrowCenterOffset:(CGFloat)offset
@@ -166,10 +192,16 @@
     [self calculatePopUpViewSize];
 }
 
-- (void)setPopUpViewColor:(UIColor *)color;
+- (void)setPopUpViewColors:(NSArray *)popUpViewAnimatedColors
 {
-    _popUpViewColor = color;
-    [self.popUpView setPopUpViewColour:color];
+    _popUpViewColors = popUpViewAnimatedColors;
+    
+    if ([popUpViewAnimatedColors count] < 2) {
+        [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject]];
+    } else {
+        [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors
+                                            offset:[self currentValueOffset]];
+    }
 }
 
 // when either the min/max value or number formatter changes, recalculate the popUpView width
@@ -216,7 +248,7 @@
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-    self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+    self.popUpViewColors = @[[UIColor colorWithWhite:0.0 alpha:0.7]];
     
     [self calculatePopUpViewSize];
 }
@@ -292,6 +324,8 @@
     NSString *string = [_numberFormatter stringFromNumber:@(self.value)];
     [[self.attributedString mutableString] setString:string];
     [self.popUpView setString:self.attributedString];
+    
+    [self.popUpView setAnimationOffset:[self currentValueOffset]];
 }
 
 - (void)calculatePopUpViewSize
@@ -311,6 +345,13 @@
     return [self thumbRectForBounds:self.bounds
                           trackRect:[self trackRectForBounds:self.bounds]
                               value:self.value];
+}
+
+// returns the current offset of UISlider value in the range 0.0 – 1.0
+- (CGFloat)currentValueOffset
+{
+    CGFloat valueRange = self.maximumValue - self.minimumValue;
+    return (self.value + ABS(self.minimumValue)) / valueRange;
 }
 
 #pragma mark - subclassed methods
