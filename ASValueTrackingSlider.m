@@ -257,7 +257,7 @@
         scaleAnim.duration = 0.6;
         scaleAnim.removedOnCompletion = NO;
         scaleAnim.fillMode = kCAFillModeForwards;
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:.1 :-2 :0.3 :2.25]];
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
         [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
         
         CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
