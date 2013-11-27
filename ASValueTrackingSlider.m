@@ -254,7 +254,7 @@
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-    self.popUpViewColors = @[[UIColor colorWithWhite:0.0 alpha:0.7]];
+    self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
     
     [self calculatePopUpViewSize];
 }
