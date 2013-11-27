@@ -194,6 +194,7 @@
 
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
 {
+    _popUpViewColor = popUpViewColor;
     [self.popUpView setPopUpViewColor:popUpViewColor];
 }
 
