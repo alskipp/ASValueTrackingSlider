@@ -15,7 +15,7 @@
 @property (strong, nonatomic) UIColor *popUpViewColor;
 
 // pass an array of  2 or more UIColors to animate the color change as the slider moves
-@property (strong, nonatomic) NSArray *popUpViewColors;
+@property (strong, nonatomic) NSArray *popUpViewAnimatedColors;
 
 // when setting max FractionDigits the min value is automatically set to the same value
 // this ensures that the PopUpView frame maintains a consistent width

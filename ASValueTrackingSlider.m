@@ -198,9 +198,9 @@
     [self.popUpView setPopUpViewColor:popUpViewColor];
 }
 
-- (void)setPopUpViewColors:(NSArray *)popUpViewAnimatedColors
+- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
-    _popUpViewColors = popUpViewAnimatedColors;
+    _popUpViewAnimatedColors = popUpViewAnimatedColors;
     
     if ([popUpViewAnimatedColors count] < 2) {
         [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject]];
