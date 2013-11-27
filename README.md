@@ -16,6 +16,7 @@ Features
   * textColor
   * font
   * popUpViewColor
+  * popUpViewAnimatedColors - color animates as slider value changes
 * Set your own NSNumberFormatter to control the displayed values
 * Wholesome springy animation
 
@@ -37,7 +38,7 @@ The examples below demonstrate how to customize the appearance and value display
 ```objective-c
 self.slider.maximumValue = 255.0;
 [self.slider setMaxFractionDigitsDisplayed:0];
-self.slider.popUpViewColors = @[[UIColor colorWithHue:0.55 saturation:0.5 brightness:0.9 alpha:0.8]];
+self.slider.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.5 brightness:0.9 alpha:0.8];
 self.slider.textColor = [UIColor colorWithHue:0.55 saturation:1 brightness:0.4 alpha:1];
 self.slider.font = [UIFont fontWithName:@"Menlo-Bold" size:22];
 ```
@@ -49,7 +50,7 @@ self.slider.font = [UIFont fontWithName:@"Menlo-Bold" size:22];
 NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 [formatter setNumberStyle:NSNumberFormatterPercentStyle];
 [self.slider setNumberFormatter:formatter];
-self.slider.popUpViewColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
+self.slider.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
 self.slider.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
 ```
 
