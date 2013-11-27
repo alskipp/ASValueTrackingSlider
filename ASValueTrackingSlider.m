@@ -192,6 +192,11 @@
     [self calculatePopUpViewSize];
 }
 
+- (void)setPopUpViewColor:(UIColor *)popUpViewColor
+{
+    [self.popUpView setPopUpViewColor:popUpViewColor];
+}
+
 - (void)setPopUpViewColors:(NSArray *)popUpViewAnimatedColors
 {
     _popUpViewColors = popUpViewAnimatedColors;

@@ -12,7 +12,8 @@
 @property (strong, nonatomic) UIColor *textColor;
 @property (strong, nonatomic) UIFont *font;
 
-// pass an array containing a single UIColor object to set a consistent color
+@property (strong, nonatomic) UIColor *popUpViewColor;
+
 // pass an array of  2 or more UIColors to animate the color change as the slider moves
 @property (strong, nonatomic) NSArray *popUpViewColors;
 
