@@ -12,6 +12,7 @@
 
 @interface ASValuePopUpView : UIView
 - (void)setString:(NSAttributedString *)string;
+- (UIColor *)popUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
 - (void)setAnimationOffset:(CGFloat)offset;
@@ -51,6 +52,11 @@
 - (void)setString:(NSAttributedString *)string
 {
     _textLayer.string = string;
+}
+
+- (UIColor *)popUpViewColor
+{
+    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
 }
 
 - (void)setPopUpViewColor:(UIColor *)color;
@@ -153,6 +159,7 @@
 {
     CGFloat _popUpViewWidth;
     CGFloat _popUpViewHeight;
+    UIColor *_popUpViewColor;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -192,18 +199,28 @@
     [self calculatePopUpViewSize];
 }
 
+// return the currently displayed color if possible, otherwise return _popUpViewColor
+// if animated colors are set, the color will change each time the slider value changes
+- (UIColor *)popUpViewColor
+{
+    return [self.popUpView popUpViewColor] ?: _popUpViewColor;
+}
+
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
 {
     _popUpViewColor = popUpViewColor;
     [self.popUpView setPopUpViewColor:popUpViewColor];
 }
 
+// if only 1 color is present then call 'setPopUpViewColor:'
+// if arg is nil then restore previous _popUpViewColor
+// otherwise, set animated colors
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
     
     if ([popUpViewAnimatedColors count] < 2) {
-        [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject]];
+        [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     } else {
         [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors
                                             offset:[self currentValueOffset]];
