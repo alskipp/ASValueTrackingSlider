@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
                    * Option to animate background color as value changes
                    DESC
   s.homepage     = "https://github.com/alskipp/ValueTrackingSlider"
-  s.screenshots  = "http://alskipp.github.io/ValueTrackingSlider/img/screenshot2.png",
-                   "http://alskipp.github.io/ValueTrackingSlider/img/screenshot3.png"
+  s.screenshots  = "http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.png",
+                   "http://alskipp.github.io/ValueTrackingSlider/img/screenshot2.png"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Al Skipp" => "al@alskipp.com" }
   s.platform     = :ios, '6.0'
