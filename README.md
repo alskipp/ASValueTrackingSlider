@@ -4,7 +4,7 @@ ValueTrackingSlider
 What is it?
 ---
 
-A UISlider Subclass that displays live values in a popUpView. It’s inspired by the implementation found [here](https://github.com/mneuwert/iOS-Custom-Controls), but this version is built using CALayers.
+A UISlider Subclass that displays live values in a popUpView. It’s inspired by the implementation found [here](https://github.com/mneuwert/iOS-Custom-Controls). This version is built using CALayers, it offers a few more features and it's easy to customize the appearance.
 
 ![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.png)
 
@@ -32,7 +32,7 @@ Just include these two files in your project:
 How to use it
 ---
 
-It’s very simple. Just drag a UISlider into your Storyboard/nib and set it’s class to ASValueTrackingSlider.
+It’s very simple. Just drag a UISlider into your Storyboard/nib and set its class to ASValueTrackingSlider.
 The examples below demonstrate how to customize the appearance and value displayed.
 
 ```objective-c
