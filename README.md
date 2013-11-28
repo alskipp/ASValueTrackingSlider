@@ -21,20 +21,21 @@ Features
 * Wholesome springy animation
 
 
-What do you need?
+Which files are needed?
 ---
 
-If you use [CocoaPods](http://beta.cocoapods.org) then just add `pod 'ASValueTrackingSlider'` to your podfile.
+If you use [CocoaPods](http://beta.cocoapods.org) then simply add `pod 'ASValueTrackingSlider'` to your podfile.
 
 Alternatively, just include these two files in your project:
 
 * ASValueTrackingSlider.h
 * ASValueTrackingSlider.m
 
+
 How to use it
 ---
 
-It’s very simple. Just drag a UISlider into your Storyboard/nib and set its class to ASValueTrackingSlider.
+It’s very simple. Drag a UISlider into your Storyboard/nib and set its class to ASValueTrackingSlider – that's it.
 The examples below demonstrate how to customize the appearance and value displayed.
 
 ```objective-c
