@@ -6,7 +6,7 @@ What is it?
 
 A UISlider Subclass that displays live values in a popUpView. It’s inspired by the implementation found [here](https://github.com/mneuwert/iOS-Custom-Controls). This version is built using CALayers, it offers a few more features and it's easy to customize the appearance.
 
-![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.png)
+![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.gif)
 
 Features
 ---
