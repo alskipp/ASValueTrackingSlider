@@ -24,7 +24,9 @@ Features
 What do you need?
 ---
 
-Just include these two files in your project:
+If you use [CocoaPods](http://beta.cocoapods.org) then just add `pod 'ASValueTrackingSlider'` to your podfile.
+
+Alternatively, just include these two files in your project:
 
 * ASValueTrackingSlider.h
 * ASValueTrackingSlider.m
