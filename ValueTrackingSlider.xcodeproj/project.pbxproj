@@ -22,6 +22,8 @@
 		E742B0B01812EC4E005B188F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E742B0AE1812EC4E005B188F /* InfoPlist.strings */; };
 		E742B0B21812EC4E005B188F /* ValueTrackingSliderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */; };
 		E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */; };
+		E7D155521846AAED009173E4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E7D155511846AAED009173E4 /* LICENSE */; };
+		E7D155541846AB27009173E4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7D155531846AB27009173E4 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValueTrackingSliderTests.m; sourceTree = "<group>"; };
 		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASValueTrackingSlider.h; path = ../ASValueTrackingSlider.h; sourceTree = "<group>"; };
 		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASValueTrackingSlider.m; path = ../ASValueTrackingSlider.m; sourceTree = "<group>"; };
+		E7D155511846AAED009173E4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		E7D155531846AB27009173E4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +128,8 @@
 				E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */,
 				E742B09E1812EC4E005B188F /* Images.xcassets */,
 				E742B08D1812EC4E005B188F /* Supporting Files */,
+				E7D155511846AAED009173E4 /* LICENSE */,
+				E7D155531846AB27009173E4 /* README.md */,
 			);
 			path = ValueTrackingSlider;
 			sourceTree = "<group>";
@@ -236,6 +242,8 @@
 			files = (
 				E742B09F1812EC4E005B188F /* Images.xcassets in Resources */,
 				E742B0911812EC4E005B188F /* InfoPlist.strings in Resources */,
+				E7D155541846AB27009173E4 /* README.md in Resources */,
+				E7D155521846AAED009173E4 /* LICENSE in Resources */,
 				E742B09A1812EC4E005B188F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
