@@ -9,6 +9,7 @@
 #import "ASValueTrackingSlider.h"
 
 #define ARROW_LENGTH 13
+NSString *const FillColorAnimation = @"fillColor";
 
 @interface ASValuePopUpView : UIView
 
@@ -64,7 +65,7 @@
 
 - (void)setPopUpViewColor:(UIColor *)color;
 {
-    [_backgroundLayer removeAnimationForKey:@"fillColor"];
+    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
     _backgroundLayer.fillColor = color.CGColor;
 }
 
@@ -75,13 +76,13 @@
         [cgColors addObject:(id)col.CGColor];
     }
     
-    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:@"fillColor"];
+    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:FillColorAnimation];
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
-    [_backgroundLayer addAnimation:colorAnim forKey:@"fillColor"];
     
     _backgroundLayer.speed = 0.0;
+    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
 }
 
 - (void)setAnimationOffset:(CGFloat)offset
