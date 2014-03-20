@@ -12,7 +12,7 @@
 
 @interface ASValuePopUpView : UIView
 - (void)setString:(NSAttributedString *)string;
-- (UIColor *)popUpViewColor;
+- (CGColorRef)popUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
 - (void)setAnimationOffset:(CGFloat)offset;
@@ -54,9 +54,9 @@
     _textLayer.string = string;
 }
 
-- (UIColor *)popUpViewColor
+- (CGColorRef)popUpViewColor
 {
-    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
+    return [_backgroundLayer.presentationLayer fillColor];
 }
 
 - (void)setPopUpViewColor:(UIColor *)color;
@@ -203,7 +203,7 @@
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [self.popUpView popUpViewColor] ?: _popUpViewColor;
+    return [UIColor colorWithCGColor:[self.popUpView popUpViewColor]] ?: _popUpViewColor;
 }
 
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
