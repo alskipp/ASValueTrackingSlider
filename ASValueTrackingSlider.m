@@ -272,8 +272,6 @@
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
     self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
-    
-    [self calculatePopUpViewSize];
 }
 
 - (void)showPopUp
@@ -359,8 +357,6 @@
     [[self.attributedString mutableString] setString:string];
     _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
     _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
-    
-    [self positionAndUpdatePopUpView];
 }
 
 - (CGRect)thumbRect
