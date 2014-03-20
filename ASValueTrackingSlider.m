@@ -264,18 +264,21 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
-    self.numberFormatter = formatter;
-    [self setMaxFractionDigitsDisplayed:2];
-    
+    [formatter setMaximumFractionDigits:2];
+    [formatter setMinimumFractionDigits:2];
+    _numberFormatter = formatter;
+
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
     
+    _popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+    [self.popUpView setPopUpViewColor:_popUpViewColor];
+
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-    self.popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
 }
 
 - (void)showPopUp
