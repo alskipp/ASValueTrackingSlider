@@ -17,7 +17,7 @@
 - (void)setString:(NSAttributedString *)string;
 - (CGColorRef)popUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
+- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
 - (void)setAnimationOffset:(CGFloat)offset;
 @end
 
@@ -68,7 +68,7 @@
     _backgroundLayer.fillColor = color.CGColor;
 }
 
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors offset:(CGFloat)offset;
+- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
     for (UIColor *col in animatedColors) {
@@ -82,8 +82,6 @@
     [_backgroundLayer addAnimation:colorAnim forKey:@"fillColor"];
     
     _backgroundLayer.speed = 0.0;
-    _backgroundLayer.beginTime = offset;
-    _backgroundLayer.timeOffset = 0.0;
 }
 
 - (void)setAnimationOffset:(CGFloat)offset
@@ -225,8 +223,7 @@
     if ([popUpViewAnimatedColors count] < 2) {
         [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     } else {
-        [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors
-                                            offset:[self currentValueOffset]];
+        [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors];
     }
 }
 
