@@ -21,21 +21,21 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NLb-U4-kLt" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="150" width="284" height="31"/>
+                                <rect key="frame" x="18" y="165" width="284" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rqf-uQ-zqb" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="230" width="284" height="31"/>
+                                <rect key="frame" x="18" y="260" width="284" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="dlN-b3-P3n" secondAttribute="bottom" constant="50" id="1tG-uh-wsk"/>
+                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="dlN-b3-P3n" secondAttribute="bottom" constant="65" id="1tG-uh-wsk"/>
                             <constraint firstAttribute="trailing" secondItem="dlN-b3-P3n" secondAttribute="trailing" constant="20" symbolic="YES" id="BMb-tW-EOw"/>
                             <constraint firstAttribute="trailing" secondItem="NLb-U4-kLt" secondAttribute="trailing" constant="20" symbolic="YES" id="BUV-ed-N1Z"/>
                             <constraint firstItem="dlN-b3-P3n" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="EVF-Kb-toL"/>
-                            <constraint firstItem="rqf-uQ-zqb" firstAttribute="top" secondItem="NLb-U4-kLt" secondAttribute="bottom" constant="50" id="Hze-oe-8k7"/>
+                            <constraint firstItem="rqf-uQ-zqb" firstAttribute="top" secondItem="NLb-U4-kLt" secondAttribute="bottom" constant="65" id="Hze-oe-8k7"/>
                             <constraint firstItem="rqf-uQ-zqb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Jth-3T-KdA"/>
                             <constraint firstItem="NLb-U4-kLt" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="bDz-Sx-QdW"/>
                             <constraint firstAttribute="trailing" secondItem="rqf-uQ-zqb" secondAttribute="trailing" constant="20" symbolic="YES" id="eWt-c4-Heh"/>
