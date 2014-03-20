@@ -11,6 +11,9 @@
 #define ARROW_LENGTH 13
 
 @interface ASValuePopUpView : UIView
+
+@property (weak, nonatomic) id delegate;
+
 - (void)setString:(NSAttributedString *)string;
 - (CGColorRef)popUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
@@ -266,6 +269,7 @@
     
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpView.alpha = 0.0;
+    self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
     
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
