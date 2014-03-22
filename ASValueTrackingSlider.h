@@ -20,6 +20,11 @@
 // pass an array of  2 or more UIColors to animate the color change as the slider moves
 @property (strong, nonatomic) NSArray *popUpViewAnimatedColors;
 
+// default is YES
+// changes the left handside of the UISlider track to match current popUpView color
+// the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
+@property (nonatomic) BOOL autoAdjustTrackColor;
+
 // when setting max FractionDigits the min value is automatically set to the same value
 // this ensures that the PopUpView frame maintains a consistent width
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
