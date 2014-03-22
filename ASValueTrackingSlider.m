@@ -266,12 +266,11 @@ NSString *const FillColorAnimation = @"fillColor";
     _numberFormatter = formatter;
 
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
+    self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.65];
+
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
-    
-    _popUpViewColor = [UIColor colorWithWhite:0.0 alpha:0.7];
-    [self.popUpView setPopUpViewColor:_popUpViewColor];
 
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
