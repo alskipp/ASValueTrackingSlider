@@ -9,16 +9,18 @@
 #import "ASValueTrackingSlider.h"
 
 #define ARROW_LENGTH 13
+NSString *const AnimationLayer = @"animationLayer";
 NSString *const FillColorAnimation = @"fillColor";
 
 @interface ASValuePopUpView : UIView
 
 @property (weak, nonatomic) id delegate;
 
-- (void)setString:(NSAttributedString *)string;
-- (CGColorRef)popUpViewColor;
+- (UIColor *)opaquePopUpViewColor;
+- (UIColor *)popUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
+- (void)setString:(NSAttributedString *)string;
 - (void)setAnimationOffset:(CGFloat)offset;
 @end
 
@@ -28,6 +30,18 @@ NSString *const FillColorAnimation = @"fillColor";
     CATextLayer *_textLayer;
     CGSize _oldSize;
     CGFloat _arrowCenterOffset;
+}
+
+static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
+{
+    const CGFloat *components = CGColorGetComponents(col);
+    UIColor *color;
+    if (CGColorGetNumberOfComponents(col) == 2) {
+        color = [UIColor colorWithWhite:components[0] alpha:1.0];
+    } else {
+        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
+    }
+    return color;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -58,9 +72,14 @@ NSString *const FillColorAnimation = @"fillColor";
     _textLayer.string = string;
 }
 
-- (CGColorRef)popUpViewColor
+- (UIColor *)popUpViewColor
 {
-    return [_backgroundLayer.presentationLayer fillColor];
+    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
+}
+
+- (UIColor *)opaquePopUpViewColor
+{
+    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
 }
 
 - (void)setPopUpViewColor:(UIColor *)color;
@@ -80,9 +99,11 @@ NSString *const FillColorAnimation = @"fillColor";
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
-    
-    _backgroundLayer.speed = 0.0;
+    colorAnim.delegate = self.delegate;
+    [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
+
     [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
+    _backgroundLayer.speed = FLT_MIN;
 }
 
 - (void)setAnimationOffset:(CGFloat)offset
@@ -163,6 +184,8 @@ NSString *const FillColorAnimation = @"fillColor";
     UIColor *_popUpViewColor;
 }
 
+#pragma mark - initialization
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -181,7 +204,32 @@ NSString *const FillColorAnimation = @"fillColor";
     return self;
 }
 
+#pragma mark - delegate methods
+
+- (void)animationDidStart:(CAAnimation *)animation
+{
+    CALayer *layer = [animation valueForKey:AnimationLayer];
+    layer.speed = 0.0;
+    layer.timeOffset = [self currentValueOffset];
+    [self autoColorTrack];
+}
+
 #pragma mark - public methods
+
+- (void)setAutoAdjustTrackColor:(BOOL)autoAdjust
+{
+    if (_autoAdjustTrackColor == autoAdjust) return;
+    
+    _autoAdjustTrackColor = autoAdjust;
+    
+    // setMinimumTrackTintColor has been overridden to also set autoAdjustTrackColor to NO
+    // therefore super's implementation must be called to set minimumTrackTintColor
+    if (autoAdjust == NO) {
+        super.minimumTrackTintColor = nil; // sets track to default blue color
+    } else {
+        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+    }
+}
 
 - (void)setTextColor:(UIColor *)color
 {
@@ -204,13 +252,18 @@ NSString *const FillColorAnimation = @"fillColor";
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [UIColor colorWithCGColor:[self.popUpView popUpViewColor]] ?: _popUpViewColor;
+    return [self.popUpView popUpViewColor] ?: _popUpViewColor;
 }
 
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
 {
     _popUpViewColor = popUpViewColor;
+    _popUpViewAnimatedColors = nil; // animated colors should be discarded
     [self.popUpView setPopUpViewColor:popUpViewColor];
+
+    if (_autoAdjustTrackColor) {
+        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+    }
 }
 
 // if only 1 color is present then call 'setPopUpViewColor:'
@@ -220,10 +273,11 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
     
-    if ([popUpViewAnimatedColors count] < 2) {
-        [self.popUpView setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
-    } else {
+    if ([popUpViewAnimatedColors count] >= 2) {
         [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors];
+        [self autoColorTrack];
+    } else {
+        [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
 }
 
@@ -258,6 +312,8 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)setup
 {
+    _autoAdjustTrackColor = YES;
+    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
@@ -331,7 +387,7 @@ NSString *const FillColorAnimation = @"fillColor";
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
 
-    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth)/2, (thumbH -_popUpViewHeight)/2);
+    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth)/2, (thumbH - _popUpViewHeight)/2);
     popUpRect.origin.y = thumbRect.origin.y - _popUpViewHeight;
     
     // determine if popUpRect extends beyond the frame of the UISlider
@@ -350,6 +406,16 @@ NSString *const FillColorAnimation = @"fillColor";
     [self.popUpView setString:self.attributedString];
     
     [self.popUpView setAnimationOffset:[self currentValueOffset]];
+    
+    [self autoColorTrack];
+}
+
+// returns BOOL indicating if auto track color was successful
+- (void)autoColorTrack
+{
+    if (_autoAdjustTrackColor == NO || !_popUpViewAnimatedColors) return;
+
+    super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
 }
 
 - (void)calculatePopUpViewSize
@@ -377,6 +443,12 @@ NSString *const FillColorAnimation = @"fillColor";
 }
 
 #pragma mark - subclassed methods
+
+- (void)setMinimumTrackTintColor:(UIColor *)color
+{
+    self.autoAdjustTrackColor = NO; // if a custom value is set then prevent auto coloring
+    [super setMinimumTrackTintColor:color];
+}
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
