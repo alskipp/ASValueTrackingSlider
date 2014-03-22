@@ -99,10 +99,16 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
-    colorAnim.delegate = self.delegate;
+    colorAnim.delegate = self.delegate; // delegate will be used to set speed to zero in 'animationDidStart:'
+    
+    // the delegate uses this key to retrieve the _backgroundLayer
     [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
 
     [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
+    
+    // set speed to min value to start animation - it will then be set to zero in 'animationDidStart:'
+    // the initial color of 'minimumTrackTintColor' is derived from the presentationLayer of _backgroundLayer
+    // so the animation must be allowed to start to initialize the presentationLayer
     _backgroundLayer.speed = FLT_MIN;
 }
 
@@ -206,6 +212,10 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 
 #pragma mark - delegate methods
 
+// this delegate method is received from ASValuePopUpView's background layer
+// it is the layer responsible for animating the color change of ASValuePopUpView
+// set the speed to zero to freeze the animation and set the offset to the correct value
+// the animation will then update only when the slider value changes
 - (void)animationDidStart:(CAAnimation *)animation
 {
     CALayer *layer = [animation valueForKey:AnimationLayer];
