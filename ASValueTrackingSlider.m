@@ -149,7 +149,6 @@ NSString *const FillColorAnimation = @"fillColor";
 @interface ASValueTrackingSlider()
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
-@property (readonly, nonatomic) CGRect thumbRect;
 @property (strong, nonatomic) NSMutableAttributedString *attributedString;
 @end
 
@@ -329,7 +328,7 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)positionAndUpdatePopUpView
 {
-    CGRect thumbRect = self.thumbRect;
+    CGRect thumbRect = [self thumbRect];
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
 
