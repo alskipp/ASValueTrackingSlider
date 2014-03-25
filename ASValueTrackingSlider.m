@@ -16,8 +16,8 @@ NSString *const FillColorAnimation = @"fillColor";
 
 @property (weak, nonatomic) id delegate;
 
-- (UIColor *)opaquePopUpViewColor;
 - (UIColor *)popUpViewColor;
+- (UIColor *)opaquePopUpViewColor;
 - (void)setPopUpViewColor:(UIColor *)color;
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
 - (void)setString:(NSAttributedString *)string;
