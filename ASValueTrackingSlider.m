@@ -420,7 +420,6 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     [self autoColorTrack];
 }
 
-// returns BOOL indicating if auto track color was successful
 - (void)autoColorTrack
 {
     if (_autoAdjustTrackColor == NO || !_popUpViewAnimatedColors) return;
