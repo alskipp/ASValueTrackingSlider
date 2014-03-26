@@ -16,7 +16,7 @@ Features
   * textColor
   * font
   * popUpViewColor
-  * popUpViewAnimatedColors - color animates as slider value changes
+  * popUpViewAnimatedColors - popUpView and UISlider track color animate as value changes
 * Set your own NSNumberFormatter to control the displayed values
 * Wholesome springy animation
 
