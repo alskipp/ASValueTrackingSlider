@@ -88,6 +88,8 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _backgroundLayer.fillColor = color.CGColor;
 }
 
+// set up an animation with a speed of zero to prevent it from running
+// the animation offset can then be controlled by the UISlider
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
@@ -103,13 +105,13 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     
     // the delegate uses this key to retrieve the _backgroundLayer
     [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
-
-    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
     
-    // set speed to min value to start animation - it will then be set to zero in 'animationDidStart:'
-    // the initial color of 'minimumTrackTintColor' is derived from the presentationLayer of _backgroundLayer
-    // so the animation must be allowed to start to initialize the presentationLayer
+    // the animation must be allowed to start to initialize the CALayer's presentationLayer
+    // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
+    // hence the speed is set to min value - then set to zero in 'animationDidStart:'
     _backgroundLayer.speed = FLT_MIN;
+    
+    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
 }
 
 - (void)setAnimationOffset:(CGFloat)offset
