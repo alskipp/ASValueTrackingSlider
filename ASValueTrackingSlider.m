@@ -16,10 +16,10 @@ NSString *const FillColorAnimation = @"fillColor";
 
 @property (weak, nonatomic) id delegate;
 
-- (UIColor *)popUpViewColor;
-- (UIColor *)opaquePopUpViewColor;
-- (void)setPopUpViewColor:(UIColor *)color;
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
+- (UIColor *)color;
+- (UIColor *)opaqueColor;
+- (void)setColor:(UIColor *)color;
+- (void)setAnimatedColors:(NSArray *)animatedColors;
 - (void)setString:(NSAttributedString *)string;
 - (void)setAnimationOffset:(CGFloat)offset;
 - (void)show;
@@ -75,17 +75,17 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _textLayer.string = string;
 }
 
-- (UIColor *)popUpViewColor
+- (UIColor *)color
 {
     return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
 }
 
-- (UIColor *)opaquePopUpViewColor
+- (UIColor *)opaqueColor
 {
     return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
 }
 
-- (void)setPopUpViewColor:(UIColor *)color;
+- (void)setColor:(UIColor *)color;
 {
     [_backgroundLayer removeAnimationForKey:FillColorAnimation];
     _backgroundLayer.fillColor = color.CGColor;
@@ -93,7 +93,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 
 // set up an animation with a speed of zero to prevent it from running
 // the animation offset can then be controlled by the UISlider
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors
+- (void)setAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
     for (UIColor *col in animatedColors) {
@@ -288,7 +288,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     if (autoAdjust == NO) {
         super.minimumTrackTintColor = nil; // sets track to default blue color
     } else {
-        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+        super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
@@ -313,17 +313,17 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [self.popUpView popUpViewColor] ?: _popUpViewColor;
+    return [self.popUpView color] ?: _popUpViewColor;
 }
 
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
 {
     _popUpViewColor = popUpViewColor;
     _popUpViewAnimatedColors = nil; // animated colors should be discarded
-    [self.popUpView setPopUpViewColor:popUpViewColor];
+    [self.popUpView setColor:popUpViewColor];
 
     if (_autoAdjustTrackColor) {
-        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+        super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
@@ -335,7 +335,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
     
     if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors];
+        [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
         [self autoColorTrack];
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
@@ -427,7 +427,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 {
     if (_autoAdjustTrackColor == NO || !_popUpViewAnimatedColors) return;
 
-    super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+    super.minimumTrackTintColor = [self.popUpView opaqueColor];
 }
 
 - (void)calculatePopUpViewSize
