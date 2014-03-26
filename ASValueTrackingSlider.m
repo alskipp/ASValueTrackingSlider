@@ -22,6 +22,9 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
 - (void)setString:(NSAttributedString *)string;
 - (void)setAnimationOffset:(CGFloat)offset;
+- (void)show;
+- (void)hide;
+
 @end
 
 @implementation ASValuePopUpView
@@ -130,6 +133,52 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
+}
+
+- (void)show
+{
+    [CATransaction begin]; {
+        // start the transform animation from its current value if it's already running
+        NSValue *fromValue = [self.layer animationForKey:@"transform"] ? [self.layer.presentationLayer valueForKey:@"transform"] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = fromValue;
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        scaleAnim.duration = 0.4;
+        [self.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeInAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
+        fadeInAnim.duration = 0.1;
+        fadeInAnim.toValue = @1.0;
+        [self.layer addAnimation:fadeInAnim forKey:@"opacity"];
+        
+        self.layer.opacity = 1.0;
+    } [CATransaction commit];
+}
+
+- (void)hide
+{
+    [CATransaction begin]; {
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        scaleAnim.duration = 0.6;
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
+        [self.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeOutAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
+        fadeOutAnim.toValue = @0.0;
+        fadeOutAnim.duration = 0.8;
+        [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
+        self.layer.opacity = 0.0;
+    } [CATransaction commit];
 }
 
 - (void)drawPath
@@ -345,54 +394,6 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     self.font = [UIFont boldSystemFontOfSize:22.0f];
 }
 
-- (void)showPopUp
-{
-    [CATransaction begin]; {
-        // if the transfrom animation hasn't run yet then set a default fromValue
-        NSValue *fromValue = [self.popUpView.layer animationForKey:@"transform"] ?
-        [self.popUpView.layer.presentationLayer valueForKey:@"transform"] :
-        [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = fromValue;
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        scaleAnim.duration = 0.4;
-        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeInAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
-        fadeInAnim.duration = 0.1;
-        fadeInAnim.toValue = @1.0;
-        [self.popUpView.layer addAnimation:fadeInAnim forKey:@"opacity"];
-        self.popUpView.layer.opacity = 1.0;
-        
-    } [CATransaction commit];
-}
-
-- (void)hidePopUp
-{
-    [CATransaction begin]; {
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"transform"];
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        scaleAnim.duration = 0.6;
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
-        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeOutAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
-        fadeOutAnim.toValue = @0.0;
-        fadeOutAnim.duration = 0.8;
-        [self.popUpView.layer addAnimation:fadeOutAnim forKey:@"opacity"];
-        self.popUpView.layer.opacity = 0.0;
-    } [CATransaction commit];
-}
-
 - (void)positionAndUpdatePopUpView
 {
     CGRect thumbRect = [self thumbRect];
@@ -466,7 +467,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
     if (begin) {
         [self positionAndUpdatePopUpView];
-        [self showPopUp];
+        [self.popUpView show];
     }
     return begin;
 }
@@ -481,14 +482,14 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    [self hidePopUp];
+    [self.popUpView hide];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
-    [self hidePopUp];
+    [self.popUpView hide];
 }
 
 @end
