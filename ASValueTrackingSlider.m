@@ -16,12 +16,15 @@ NSString *const FillColorAnimation = @"fillColor";
 
 @property (weak, nonatomic) id delegate;
 
-- (UIColor *)popUpViewColor;
-- (UIColor *)opaquePopUpViewColor;
-- (void)setPopUpViewColor:(UIColor *)color;
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors;
+- (UIColor *)color;
+- (UIColor *)opaqueColor;
+- (void)setColor:(UIColor *)color;
+- (void)setAnimatedColors:(NSArray *)animatedColors;
 - (void)setString:(NSAttributedString *)string;
 - (void)setAnimationOffset:(CGFloat)offset;
+- (void)show;
+- (void)hide;
+
 @end
 
 @implementation ASValuePopUpView
@@ -72,23 +75,25 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _textLayer.string = string;
 }
 
-- (UIColor *)popUpViewColor
+- (UIColor *)color
 {
     return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
 }
 
-- (UIColor *)opaquePopUpViewColor
+- (UIColor *)opaqueColor
 {
     return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
 }
 
-- (void)setPopUpViewColor:(UIColor *)color;
+- (void)setColor:(UIColor *)color;
 {
     [_backgroundLayer removeAnimationForKey:FillColorAnimation];
     _backgroundLayer.fillColor = color.CGColor;
 }
 
-- (void)setPopUpViewAnimatedColors:(NSArray *)animatedColors
+// set up an animation with a speed of zero to prevent it from running
+// the animation offset can then be controlled by the UISlider
+- (void)setAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
     for (UIColor *col in animatedColors) {
@@ -103,13 +108,14 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     
     // the delegate uses this key to retrieve the _backgroundLayer
     [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
-
-    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
     
-    // set speed to min value to start animation - it will then be set to zero in 'animationDidStart:'
-    // the initial color of 'minimumTrackTintColor' is derived from the presentationLayer of _backgroundLayer
-    // so the animation must be allowed to start to initialize the presentationLayer
+    // the animation must be allowed to start to initialize the CALayer's presentationLayer
+    // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
+    // hence the speed is set to min value - then set to zero in 'animationDidStart:'
     _backgroundLayer.speed = FLT_MIN;
+    _backgroundLayer.timeOffset = 0.0;
+    
+    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
 }
 
 - (void)setAnimationOffset:(CGFloat)offset
@@ -128,6 +134,52 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
+}
+
+- (void)show
+{
+    [CATransaction begin]; {
+        // start the transform animation from its current value if it's already running
+        NSValue *fromValue = [self.layer animationForKey:@"transform"] ? [self.layer.presentationLayer valueForKey:@"transform"] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = fromValue;
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        scaleAnim.duration = 0.4;
+        [self.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeInAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
+        fadeInAnim.duration = 0.1;
+        fadeInAnim.toValue = @1.0;
+        [self.layer addAnimation:fadeInAnim forKey:@"opacity"];
+        
+        self.layer.opacity = 1.0;
+    } [CATransaction commit];
+}
+
+- (void)hide
+{
+    [CATransaction begin]; {
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        scaleAnim.duration = 0.6;
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
+        [self.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeOutAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
+        fadeOutAnim.toValue = @0.0;
+        fadeOutAnim.duration = 0.8;
+        [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
+        self.layer.opacity = 0.0;
+    } [CATransaction commit];
 }
 
 - (void)drawPath
@@ -237,7 +289,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     if (autoAdjust == NO) {
         super.minimumTrackTintColor = nil; // sets track to default blue color
     } else {
-        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+        super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
@@ -262,17 +314,17 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [self.popUpView popUpViewColor] ?: _popUpViewColor;
+    return [self.popUpView color] ?: _popUpViewColor;
 }
 
 - (void)setPopUpViewColor:(UIColor *)popUpViewColor
 {
     _popUpViewColor = popUpViewColor;
     _popUpViewAnimatedColors = nil; // animated colors should be discarded
-    [self.popUpView setPopUpViewColor:popUpViewColor];
+    [self.popUpView setColor:popUpViewColor];
 
     if (_autoAdjustTrackColor) {
-        super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+        super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
@@ -284,7 +336,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
     
     if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setPopUpViewAnimatedColors:popUpViewAnimatedColors];
+        [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
         [self autoColorTrack];
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
@@ -324,6 +376,15 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 {
     _autoAdjustTrackColor = YES;
     
+    // ensure animation restarts if app is closed then becomes active again
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                      object:nil queue:nil
+                                                  usingBlock:^(NSNotification *note) {
+                                                      if (_popUpViewAnimatedColors) {
+                                                          [self.popUpView setAnimatedColors:_popUpViewAnimatedColors];
+                                                      }
+                                                  }];
+    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
@@ -341,54 +402,6 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-}
-
-- (void)showPopUp
-{
-    [CATransaction begin]; {
-        // if the transfrom animation hasn't run yet then set a default fromValue
-        NSValue *fromValue = [self.popUpView.layer animationForKey:@"transform"] ?
-        [self.popUpView.layer.presentationLayer valueForKey:@"transform"] :
-        [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = fromValue;
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        scaleAnim.duration = 0.4;
-        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeInAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
-        fadeInAnim.duration = 0.1;
-        fadeInAnim.toValue = @1.0;
-        [self.popUpView.layer addAnimation:fadeInAnim forKey:@"opacity"];
-        self.popUpView.layer.opacity = 1.0;
-        
-    } [CATransaction commit];
-}
-
-- (void)hidePopUp
-{
-    [CATransaction begin]; {
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"transform"];
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        scaleAnim.duration = 0.6;
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
-        [self.popUpView.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeOutAnim.fromValue = [self.popUpView.layer.presentationLayer valueForKey:@"opacity"];
-        fadeOutAnim.toValue = @0.0;
-        fadeOutAnim.duration = 0.8;
-        [self.popUpView.layer addAnimation:fadeOutAnim forKey:@"opacity"];
-        self.popUpView.layer.opacity = 0.0;
-    } [CATransaction commit];
 }
 
 - (void)positionAndUpdatePopUpView
@@ -424,7 +437,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 {
     if (_autoAdjustTrackColor == NO || !_popUpViewAnimatedColors) return;
 
-    super.minimumTrackTintColor = [self.popUpView opaquePopUpViewColor];
+    super.minimumTrackTintColor = [self.popUpView opaqueColor];
 }
 
 - (void)calculatePopUpViewSize
@@ -464,7 +477,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
     if (begin) {
         [self positionAndUpdatePopUpView];
-        [self showPopUp];
+        [self.popUpView show];
     }
     return begin;
 }
@@ -479,14 +492,14 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    [self hidePopUp];
+    [self.popUpView hide];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
-    [self hidePopUp];
+    [self.popUpView hide];
 }
 
 @end
