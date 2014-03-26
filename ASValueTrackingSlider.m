@@ -113,6 +113,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
     // hence the speed is set to min value - then set to zero in 'animationDidStart:'
     _backgroundLayer.speed = FLT_MIN;
+    _backgroundLayer.timeOffset = 0.0;
     
     [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
 }
@@ -374,6 +375,15 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 - (void)setup
 {
     _autoAdjustTrackColor = YES;
+    
+    // ensure animation restarts if app is closed then becomes active again
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                      object:nil queue:nil
+                                                  usingBlock:^(NSNotification *note) {
+                                                      if (_popUpViewAnimatedColors) {
+                                                          [self.popUpView setAnimatedColors:_popUpViewAnimatedColors];
+                                                      }
+                                                  }];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
