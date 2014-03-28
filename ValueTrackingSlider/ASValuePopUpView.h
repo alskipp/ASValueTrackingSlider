@@ -13,11 +13,14 @@
 
 #import <UIKit/UIKit.h>
 
-NSString *const AnimationLayer;
+@protocol ASValuePopUpViewDelegate <NSObject>
+- (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
+- (void)animationDidStart;
+@end
 
 @interface ASValuePopUpView : UIView
 
-@property (weak, nonatomic) id delegate;
+@property (weak, nonatomic) id <ASValuePopUpViewDelegate> delegate;
 
 - (UIColor *)color;
 - (void)setColor:(UIColor *)color;

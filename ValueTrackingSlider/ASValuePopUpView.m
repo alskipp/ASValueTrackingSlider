@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Alan Skipp. All rights reserved.
 //
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// This UIView subclass is used internally by ASValueTrackingSlider
+// The public API is declared in ASValueTrackingSlider.h
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #import "ASValuePopUpView.h"
 
 #define ARROW_LENGTH 13
@@ -88,8 +93,8 @@ NSString *const FillColorAnimation = @"fillColor";
     _textLayer.string = _attributedString;
 }
 
-// set up an animation with a speed of zero to prevent it from running
-// the animation offset can then be controlled by the UISlider
+// set up an animation, but prevent it from running automatically
+// the animation progress will be adjusted manually
 - (void)setAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
@@ -101,14 +106,11 @@ NSString *const FillColorAnimation = @"fillColor";
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
-    colorAnim.delegate = self.delegate; // delegate will be used to set speed to zero in 'animationDidStart:'
+    colorAnim.delegate = self;
     
-    // the delegate uses this key to retrieve the _backgroundLayer
-    [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
-    
-    // the animation must be allowed to start to initialize the CALayer's presentationLayer
-    // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
-    // hence the speed is set to min value - then set to zero in 'animationDidStart:'
+    // As the interpolated color values from the presentationLayer are needed immediately
+    // the animation must be allowed to start to initialize _backgroundLayer's presentationLayer
+    // hence the speed is set to min value - then set to zero in 'animationDidStart:' delegate method
     _backgroundLayer.speed = FLT_MIN;
     _backgroundLayer.timeOffset = 0.0;
     
@@ -186,6 +188,17 @@ NSString *const FillColorAnimation = @"fillColor";
         [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
         self.layer.opacity = 0.0;
     } [CATransaction commit];
+}
+
+#pragma mark - CAAnimation delegate
+
+// set the speed to zero to freeze the animation and set the offset to the correct value
+// the animation can now be updated manually by explicity setting its 'timeOffset'
+- (void)animationDidStart:(CAAnimation *)animation
+{
+    _backgroundLayer.speed = 0.0;
+    _backgroundLayer.timeOffset = [self.delegate currentValueOffset];
+    [self.delegate animationDidStart];
 }
 
 #pragma mark - private

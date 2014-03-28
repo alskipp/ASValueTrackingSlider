@@ -9,7 +9,7 @@
 #import "ASValueTrackingSlider.h"
 #import "ASValuePopUpView.h"
 
-@interface ASValueTrackingSlider()
+@interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
 @end
@@ -40,21 +40,7 @@
     return self;
 }
 
-#pragma mark - delegate methods
-
-// this delegate method is received from ASValuePopUpView's background layer
-// it is the layer responsible for animating the color change of ASValuePopUpView
-// set the speed to zero to freeze the animation and set the offset to the correct value
-// the animation will then update only when the slider value changes
-- (void)animationDidStart:(CAAnimation *)animation
-{
-    CALayer *layer = [animation valueForKey:AnimationLayer];
-    layer.speed = 0.0;
-    layer.timeOffset = [self currentValueOffset];
-    [self autoColorTrack];
-}
-
-#pragma mark - public methods
+#pragma mark - public
 
 - (void)setAutoAdjustTrackColor:(BOOL)autoAdjust
 {
@@ -112,7 +98,8 @@
     
     if ([popUpViewAnimatedColors count] >= 2) {
         [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
-        [self autoColorTrack];
+//        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withOffset:[self currentValueOffset]];
+
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
@@ -145,7 +132,21 @@
     [self calculatePopUpViewSize];
 }
 
-#pragma mark - private methods
+#pragma mark - ASValuePopUpViewDelegate
+
+- (void)animationDidStart;
+{
+    [self autoColorTrack];
+}
+
+// returns the current offset of UISlider value in the range 0.0 – 1.0
+- (CGFloat)currentValueOffset
+{
+    CGFloat valueRange = self.maximumValue - self.minimumValue;
+    return (self.value + ABS(self.minimumValue)) / valueRange;
+}
+
+#pragma mark - private
 
 - (void)setup
 {
@@ -225,14 +226,7 @@
                               value:self.value];
 }
 
-// returns the current offset of UISlider value in the range 0.0 – 1.0
-- (CGFloat)currentValueOffset
-{
-    CGFloat valueRange = self.maximumValue - self.minimumValue;
-    return (self.value + ABS(self.minimumValue)) / valueRange;
-}
-
-#pragma mark - subclassed methods
+#pragma mark - subclassed
 
 - (void)setMinimumTrackTintColor:(UIColor *)color
 {
