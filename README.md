@@ -26,10 +26,12 @@ Which files are needed?
 
 If you use [CocoaPods](http://beta.cocoapods.org) then simply add `pod 'ASValueTrackingSlider'` to your podfile.
 
-Alternatively, just include these two files in your project:
+Alternatively, just include these files in your project:
 
 * ASValueTrackingSlider.h
 * ASValueTrackingSlider.m
+* ASValuePopUpView.h
+* ASValuePopUpView.m
 
 
 How to use it
