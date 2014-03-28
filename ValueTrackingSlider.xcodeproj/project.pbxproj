@@ -22,6 +22,7 @@
 		E742B0B01812EC4E005B188F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E742B0AE1812EC4E005B188F /* InfoPlist.strings */; };
 		E742B0B21812EC4E005B188F /* ValueTrackingSliderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */; };
 		E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */; };
+		E7AAB18E18E4E8AF00B51B6C /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */; };
 		E7D155521846AAED009173E4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E7D155511846AAED009173E4 /* LICENSE */; };
 		E7D155541846AB27009173E4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7D155531846AB27009173E4 /* README.md */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,8 @@
 		E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValueTrackingSliderTests.m; sourceTree = "<group>"; };
 		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASValueTrackingSlider.h; path = ../ASValueTrackingSlider.h; sourceTree = "<group>"; };
 		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASValueTrackingSlider.m; path = ../ASValueTrackingSlider.m; sourceTree = "<group>"; };
+		E7AAB18C18E4E8AF00B51B6C /* ASValuePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValuePopUpView.h; sourceTree = "<group>"; };
+		E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValuePopUpView.m; sourceTree = "<group>"; };
 		E7D155511846AAED009173E4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		E7D155531846AB27009173E4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -126,6 +129,8 @@
 				E742B09C1812EC4E005B188F /* ASViewController.m */,
 				E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */,
 				E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */,
+				E7AAB18C18E4E8AF00B51B6C /* ASValuePopUpView.h */,
+				E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */,
 				E742B09E1812EC4E005B188F /* Images.xcassets */,
 				E742B08D1812EC4E005B188F /* Supporting Files */,
 				E7D155511846AAED009173E4 /* LICENSE */,
@@ -264,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E742B0971812EC4E005B188F /* ASAppDelegate.m in Sources */,
+				E7AAB18E18E4E8AF00B51B6C /* ASValuePopUpView.m in Sources */,
 				E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */,
 				E742B09D1812EC4E005B188F /* ASViewController.m in Sources */,
 				E742B0931812EC4E005B188F /* main.m in Sources */,
