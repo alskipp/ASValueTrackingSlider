@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Alan Skipp. All rights reserved.
 //
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// This UIView subclass is used internally by ASValueTrackingSlider
+// The public API is declared in ASValueTrackingSlider.h
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #import <UIKit/UIKit.h>
 
 NSString *const AnimationLayer;
