@@ -1,5 +1,5 @@
 //
-//  ASViewController.h
+//  ASAppDelegate.h
 //  ValueTrackingSlider
 //
 //  Created by Alan Skipp on 19/10/2013.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ASViewController : UIViewController
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
 
 @end

@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Alan Skipp. All rights reserved.
 //
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// This UIView subclass is used internally by ASValueTrackingSlider
+// The public API is declared in ASValueTrackingSlider.h
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #import "ASValuePopUpView.h"
 
 #define ARROW_LENGTH 13
@@ -25,17 +30,7 @@ NSString *const FillColorAnimation = @"fillColor";
     CGFloat _arrowCenterOffset;
 }
 
-static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
-{
-    const CGFloat *components = CGColorGetComponents(col);
-    UIColor *color;
-    if (CGColorGetNumberOfComponents(col) == 2) {
-        color = [UIColor colorWithWhite:components[0] alpha:1.0];
-    } else {
-        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
-    }
-    return color;
-}
+#pragma mark - public
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -62,6 +57,22 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     return self;
 }
 
+- (UIColor *)color
+{
+    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
+}
+
+- (void)setColor:(UIColor *)color;
+{
+    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
+    _backgroundLayer.fillColor = color.CGColor;
+}
+
+- (UIColor *)opaqueColor
+{
+    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
+}
+
 - (void)setTextColor:(UIColor *)color
 {
     [_attributedString addAttribute:NSForegroundColorAttributeName
@@ -82,24 +93,8 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     _textLayer.string = _attributedString;
 }
 
-- (UIColor *)color
-{
-    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
-}
-
-- (UIColor *)opaqueColor
-{
-    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
-}
-
-- (void)setColor:(UIColor *)color;
-{
-    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
-    _backgroundLayer.fillColor = color.CGColor;
-}
-
-// set up an animation with a speed of zero to prevent it from running
-// the animation offset can then be controlled by the UISlider
+// set up an animation, but prevent it from running automatically
+// the animation progress will be adjusted manually
 - (void)setAnimatedColors:(NSArray *)animatedColors
 {
     NSMutableArray *cgColors = [NSMutableArray array];
@@ -111,14 +106,11 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
-    colorAnim.delegate = self.delegate; // delegate will be used to set speed to zero in 'animationDidStart:'
+    colorAnim.delegate = self;
     
-    // the delegate uses this key to retrieve the _backgroundLayer
-    [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
-    
-    // the animation must be allowed to start to initialize the CALayer's presentationLayer
-    // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
-    // hence the speed is set to min value - then set to zero in 'animationDidStart:'
+    // As the interpolated color values from the presentationLayer are needed immediately
+    // the animation must be allowed to start to initialize _backgroundLayer's presentationLayer
+    // hence the speed is set to min value - then set to zero in 'animationDidStart:' delegate method
     _backgroundLayer.speed = FLT_MIN;
     _backgroundLayer.timeOffset = 0.0;
     
@@ -141,6 +133,15 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
+}
+
+- (CGSize)popUpSizeForString:(NSString *)string
+{
+    [[_attributedString mutableString] setString:string];
+    CGFloat w, h;
+    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
+    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
+    return CGSizeMake(w, h);
 }
 
 - (void)show
@@ -189,14 +190,18 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     } [CATransaction commit];
 }
 
-- (CGSize)sizeForString:(NSString *)string
+#pragma mark - CAAnimation delegate
+
+// set the speed to zero to freeze the animation and set the offset to the correct value
+// the animation can now be updated manually by explicity setting its 'timeOffset'
+- (void)animationDidStart:(CAAnimation *)animation
 {
-    [[_attributedString mutableString] setString:string];
-    CGFloat w, h;
-    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
-    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
-    return CGSizeMake(w, h);
+    _backgroundLayer.speed = 0.0;
+    _backgroundLayer.timeOffset = [self.delegate currentValueOffset];
+    [self.delegate animationDidStart];
 }
+
+#pragma mark - private
 
 - (void)drawPath
 {
@@ -237,5 +242,18 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         [self drawPath];
     }
 }
+
+static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
+{
+    const CGFloat *components = CGColorGetComponents(col);
+    UIColor *color;
+    if (CGColorGetNumberOfComponents(col) == 2) {
+        color = [UIColor colorWithWhite:components[0] alpha:1.0];
+    } else {
+        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
+    }
+    return color;
+}
+
 
 @end
