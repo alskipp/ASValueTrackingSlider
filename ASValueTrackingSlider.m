@@ -7,238 +7,16 @@
 //
 
 #import "ASValueTrackingSlider.h"
-
-#define ARROW_LENGTH 13
-NSString *const AnimationLayer = @"animationLayer";
-NSString *const FillColorAnimation = @"fillColor";
-
-@interface ASValuePopUpView : UIView
-
-@property (weak, nonatomic) id delegate;
-
-- (UIColor *)color;
-- (UIColor *)opaqueColor;
-- (void)setColor:(UIColor *)color;
-- (void)setAnimatedColors:(NSArray *)animatedColors;
-- (void)setString:(NSAttributedString *)string;
-- (void)setAnimationOffset:(CGFloat)offset;
-- (void)show;
-- (void)hide;
-
-@end
-
-@implementation ASValuePopUpView
-{
-    CAShapeLayer *_backgroundLayer;
-    CATextLayer *_textLayer;
-    CGSize _oldSize;
-    CGFloat _arrowCenterOffset;
-}
-
-static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
-{
-    const CGFloat *components = CGColorGetComponents(col);
-    UIColor *color;
-    if (CGColorGetNumberOfComponents(col) == 2) {
-        color = [UIColor colorWithWhite:components[0] alpha:1.0];
-    } else {
-        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
-    }
-    return color;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.layer.anchorPoint = CGPointMake(0.5, 1);
-
-        self.userInteractionEnabled = NO;
-        _backgroundLayer = [CAShapeLayer layer];
-        _backgroundLayer.anchorPoint = CGPointMake(0, 0);
-        
-        _textLayer = [CATextLayer layer];
-        _textLayer.alignmentMode = kCAAlignmentCenter;
-        _textLayer.anchorPoint = CGPointMake(0, 0);
-        _textLayer.contentsScale = [UIScreen mainScreen].scale;
-        _textLayer.actions = @{@"bounds" : [NSNull null],   // prevent implicit animation of bounds
-                               @"position" : [NSNull null]};// and position
-
-        [self.layer addSublayer:_backgroundLayer];
-        [self.layer addSublayer:_textLayer];
-    }
-    return self;
-}
-
-- (void)setString:(NSAttributedString *)string
-{
-    _textLayer.string = string;
-}
-
-- (UIColor *)color
-{
-    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
-}
-
-- (UIColor *)opaqueColor
-{
-    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
-}
-
-- (void)setColor:(UIColor *)color;
-{
-    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
-    _backgroundLayer.fillColor = color.CGColor;
-}
-
-// set up an animation with a speed of zero to prevent it from running
-// the animation offset can then be controlled by the UISlider
-- (void)setAnimatedColors:(NSArray *)animatedColors
-{
-    NSMutableArray *cgColors = [NSMutableArray array];
-    for (UIColor *col in animatedColors) {
-        [cgColors addObject:(id)col.CGColor];
-    }
-    
-    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:FillColorAnimation];
-    colorAnim.values = cgColors;
-    colorAnim.fillMode = kCAFillModeBoth;
-    colorAnim.duration = 1.0;
-    colorAnim.delegate = self.delegate; // delegate will be used to set speed to zero in 'animationDidStart:'
-    
-    // the delegate uses this key to retrieve the _backgroundLayer
-    [colorAnim setValue:_backgroundLayer forKey:AnimationLayer];
-    
-    // the animation must be allowed to start to initialize the CALayer's presentationLayer
-    // because the initial color of 'minimumTrackTintColor' is derived from the presentationLayer
-    // hence the speed is set to min value - then set to zero in 'animationDidStart:'
-    _backgroundLayer.speed = FLT_MIN;
-    _backgroundLayer.timeOffset = 0.0;
-    
-    [_backgroundLayer addAnimation:colorAnim forKey:FillColorAnimation];
-}
-
-- (void)setAnimationOffset:(CGFloat)offset
-{
-    _backgroundLayer.timeOffset = offset;
-}
-
-- (void)setArrowCenterOffset:(CGFloat)offset
-{
-    // only redraw if the offset has changed
-    if (_arrowCenterOffset != offset) {
-        _arrowCenterOffset = offset;
-        
-        // the arrow tip should be the origin of any scale animations
-        // to achieve this, position the anchorPoint at the tip of the arrow
-        self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
-        [self drawPath];
-    }
-}
-
-- (void)show
-{
-    [CATransaction begin]; {
-        // start the transform animation from its current value if it's already running
-        NSValue *fromValue = [self.layer animationForKey:@"transform"] ? [self.layer.presentationLayer valueForKey:@"transform"] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = fromValue;
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5]];
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        scaleAnim.duration = 0.4;
-        [self.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeInAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeInAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
-        fadeInAnim.duration = 0.1;
-        fadeInAnim.toValue = @1.0;
-        [self.layer addAnimation:fadeInAnim forKey:@"opacity"];
-        
-        self.layer.opacity = 1.0;
-    } [CATransaction commit];
-}
-
-- (void)hide
-{
-    [CATransaction begin]; {
-        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-        scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
-        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        scaleAnim.duration = 0.6;
-        scaleAnim.removedOnCompletion = NO;
-        scaleAnim.fillMode = kCAFillModeForwards;
-        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
-        [self.layer addAnimation:scaleAnim forKey:@"transform"];
-        
-        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        fadeOutAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
-        fadeOutAnim.toValue = @0.0;
-        fadeOutAnim.duration = 0.8;
-        [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
-        self.layer.opacity = 0.0;
-    } [CATransaction commit];
-}
-
-- (void)drawPath
-{
-    // Create rounded rect
-    CGRect roundedRect = self.bounds;
-    roundedRect.size.height -= ARROW_LENGTH;
-    UIBezierPath *roundedRectPath = [UIBezierPath bezierPathWithRoundedRect:roundedRect cornerRadius:4.0];
-    
-    // Create arrow path
-    UIBezierPath *arrowPath = [UIBezierPath bezierPath];
-    CGFloat arrowX = CGRectGetMidX(self.bounds) + _arrowCenterOffset;
-    CGPoint p0 = CGPointMake(arrowX, CGRectGetMaxY(self.bounds));
-    [arrowPath moveToPoint:p0];
-    [arrowPath addLineToPoint:CGPointMake((arrowX - 6.0), CGRectGetMaxY(roundedRect))];
-    [arrowPath addLineToPoint:CGPointMake((arrowX + 6.0), CGRectGetMaxY(roundedRect))];
-    [arrowPath closePath];
-    
-    // combine arrow path and rounded rect
-    [roundedRectPath appendPath:arrowPath];
-
-    _backgroundLayer.path = roundedRectPath.CGPath;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    // only redraw if the view size has changed
-    if (!CGSizeEqualToSize(self.bounds.size, _oldSize)) {
-        _oldSize = self.bounds.size;
-        _backgroundLayer.bounds = self.bounds;
-
-        CGFloat textHeight = [_textLayer.string size].height;
-        CGRect textRect = CGRectMake(self.bounds.origin.x,
-                                     (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
-                                     self.bounds.size.width, textHeight);
-        _textLayer.frame = textRect;
-        [self drawPath];
-    }
-}
-
-@end
-
+#import "ASValuePopUpView.h"
 
 @interface ASValueTrackingSlider()
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
-@property (strong, nonatomic) NSMutableAttributedString *attributedString;
 @end
-
-#define MIN_POPUPVIEW_WIDTH 36.0
-#define MIN_POPUPVIEW_HEIGHT 27.0
-#define POPUPVIEW_WIDTH_INSET 10.0
 
 @implementation ASValueTrackingSlider
 {
-    CGFloat _popUpViewWidth;
-    CGFloat _popUpViewHeight;
+    CGSize _popUpViewSize;
     UIColor *_popUpViewColor;
 }
 
@@ -296,17 +74,14 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 - (void)setTextColor:(UIColor *)color
 {
     _textColor = color;
-    [self.attributedString addAttribute:NSForegroundColorAttributeName
-                                  value:(id)color.CGColor
-                                  range:NSMakeRange(0, [_attributedString length])];
+    [self.popUpView setTextColor:color];
 }
 
 - (void)setFont:(UIFont *)font
 {
     _font = font;
-    [self.attributedString addAttribute:NSFontAttributeName
-                                  value:font
-                                  range:NSMakeRange(0, [_attributedString length])];
+    [self.popUpView setFont:font];
+
     [self calculatePopUpViewSize];
 }
 
@@ -399,7 +174,6 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
 
-    self.attributedString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:nil];
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
 }
@@ -410,8 +184,8 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
 
-    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewWidth)/2, (thumbH - _popUpViewHeight)/2);
-    popUpRect.origin.y = thumbRect.origin.y - _popUpViewHeight;
+    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewSize.width)/2, (thumbH - _popUpViewSize.height)/2);
+    popUpRect.origin.y = thumbRect.origin.y - _popUpViewSize.height;
     
     // determine if popUpRect extends beyond the frame of the UISlider
     // if so adjust frame and set the center offset of the PopUpView's arrow
@@ -423,11 +197,8 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     [self.popUpView setArrowCenterOffset:offset];
 
     self.popUpView.frame = popUpRect;
-    
-    NSString *string = [_numberFormatter stringFromNumber:@(self.value)];
-    [[self.attributedString mutableString] setString:string];
-    [self.popUpView setString:self.attributedString];
-    
+
+    [self.popUpView setString:[_numberFormatter stringFromNumber:@(self.value)]];
     [self.popUpView setAnimationOffset:[self currentValueOffset]];
     
     [self autoColorTrack];
@@ -444,10 +215,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 {
     // if the abs of minimumValue is the same or larger than maximumValue, use it to calculate size
     CGFloat value = ABS(self.minimumValue) >= self.maximumValue ? self.minimumValue : self.maximumValue;
-    NSString *string = [_numberFormatter stringFromNumber:@(value)];
-    [[self.attributedString mutableString] setString:string];
-    _popUpViewWidth = ceilf(MAX([self.attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
-    _popUpViewHeight = ceilf(MAX([self.attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
+    _popUpViewSize = [self.popUpView sizeForString:[_numberFormatter stringFromNumber:@(value)]];
 }
 
 - (CGRect)thumbRect
