@@ -25,17 +25,7 @@ NSString *const FillColorAnimation = @"fillColor";
     CGFloat _arrowCenterOffset;
 }
 
-static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
-{
-    const CGFloat *components = CGColorGetComponents(col);
-    UIColor *color;
-    if (CGColorGetNumberOfComponents(col) == 2) {
-        color = [UIColor colorWithWhite:components[0] alpha:1.0];
-    } else {
-        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
-    }
-    return color;
-}
+#pragma mark - public
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -62,6 +52,22 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     return self;
 }
 
+- (UIColor *)color
+{
+    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
+}
+
+- (void)setColor:(UIColor *)color;
+{
+    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
+    _backgroundLayer.fillColor = color.CGColor;
+}
+
+- (UIColor *)opaqueColor
+{
+    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
+}
+
 - (void)setTextColor:(UIColor *)color
 {
     [_attributedString addAttribute:NSForegroundColorAttributeName
@@ -80,22 +86,6 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
 {
     [[_attributedString mutableString] setString:string];
     _textLayer.string = _attributedString;
-}
-
-- (UIColor *)color
-{
-    return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
-}
-
-- (UIColor *)opaqueColor
-{
-    return opaqueUIColorFromCGColor([_backgroundLayer.presentationLayer fillColor] ?: _backgroundLayer.fillColor);
-}
-
-- (void)setColor:(UIColor *)color;
-{
-    [_backgroundLayer removeAnimationForKey:FillColorAnimation];
-    _backgroundLayer.fillColor = color.CGColor;
 }
 
 // set up an animation with a speed of zero to prevent it from running
@@ -141,6 +131,15 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
         [self drawPath];
     }
+}
+
+- (CGSize)popUpSizeForString:(NSString *)string
+{
+    [[_attributedString mutableString] setString:string];
+    CGFloat w, h;
+    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
+    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
+    return CGSizeMake(w, h);
 }
 
 - (void)show
@@ -189,14 +188,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     } [CATransaction commit];
 }
 
-- (CGSize)popUpSizeForString:(NSString *)string
-{
-    [[_attributedString mutableString] setString:string];
-    CGFloat w, h;
-    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
-    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
-    return CGSizeMake(w, h);
-}
+#pragma mark - private
 
 - (void)drawPath
 {
@@ -237,5 +229,18 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
         [self drawPath];
     }
 }
+
+static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
+{
+    const CGFloat *components = CGColorGetComponents(col);
+    UIColor *color;
+    if (CGColorGetNumberOfComponents(col) == 2) {
+        color = [UIColor colorWithWhite:components[0] alpha:1.0];
+    } else {
+        color = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:1.0];
+    }
+    return color;
+}
+
 
 @end

@@ -20,15 +20,20 @@ NSString *const AnimationLayer;
 @property (weak, nonatomic) id delegate;
 
 - (UIColor *)color;
-- (UIColor *)opaqueColor;
 - (void)setColor:(UIColor *)color;
-- (void)setAnimatedColors:(NSArray *)animatedColors;
-- (void)setString:(NSString *)string;
+- (UIColor *)opaqueColor;
+
 - (void)setTextColor:(UIColor *)textColor;
 - (void)setFont:(UIFont *)font;
+- (void)setString:(NSString *)string;
+
+- (void)setAnimatedColors:(NSArray *)animatedColors;
+
 - (void)setAnimationOffset:(CGFloat)offset;
 - (void)setArrowCenterOffset:(CGFloat)offset;
+
 - (CGSize)popUpSizeForString:(NSString *)string;
+
 - (void)show;
 - (void)hide;
 
