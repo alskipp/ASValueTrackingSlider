@@ -189,7 +189,7 @@ static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
     } [CATransaction commit];
 }
 
-- (CGSize)sizeForString:(NSString *)string
+- (CGSize)popUpSizeForString:(NSString *)string
 {
     [[_attributedString mutableString] setString:string];
     CGFloat w, h;

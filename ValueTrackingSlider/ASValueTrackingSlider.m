@@ -215,7 +215,7 @@
 {
     // if the abs of minimumValue is the same or larger than maximumValue, use it to calculate size
     CGFloat value = ABS(self.minimumValue) >= self.maximumValue ? self.minimumValue : self.maximumValue;
-    _popUpViewSize = [self.popUpView sizeForString:[_numberFormatter stringFromNumber:@(value)]];
+    _popUpViewSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(value)]];
 }
 
 - (CGRect)thumbRect

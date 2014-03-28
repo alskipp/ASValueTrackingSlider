@@ -26,9 +26,9 @@ NSString *const AnimationLayer;
 - (void)setString:(NSString *)string;
 - (void)setTextColor:(UIColor *)textColor;
 - (void)setFont:(UIFont *)font;
-- (CGSize)sizeForString:(NSString *)string;
 - (void)setAnimationOffset:(CGFloat)offset;
 - (void)setArrowCenterOffset:(CGFloat)offset;
+- (CGSize)popUpSizeForString:(NSString *)string;
 - (void)show;
 - (void)hide;
 
