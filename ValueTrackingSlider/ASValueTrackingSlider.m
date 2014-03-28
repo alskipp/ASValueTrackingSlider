@@ -181,10 +181,19 @@
 
 - (void)positionAndUpdatePopUpView
 {
+    [self adjustPopUpViewFrame];
+    [self.popUpView setString:[_numberFormatter stringFromNumber:@(self.value)]];
+    [self.popUpView setAnimationOffset:[self currentValueOffset]];
+    
+    [self autoColorTrack];
+}
+
+- (void)adjustPopUpViewFrame
+{
     CGRect thumbRect = [self thumbRect];
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
-
+    
     CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewSize.width)/2, (thumbH - _popUpViewSize.height)/2);
     popUpRect.origin.y = thumbRect.origin.y - _popUpViewSize.height;
     
@@ -196,13 +205,8 @@
     CGFloat offset = minOffsetX < 0.0 ? minOffsetX : (maxOffsetX > 0.0 ? maxOffsetX : 0.0);
     popUpRect.origin.x -= offset;
     [self.popUpView setArrowCenterOffset:offset];
-
-    self.popUpView.frame = popUpRect;
-
-    [self.popUpView setString:[_numberFormatter stringFromNumber:@(self.value)]];
-    [self.popUpView setAnimationOffset:[self currentValueOffset]];
     
-    [self autoColorTrack];
+    self.popUpView.frame = popUpRect;
 }
 
 - (void)autoColorTrack
