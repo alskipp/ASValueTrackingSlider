@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Alan Skipp. All rights reserved.
 //
 
-#import "ASAppDelegate.h"
+#import "AppDelegate.h"
 
-@implementation ASAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

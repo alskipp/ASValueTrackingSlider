@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 Alan Skipp. All rights reserved.
 //
 
-#import "ASViewController.h"
+#import "ViewController.h"
 #import "ASValueTrackingSlider.h"
 
-@interface ASViewController ()
+@interface ViewController ()
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider1;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider2;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider3;
 @end
 
-@implementation ASViewController
+@implementation ViewController
 
 - (void)viewDidLoad
 {
