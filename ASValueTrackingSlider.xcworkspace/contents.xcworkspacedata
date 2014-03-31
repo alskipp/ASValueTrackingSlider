@@ -5,16 +5,16 @@
       location = "group:ASValueTrackingSlider"
       name = "ASValueTrackingSlider">
       <FileRef
-         location = "group:ASValuePopUpView.h">
-      </FileRef>
-      <FileRef
-         location = "group:ASValuePopUpView.m">
-      </FileRef>
-      <FileRef
          location = "group:ASValueTrackingSlider.h">
       </FileRef>
       <FileRef
          location = "group:ASValueTrackingSlider.m">
+      </FileRef>
+      <FileRef
+         location = "group:ASValuePopUpView.h">
+      </FileRef>
+      <FileRef
+         location = "group:ASValuePopUpView.m">
       </FileRef>
    </Group>
    <FileRef
