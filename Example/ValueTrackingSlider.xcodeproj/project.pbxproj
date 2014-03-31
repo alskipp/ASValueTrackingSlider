@@ -7,24 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E72E05DB18E9EA430082D173 /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = E72E05D818E9EA430082D173 /* ASValuePopUpView.m */; };
+		E72E05DC18E9EA430082D173 /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E72E05DA18E9EA430082D173 /* ASValueTrackingSlider.m */; };
 		E742B0871812EC4E005B188F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0861812EC4E005B188F /* Foundation.framework */; };
 		E742B0891812EC4E005B188F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0881812EC4E005B188F /* CoreGraphics.framework */; };
 		E742B08B1812EC4E005B188F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B08A1812EC4E005B188F /* UIKit.framework */; };
 		E742B0911812EC4E005B188F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E742B08F1812EC4E005B188F /* InfoPlist.strings */; };
 		E742B0931812EC4E005B188F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0921812EC4E005B188F /* main.m */; };
 		E742B0971812EC4E005B188F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0961812EC4E005B188F /* AppDelegate.m */; };
-		E742B09A1812EC4E005B188F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E742B0981812EC4E005B188F /* Main.storyboard */; };
 		E742B09D1812EC4E005B188F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B09C1812EC4E005B188F /* ViewController.m */; };
 		E742B09F1812EC4E005B188F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E742B09E1812EC4E005B188F /* Images.xcassets */; };
 		E742B0A61812EC4E005B188F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0A51812EC4E005B188F /* XCTest.framework */; };
 		E742B0A71812EC4E005B188F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0861812EC4E005B188F /* Foundation.framework */; };
 		E742B0A81812EC4E005B188F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B08A1812EC4E005B188F /* UIKit.framework */; };
-		E742B0B01812EC4E005B188F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E742B0AE1812EC4E005B188F /* InfoPlist.strings */; };
-		E742B0B21812EC4E005B188F /* ValueTrackingSliderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */; };
-		E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */; };
-		E7AAB18E18E4E8AF00B51B6C /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */; };
-		E7D155521846AAED009173E4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E7D155511846AAED009173E4 /* LICENSE */; };
-		E7D155541846AB27009173E4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7D155531846AB27009173E4 /* README.md */; };
+		E748CA1118E9DE0F00062047 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E748CA0F18E9DE0F00062047 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +34,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E72E05D718E9EA430082D173 /* ASValuePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValuePopUpView.h; sourceTree = "<group>"; };
+		E72E05D818E9EA430082D173 /* ASValuePopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValuePopUpView.m; sourceTree = "<group>"; };
+		E72E05D918E9EA430082D173 /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTrackingSlider.h; sourceTree = "<group>"; };
+		E72E05DA18E9EA430082D173 /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTrackingSlider.m; sourceTree = "<group>"; };
 		E742B0831812EC4E005B188F /* ValueTrackingSlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ValueTrackingSlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E742B0861812EC4E005B188F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E742B0881812EC4E005B188F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -48,21 +48,12 @@
 		E742B0941812EC4E005B188F /* ValueTrackingSlider-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ValueTrackingSlider-Prefix.pch"; sourceTree = "<group>"; };
 		E742B0951812EC4E005B188F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E742B0961812EC4E005B188F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E742B0991812EC4E005B188F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E742B09B1812EC4E005B188F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		E742B09C1812EC4E005B188F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E742B09E1812EC4E005B188F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E742B0A41812EC4E005B188F /* ValueTrackingSliderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ValueTrackingSliderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E742B0A51812EC4E005B188F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		E742B0AD1812EC4E005B188F /* ValueTrackingSliderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ValueTrackingSliderTests-Info.plist"; sourceTree = "<group>"; };
-		E742B0AF1812EC4E005B188F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValueTrackingSliderTests.m; sourceTree = "<group>"; };
-		E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTrackingSlider.h; sourceTree = "<group>"; };
-		E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTrackingSlider.m; sourceTree = "<group>"; };
-		E7AAB18C18E4E8AF00B51B6C /* ASValuePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValuePopUpView.h; sourceTree = "<group>"; };
-		E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValuePopUpView.m; sourceTree = "<group>"; };
-		E7D155511846AAED009173E4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
-		E7D155531846AB27009173E4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		E748CA1018E9DE0F00062047 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,11 +80,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E72E05D618E9EA430082D173 /* ASValueTrackingSlider */ = {
+			isa = PBXGroup;
+			children = (
+				E72E05D718E9EA430082D173 /* ASValuePopUpView.h */,
+				E72E05D818E9EA430082D173 /* ASValuePopUpView.m */,
+				E72E05D918E9EA430082D173 /* ASValueTrackingSlider.h */,
+				E72E05DA18E9EA430082D173 /* ASValueTrackingSlider.m */,
+			);
+			path = ASValueTrackingSlider;
+			sourceTree = "<group>";
+		};
 		E742B07A1812EC4E005B188F = {
 			isa = PBXGroup;
 			children = (
-				E742B08C1812EC4E005B188F /* ValueTrackingSlider */,
-				E742B0AB1812EC4E005B188F /* ValueTrackingSliderTests */,
+				E742B08C1812EC4E005B188F /* Classes */,
+				E7E3CBEE18E9E9A100AE501C /* Vendor */,
 				E742B0851812EC4E005B188F /* Frameworks */,
 				E742B0841812EC4E005B188F /* Products */,
 			);
@@ -119,23 +121,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E742B08C1812EC4E005B188F /* ValueTrackingSlider */ = {
+		E742B08C1812EC4E005B188F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E742B0981812EC4E005B188F /* Main.storyboard */,
+				E748CA0F18E9DE0F00062047 /* Main.storyboard */,
 				E742B0951812EC4E005B188F /* AppDelegate.h */,
 				E742B0961812EC4E005B188F /* AppDelegate.m */,
 				E742B09B1812EC4E005B188F /* ViewController.h */,
 				E742B09C1812EC4E005B188F /* ViewController.m */,
-				E742B0BB1812F057005B188F /* ASValueTrackingSlider.h */,
-				E742B0BC1812F057005B188F /* ASValueTrackingSlider.m */,
-				E7AAB18C18E4E8AF00B51B6C /* ASValuePopUpView.h */,
-				E7AAB18D18E4E8AF00B51B6C /* ASValuePopUpView.m */,
 				E742B09E1812EC4E005B188F /* Images.xcassets */,
 				E742B08D1812EC4E005B188F /* Supporting Files */,
-				E7D155511846AAED009173E4 /* LICENSE */,
-				E7D155531846AB27009173E4 /* README.md */,
 			);
+			name = Classes;
 			path = ValueTrackingSlider;
 			sourceTree = "<group>";
 		};
@@ -150,22 +147,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E742B0AB1812EC4E005B188F /* ValueTrackingSliderTests */ = {
+		E7E3CBEE18E9E9A100AE501C /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				E742B0B11812EC4E005B188F /* ValueTrackingSliderTests.m */,
-				E742B0AC1812EC4E005B188F /* Supporting Files */,
+				E72E05D618E9EA430082D173 /* ASValueTrackingSlider */,
 			);
-			path = ValueTrackingSliderTests;
-			sourceTree = "<group>";
-		};
-		E742B0AC1812EC4E005B188F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E742B0AD1812EC4E005B188F /* ValueTrackingSliderTests-Info.plist */,
-				E742B0AE1812EC4E005B188F /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
+			name = Vendor;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,11 +233,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E748CA1118E9DE0F00062047 /* Main.storyboard in Resources */,
 				E742B09F1812EC4E005B188F /* Images.xcassets in Resources */,
 				E742B0911812EC4E005B188F /* InfoPlist.strings in Resources */,
-				E7D155541846AB27009173E4 /* README.md in Resources */,
-				E7D155521846AAED009173E4 /* LICENSE in Resources */,
-				E742B09A1812EC4E005B188F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +243,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E742B0B01812EC4E005B188F /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,8 +254,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E742B0971812EC4E005B188F /* AppDelegate.m in Sources */,
-				E7AAB18E18E4E8AF00B51B6C /* ASValuePopUpView.m in Sources */,
-				E742B0BD1812F057005B188F /* ASValueTrackingSlider.m in Sources */,
+				E72E05DB18E9EA430082D173 /* ASValuePopUpView.m in Sources */,
+				E72E05DC18E9EA430082D173 /* ASValueTrackingSlider.m in Sources */,
 				E742B09D1812EC4E005B188F /* ViewController.m in Sources */,
 				E742B0931812EC4E005B188F /* main.m in Sources */,
 			);
@@ -280,7 +265,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E742B0B21812EC4E005B188F /* ValueTrackingSliderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,20 +287,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		E742B0981812EC4E005B188F /* Main.storyboard */ = {
+		E748CA0F18E9DE0F00062047 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E742B0991812EC4E005B188F /* Base */,
+				E748CA1018E9DE0F00062047 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		E742B0AE1812EC4E005B188F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E742B0AF1812EC4E005B188F /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -399,7 +375,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ValueTrackingSlider/ValueTrackingSlider-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "ValueTrackingSlider/ValueTrackingSlider-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -412,7 +393,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ValueTrackingSlider/ValueTrackingSlider-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "ValueTrackingSlider/ValueTrackingSlider-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
