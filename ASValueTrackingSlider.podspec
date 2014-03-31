@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "ASValueTrackingSlider"
-  s.version      = "0.5"
-  s.summary      = "A UISlider subclass that displays the slider value in a popUpView"
+  s.version      = "0.6"
+  s.summary      = "A UISlider subclass that displays the slider value in an animated popUpView"
   s.description  = <<-DESC
                    Displays continuously updated values in an animated popUpView 
                    * Customize: font, font color, background color
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Al Skipp" => "al@alskipp.com" }
   s.platform     = :ios, '6.0'
-  s.source       = { :git => "https://github.com/alskipp/ValueTrackingSlider.git", :tag => "0.5" }  
-  s.source_files  = '*.{h,m}'
+  s.source       = { :git => "https://github.com/alskipp/ValueTrackingSlider.git", :tag => "0.6" }
+  s.source_files  = 'ASValueTrackingSlider'
   s.requires_arc = true
 end
