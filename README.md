@@ -24,9 +24,9 @@ Features
 Which files are needed?
 ---
 
-If you use [CocoaPods](http://beta.cocoapods.org) then simply add `pod 'ASValueTrackingSlider'` to your podfile.
+For [CocoaPods](http://beta.cocoapods.org) users simply add `pod 'ASValueTrackingSlider'` to your podfile. If you'd like to test the included demo project before including it in your own work, then type `$ pod try ASValueTrackingSlider` in your terminal. CocoaPods will download the demo project into a temp folder and open it in Xcode. Magic.
 
-Alternatively, just include these files in your project:
+If you don't use CocoaPods, just include these files in your project:
 
 * ASValueTrackingSlider.h
 * ASValueTrackingSlider.m
