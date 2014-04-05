@@ -1,12 +1,12 @@
-ValueTrackingSlider
+ASValueTrackingSlider
 ========
 
-What is it?
----
+###What is it?
 
-A UISlider Subclass that displays live values in a popUpView. It’s inspired by the implementation found [here](https://github.com/mneuwert/iOS-Custom-Controls). This version is built using CALayers, it offers a few more features and it's easy to customize the appearance.
 
-![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot1.gif)
+A UISlider Subclass that displays live values in an easy to customize popUpView.
+
+![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot1.gif)
 
 Features
 ---
@@ -46,7 +46,7 @@ self.slider.font = [UIFont fontWithName:@"Menlo-Bold" size:22];
 self.slider.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
 ```
 
-![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot2.png)
+![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot2.png)
 
 
 ```objective-c
@@ -57,6 +57,6 @@ self.slider.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor
 self.slider.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
 ```
 
-![screenshot] (http://alskipp.github.io/ValueTrackingSlider/img/screenshot3.png)
+![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot3.png)
 
 The popUpView adjusts itself so that it doesn't extend beyond the width of the slider control.
