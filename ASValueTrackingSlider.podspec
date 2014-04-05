@@ -7,13 +7,13 @@ Pod::Spec.new do |s|
                    * Customize: font, font color, background color
                    * Option to animate background color and slider track color as value changes
                    DESC
-  s.homepage     = "https://github.com/alskipp/ValueTrackingSlider"
-  s.screenshots  = "http://alskipp.github.io/ValueTrackingSlider/img/screenshot2.png",
-                   "http://alskipp.github.io/ValueTrackingSlider/img/screenshot3.png"
+  s.homepage     = "https://github.com/alskipp/ASValueTrackingSlider"
+  s.screenshots  = "http://alskipp.github.io/ASValueTrackingSlider/img/screenshot2.png",
+                   "http://alskipp.github.io/ASValueTrackingSlider/img/screenshot3.png"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Al Skipp" => "al@alskipp.com" }
   s.platform     = :ios, '6.0'
-  s.source       = { :git => "https://github.com/alskipp/ValueTrackingSlider.git", :tag => "0.6" }
+  s.source       = { :git => "https://github.com/alskipp/ASValueTrackingSlider.git", :tag => "0.6" }
   s.source_files  = 'ASValueTrackingSlider'
   s.requires_arc = true
 end
