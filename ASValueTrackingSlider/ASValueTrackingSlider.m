@@ -169,7 +169,7 @@
     _numberFormatter = formatter;
 
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
-    self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.65];
+    self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
