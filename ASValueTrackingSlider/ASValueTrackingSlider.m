@@ -242,6 +242,9 @@
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
     if (begin) {
+        if (self.delegate) {
+            [self.delegate sliderWillDisplayPopUpView:self];
+        }
         [self positionAndUpdatePopUpView];
         [self.popUpView show];
     }
