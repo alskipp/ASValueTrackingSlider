@@ -98,8 +98,6 @@
     
     if ([popUpViewAnimatedColors count] >= 2) {
         [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
-//        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withOffset:[self currentValueOffset]];
-
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
