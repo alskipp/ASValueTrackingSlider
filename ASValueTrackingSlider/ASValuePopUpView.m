@@ -172,6 +172,8 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)hide
 {
     [CATransaction begin]; {
+        [CATransaction setCompletionBlock:^{ [self.delegate popUpViewDidHide]; }];
+        
         CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
         scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
         scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];

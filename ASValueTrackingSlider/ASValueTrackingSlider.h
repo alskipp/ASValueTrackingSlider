@@ -43,6 +43,9 @@
 // to prevent the popUpView from being obscured
 @protocol ASValueTrackingSliderDelegate <NSObject>
 - (void)sliderWillDisplayPopUpView:(ASValueTrackingSlider *)slider;
+
+@optional
+- (void)sliderDidHidePopUpView:(ASValueTrackingSlider *)slider;
 @end
 
 /*
