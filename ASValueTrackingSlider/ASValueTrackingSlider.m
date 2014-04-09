@@ -132,7 +132,7 @@
 
 #pragma mark - ASValuePopUpViewDelegate
 
-- (void)animationDidStart;
+- (void)colorAnimationDidStart;
 {
     [self autoColorTrack];
 }

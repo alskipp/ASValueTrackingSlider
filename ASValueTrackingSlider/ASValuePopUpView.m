@@ -198,7 +198,7 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     _backgroundLayer.speed = 0.0;
     _backgroundLayer.timeOffset = [self.delegate currentValueOffset];
-    [self.delegate animationDidStart];
+    [self.delegate colorAnimationDidStart];
 }
 
 #pragma mark - private

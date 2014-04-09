@@ -15,7 +15,7 @@
 
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
-- (void)animationDidStart;
+- (void)colorAnimationDidStart;
 @end
 
 @interface ASValuePopUpView : UIView
