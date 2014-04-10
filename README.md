@@ -4,7 +4,7 @@ ASValueTrackingSlider
 ###What is it?
 
 
-A UISlider Subclass that displays live values in an easy to customize popUpView.
+A UISlider subclass that displays live values in an easy to customize popup view.
 
 ![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot1.gif)
 
@@ -24,7 +24,7 @@ Features
 Which files are needed?
 ---
 
-For [CocoaPods](http://beta.cocoapods.org) users, simply add `pod 'ASValueTrackingSlider'` to your podfile. If you'd like to test the included demo project before including it in your own work, then type `$ pod try ASValueTrackingSlider` in your terminal. CocoaPods will download the demo project into a temp folder and open it in Xcode. Magic.
+For [CocoaPods](http://beta.cocoapods.org) users, simply add `pod 'ASValueTrackingSlider'` to your podfile. If you'd like to test the included demo project before including it in your own work, then type `$ pod try ASValueTrackingSlider` in the terminal. CocoaPods will download the demo project into a temp folder and open it in Xcode. Magic.
 
 If you don't use CocoaPods, just include these files in your project:
 
@@ -60,3 +60,30 @@ self.slider.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
 ![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot3.png)
 
 The popUpView adjusts itself so that it doesn't extend beyond the width of the slider control.
+
+
+How to use with UITableView
+---
+
+To use  effectively inside a UITableView you need to implement the <ASValueTrackingSliderDelegate> protocol. If you just embed an ASValueTrackingSlider inside a UITableViewCell the popUpView will probably be obscured by the cell above. The delegate method notifies you before the popUpView appears so that you can ensure that your UITableViewCell is rendered above the others.
+
+The recommended technique for use with a tableView is to create a UITableViewCell subclass that implements the delegate method.
+
+```objective-c
+ @interface SliderCell : UITableViewCell <ASValueTrackingSliderDelegate>
+ @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider;
+ @end
+ 
+ @implementation SliderCell
+ - (void)awakeFromNib
+ {
+    self.slider.delegate = self;
+ }
+ 
+ - (void)sliderWillDisplayPopUpView:(ASValueTrackingSlider *)slider;
+ {
+    [self.superview bringSubviewToFront:self];
+ }
+ @end
+ ```
+ 
