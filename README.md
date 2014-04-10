@@ -64,7 +64,7 @@ The popUpView adjusts itself so that it doesn't extend beyond the width of the s
 
 ###How to use with UITableView
 
-To use  effectively inside a UITableView you need to implement the <ASValueTrackingSliderDelegate> protocol. If you just embed an ASValueTrackingSlider inside a UITableViewCell the popUpView will probably be obscured by the cell above. The delegate method notifies you before the popUpView appears so that you can ensure that your UITableViewCell is rendered above the others.
+To use  effectively inside a UITableView you need to implement the `<ASValueTrackingSliderDelegate>` protocol. If you just embed an ASValueTrackingSlider inside a UITableViewCell the popUpView will probably be obscured by the cell above. The delegate method notifies you before the popUpView appears so that you can ensure that your UITableViewCell is rendered above the others.
 
 The recommended technique for use with UITableView is to create a UITableViewCell subclass that implements the delegate method.
 
