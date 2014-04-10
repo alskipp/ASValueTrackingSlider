@@ -62,12 +62,12 @@ self.slider.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
 The popUpView adjusts itself so that it doesn't extend beyond the width of the slider control.
 
 
-How to use with UITableView
----
+###How to use with UITableView
 
 To use  effectively inside a UITableView you need to implement the <ASValueTrackingSliderDelegate> protocol. If you just embed an ASValueTrackingSlider inside a UITableViewCell the popUpView will probably be obscured by the cell above. The delegate method notifies you before the popUpView appears so that you can ensure that your UITableViewCell is rendered above the others.
 
-The recommended technique for use with a tableView is to create a UITableViewCell subclass that implements the delegate method.
+The recommended technique for use with UITableView is to create a UITableViewCell subclass that implements the delegate method.
+
 
 ```objective-c
  @interface SliderCell : UITableViewCell <ASValueTrackingSliderDelegate>
@@ -85,5 +85,5 @@ The recommended technique for use with a tableView is to create a UITableViewCel
     [self.superview bringSubviewToFront:self];
  }
  @end
- ```
+```
  
