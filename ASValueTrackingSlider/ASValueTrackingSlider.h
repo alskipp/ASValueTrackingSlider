@@ -23,6 +23,7 @@
 
 // pass an array of  2 or more UIColors to animate the color change as the slider moves
 @property (strong, nonatomic) NSArray *popUpViewAnimatedColors;
+- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withLocations:(NSArray *)locations;
 
 // default is YES
 // changes the left handside of the UISlider track to match current popUpView color

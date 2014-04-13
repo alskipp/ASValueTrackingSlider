@@ -31,7 +31,7 @@
 - (void)setFont:(UIFont *)font;
 - (void)setString:(NSString *)string;
 
-- (void)setAnimatedColors:(NSArray *)animatedColors;
+- (void)setAnimatedColors:(NSArray *)animatedColors withKeyTimes:(NSArray *)keyTimes;
 
 - (void)setAnimationOffset:(CGFloat)offset;
 - (void)setArrowCenterOffset:(CGFloat)offset;

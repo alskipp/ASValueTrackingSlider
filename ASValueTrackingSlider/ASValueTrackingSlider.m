@@ -18,6 +18,7 @@
 {
     CGSize _popUpViewSize;
     UIColor *_popUpViewColor;
+    NSArray *_keyTimes;
 }
 
 #pragma mark - initialization
@@ -94,10 +95,16 @@
 // otherwise, set animated colors
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
+    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withLocations:nil];
+}
+
+- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withLocations:(NSArray *)locations
+{
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
+    _keyTimes = locations;
     
     if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
+        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:locations];
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
@@ -162,7 +169,7 @@
                                                       object:nil queue:nil
                                                   usingBlock:^(NSNotification *note) {
                                                       if (_popUpViewAnimatedColors) {
-                                                          [self.popUpView setAnimatedColors:_popUpViewAnimatedColors];
+                                                          [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
                                                       }
                                                   }];
     
