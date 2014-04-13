@@ -90,14 +90,14 @@
     }
 }
 
-// if only 1 color is present then call 'setPopUpViewColor:'
-// if arg is nil then restore previous _popUpViewColor
-// otherwise, set animated colors
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
     [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withLocations:nil];
 }
 
+// if only 1 color is present then call 'setPopUpViewColor:'
+// if arg is nil then restore previous _popUpViewColor
+// otherwise, set animated colors
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withLocations:(NSArray *)locations
 {
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
