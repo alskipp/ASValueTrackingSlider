@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider1;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider2;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider3;
+@property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider4;
 @end
 
 @implementation ViewController
@@ -39,6 +40,25 @@
     [self.slider3 setNumberFormatter:formatter];
     self.slider3.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider3.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
+    
+    
+    // customize slider 4
+    NSNumberFormatter *tempFormatter = [[NSNumberFormatter alloc] init];
+    [tempFormatter setPositiveSuffix:@"°C"];
+    [tempFormatter setNegativeSuffix:@"°C"];
+    
+    [self.slider4 setNumberFormatter:tempFormatter];
+    self.slider4.minimumValue = -20.0;
+    self.slider4.maximumValue = 60.0;
+    
+    UIColor *darkBlue = [UIColor colorWithHue:0.6 saturation:1.0 brightness:0.6 alpha:1.0];
+    UIColor *blue = [UIColor colorWithHue:0.6 saturation:0.8 brightness:0.9 alpha:1.0];
+    UIColor *green = [UIColor colorWithHue:0.3 saturation:0.8 brightness:0.8 alpha:1.0];
+    UIColor *yellow = [UIColor colorWithHue:0.15 saturation:1.0 brightness:0.9 alpha:1.0];
+    UIColor *red = [UIColor colorWithHue:0.0 saturation:1.0 brightness:1.0 alpha:1.0];
+
+    [self.slider4 setPopUpViewAnimatedColors:@[darkBlue, blue, green, yellow, red]
+                               withLocations:@[@0, @0.25, @0.3, @0.5, @1.0]];
 }
 
 - (void)didReceiveMemoryWarning
