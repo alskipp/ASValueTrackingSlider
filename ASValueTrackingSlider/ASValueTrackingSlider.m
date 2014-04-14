@@ -158,11 +158,13 @@
     _autoAdjustTrackColor = YES;
     
     // ensure animation restarts if app is closed then becomes active again
+    __weak ASValueTrackingSlider *weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                       object:nil queue:nil
                                                   usingBlock:^(NSNotification *note) {
-                                                      if (_popUpViewAnimatedColors) {
-                                                          [self.popUpView setAnimatedColors:_popUpViewAnimatedColors];
+                                                      ASValueTrackingSlider *strongSelf = weakSelf;
+                                                      if (strongSelf.popUpViewAnimatedColors) {
+                                                          [strongSelf.popUpView setAnimatedColors: strongSelf.popUpViewAnimatedColors];
                                                       }
                                                   }];
     
