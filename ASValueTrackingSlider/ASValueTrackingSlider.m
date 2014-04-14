@@ -19,6 +19,7 @@
     CGSize _popUpViewSize;
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
+    CGFloat _valueRange;
 }
 
 #pragma mark - initialization
@@ -114,12 +115,14 @@
 - (void)setMaximumValue:(float)maximumValue
 {
     [super setMaximumValue:maximumValue];
+    _valueRange = self.maximumValue - self.minimumValue;
     [self calculatePopUpViewSize];
 }
 
 - (void)setMinimumValue:(float)minimumValue
 {
     [super setMinimumValue:minimumValue];
+    _valueRange = self.maximumValue - self.minimumValue;
     [self calculatePopUpViewSize];
 }
 
@@ -154,8 +157,7 @@
 // returns the current offset of UISlider value in the range 0.0 – 1.0
 - (CGFloat)currentValueOffset
 {
-    CGFloat valueRange = self.maximumValue - self.minimumValue;
-    return (self.value + ABS(self.minimumValue)) / valueRange;
+    return (self.value + ABS(self.minimumValue)) / _valueRange;
 }
 
 #pragma mark - private
@@ -163,7 +165,8 @@
 - (void)setup
 {
     _autoAdjustTrackColor = YES;
-    
+    _valueRange = self.maximumValue - self.minimumValue;
+
     // ensure animation restarts if app is closed then becomes active again
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
                                                       object:nil queue:nil
