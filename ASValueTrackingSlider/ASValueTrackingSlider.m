@@ -18,6 +18,8 @@
 {
     CGSize _popUpViewSize;
     UIColor *_popUpViewColor;
+    NSArray *_keyTimes;
+    CGFloat _valueRange;
 }
 
 #pragma mark - initialization
@@ -89,15 +91,25 @@
     }
 }
 
-// if only 1 color is present then call 'setPopUpViewColor:'
-// if arg is nil then restore previous _popUpViewColor
-// otherwise, set animated colors
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
+    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withPositions:nil];
+}
+
+// if 2 or more colors are present, set animated colors
+// if only 1 color is present then call 'setPopUpViewColor:'
+// if arg is nil then restore previous _popUpViewColor
+- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions
+{
+    if (positions) {
+        NSAssert([popUpViewAnimatedColors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
+    }
+    
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
+    _keyTimes = [self keyTimesFromSliderPositions:positions];
     
     if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setAnimatedColors:popUpViewAnimatedColors];
+        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:_keyTimes];
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
@@ -107,12 +119,14 @@
 - (void)setMaximumValue:(float)maximumValue
 {
     [super setMaximumValue:maximumValue];
+    _valueRange = self.maximumValue - self.minimumValue;
     [self calculatePopUpViewSize];
 }
 
 - (void)setMinimumValue:(float)minimumValue
 {
     [super setMinimumValue:minimumValue];
+    _valueRange = self.maximumValue - self.minimumValue;
     [self calculatePopUpViewSize];
 }
 
@@ -147,8 +161,7 @@
 // returns the current offset of UISlider value in the range 0.0 – 1.0
 - (CGFloat)currentValueOffset
 {
-    CGFloat valueRange = self.maximumValue - self.minimumValue;
-    return (self.value + ABS(self.minimumValue)) / valueRange;
+    return (self.value + ABS(self.minimumValue)) / _valueRange;
 }
 
 #pragma mark - private
@@ -156,7 +169,8 @@
 - (void)setup
 {
     _autoAdjustTrackColor = YES;
-    
+    _valueRange = self.maximumValue - self.minimumValue;
+
     // ensure animation restarts if app is closed then becomes active again
     __weak ASValueTrackingSlider *weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
@@ -164,7 +178,7 @@
                                                   usingBlock:^(NSNotification *note) {
                                                       ASValueTrackingSlider *strongSelf = weakSelf;
                                                       if (strongSelf.popUpViewAnimatedColors) {
-                                                          [strongSelf.popUpView setAnimatedColors: strongSelf.popUpViewAnimatedColors];
+                                                          [strongSelf.popUpView setAnimatedColors:strongSelf.popUpViewAnimatedColors withKeyTimes:_keyTimes];
                                                       }
                                                   }];
     
@@ -225,9 +239,24 @@
 
 - (void)calculatePopUpViewSize
 {
-    // if the abs of minimumValue is the same or larger than maximumValue, use it to calculate size
-    CGFloat value = ABS(self.minimumValue) >= self.maximumValue ? self.minimumValue : self.maximumValue;
-    _popUpViewSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(value)]];
+    // set _popUpViewSize to the maximum size required (negative values need more width than positive values)
+    CGSize minValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.minimumValue)]];
+    CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
+
+    _popUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+}
+
+// takes an array of NSNumbers in the range self.minimumValue - self.maximumValue
+// returns an array of NSNumbers in the range 0.0 - 1.0
+- (NSArray *)keyTimesFromSliderPositions:(NSArray *)positions
+{
+    if (!positions) return nil;
+    
+    NSMutableArray *keyTimes = [NSMutableArray array];
+    for (NSNumber *num in [positions sortedArrayUsingSelector:@selector(compare:)]) {
+        [keyTimes addObject:@((num.floatValue + ABS(self.minimumValue)) / _valueRange)];
+    }
+    return keyTimes;
 }
 
 - (CGRect)thumbRect

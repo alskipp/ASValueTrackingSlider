@@ -95,7 +95,7 @@ NSString *const FillColorAnimation = @"fillColor";
 
 // set up an animation, but prevent it from running automatically
 // the animation progress will be adjusted manually
-- (void)setAnimatedColors:(NSArray *)animatedColors
+- (void)setAnimatedColors:(NSArray *)animatedColors withKeyTimes:(NSArray *)keyTimes
 {
     NSMutableArray *cgColors = [NSMutableArray array];
     for (UIColor *col in animatedColors) {
@@ -103,6 +103,7 @@ NSString *const FillColorAnimation = @"fillColor";
     }
     
     CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:FillColorAnimation];
+    colorAnim.keyTimes = keyTimes;
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
     colorAnim.duration = 1.0;
