@@ -244,6 +244,8 @@
     _popUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
 }
 
+// takes an array of NSNumbers in the range self.minimumValue - self.maximumValue
+// returns an array of NSNumbers in the range 0.0 - 1.0
 - (NSArray *)keyTimesFromSliderPositions:(NSArray *)positions
 {
     if (!positions) return nil;
