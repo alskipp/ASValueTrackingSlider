@@ -171,16 +171,10 @@
     _autoAdjustTrackColor = YES;
     _valueRange = self.maximumValue - self.minimumValue;
 
-    // ensure animation restarts if app is closed then becomes active again
-    __weak ASValueTrackingSlider *weakSelf = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
-                                                      object:nil queue:nil
-                                                  usingBlock:^(NSNotification *note) {
-                                                      ASValueTrackingSlider *strongSelf = weakSelf;
-                                                      if (strongSelf.popUpViewAnimatedColors) {
-                                                          [strongSelf.popUpView setAnimatedColors:strongSelf.popUpViewAnimatedColors withKeyTimes:_keyTimes];
-                                                      }
-                                                  }];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willEnterForegroundNotification:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -198,6 +192,14 @@
 
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
+}
+
+// ensure animation restarts if app is closed then becomes active again
+- (void)willEnterForegroundNotification:(NSNotification *)note
+{
+    if (self.popUpViewAnimatedColors) {
+        [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+    }
 }
 
 - (void)positionAndUpdatePopUpView
