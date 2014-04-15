@@ -58,7 +58,7 @@
     UIColor *red = [UIColor colorWithHue:0.0 saturation:1.0 brightness:1.0 alpha:1.0];
 
     [self.slider4 setPopUpViewAnimatedColors:@[darkBlue, blue, green, yellow, red]
-                               withLocations:@[@0, @0.25, @0.3, @0.5, @1.0]];
+                               withPositions:@[@-20, @0, @5, @25, @60]];
 }
 
 - (void)didReceiveMemoryWarning

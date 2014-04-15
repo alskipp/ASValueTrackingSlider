@@ -93,19 +93,23 @@
 
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
 {
-    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withLocations:nil];
+    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withPositions:nil];
 }
 
+// if 2 or more colors are present, set animated colors
 // if only 1 color is present then call 'setPopUpViewColor:'
 // if arg is nil then restore previous _popUpViewColor
-// otherwise, set animated colors
-- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withLocations:(NSArray *)locations
+- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions
 {
+    if (positions) {
+        NSAssert([popUpViewAnimatedColors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
+    }
+    
     _popUpViewAnimatedColors = popUpViewAnimatedColors;
-    _keyTimes = locations;
+    _keyTimes = [self keyTimesFromSliderPositions:positions];
     
     if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:locations];
+        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:_keyTimes];
     } else {
         [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
     }
@@ -238,6 +242,17 @@
     CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
 
     _popUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+}
+
+- (NSArray *)keyTimesFromSliderPositions:(NSArray *)positions
+{
+    if (!positions) return nil;
+    
+    NSMutableArray *keyTimes = [NSMutableArray array];
+    for (NSNumber *num in [positions sortedArrayUsingSelector:@selector(compare:)]) {
+        [keyTimes addObject:@((num.floatValue + ABS(self.minimumValue)) / _valueRange)];
+    }
+    return keyTimes;
 }
 
 - (CGRect)thumbRect
