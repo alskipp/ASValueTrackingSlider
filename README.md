@@ -8,6 +8,8 @@ A UISlider subclass that displays live values in an easy to customize popup view
 
 ![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot1.gif)
 
+If you'd like the same functionality for UIProgressView then check out [ASProgressPopupView](https://github.com/alskipp/ASProgressPopupView).
+
 Features
 ---
 
