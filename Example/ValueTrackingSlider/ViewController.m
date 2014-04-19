@@ -51,13 +51,16 @@
     self.slider4.minimumValue = -20.0;
     self.slider4.maximumValue = 60.0;
     
-    UIColor *darkBlue = [UIColor colorWithHue:0.6 saturation:1.0 brightness:0.6 alpha:1.0];
-    UIColor *blue = [UIColor colorWithHue:0.6 saturation:0.8 brightness:0.9 alpha:1.0];
-    UIColor *green = [UIColor colorWithHue:0.3 saturation:0.8 brightness:0.8 alpha:1.0];
-    UIColor *yellow = [UIColor colorWithHue:0.15 saturation:1.0 brightness:0.9 alpha:1.0];
-    UIColor *red = [UIColor colorWithHue:0.0 saturation:1.0 brightness:1.0 alpha:1.0];
+    self.slider4.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:26];
+    self.slider4.textColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    
+    UIColor *coldBlue = [UIColor colorWithHue:0.6 saturation:0.7 brightness:1.0 alpha:1.0];
+    UIColor *blue = [UIColor colorWithHue:0.55 saturation:0.75 brightness:1.0 alpha:1.0];
+    UIColor *green = [UIColor colorWithHue:0.3 saturation:0.65 brightness:0.8 alpha:1.0];
+    UIColor *yellow = [UIColor colorWithHue:0.15 saturation:0.9 brightness:0.9 alpha:1.0];
+    UIColor *red = [UIColor colorWithHue:0.0 saturation:0.8 brightness:1.0 alpha:1.0];
 
-    [self.slider4 setPopUpViewAnimatedColors:@[darkBlue, blue, green, yellow, red]
+    [self.slider4 setPopUpViewAnimatedColors:@[coldBlue, blue, green, yellow, red]
                                withPositions:@[@-20, @0, @5, @25, @60]];
 }
 
