@@ -271,6 +271,24 @@
 
 #pragma mark - subclassed
 
+- (void)didMoveToWindow
+{
+    if (!self.window) { // removed from window - cancel notifications
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UIApplicationDidBecomeActiveNotification
+                                                      object:nil];
+    }
+    else { // added to window - register notifications and reset animated colors if needed
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didBecomeActiveNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        if (self.popUpViewAnimatedColors) {
+            [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+        }
+    }
+}
+
 - (void)setMinimumTrackTintColor:(UIColor *)color
 {
     self.autoAdjustTrackColor = NO; // if a custom value is set then prevent auto coloring
