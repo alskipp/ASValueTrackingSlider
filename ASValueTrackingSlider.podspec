@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ASValueTrackingSlider"
-  s.version      = "0.8"
+  s.version      = "0.8.5"
   s.summary      = "A UISlider subclass that displays the slider value in an animated popUpView"
   s.description  = <<-DESC
                    Displays continuously updated values in an animated popUpView 
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Al Skipp" => "al@alskipp.com" }
   s.platform     = :ios, '6.0'
-  s.source       = { :git => "https://github.com/alskipp/ASValueTrackingSlider.git", :tag => "0.8" }
+  s.source       = { :git => "https://github.com/alskipp/ASValueTrackingSlider.git", :tag => "0.8.5" }
   s.source_files  = 'ASValueTrackingSlider'
   s.requires_arc = true
 end
