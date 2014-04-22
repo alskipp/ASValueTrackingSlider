@@ -67,6 +67,7 @@
 
 - (void)setFont:(UIFont *)font
 {
+    NSAssert(font, @"font can not be nil, it must be a valid UIFont");
     _font = font;
     [self.popUpView setFont:font];
 
