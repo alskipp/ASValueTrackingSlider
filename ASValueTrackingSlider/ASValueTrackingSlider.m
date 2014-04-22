@@ -173,8 +173,8 @@
     _valueRange = self.maximumValue - self.minimumValue;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willEnterForegroundNotification:)
-                                                 name:UIApplicationWillEnterForegroundNotification
+                                             selector:@selector(didBecomeActiveNotification:)
+                                                 name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -196,7 +196,7 @@
 }
 
 // ensure animation restarts if app is closed then becomes active again
-- (void)willEnterForegroundNotification:(NSNotification *)note
+- (void)didBecomeActiveNotification:(NSNotification *)note
 {
     if (self.popUpViewAnimatedColors) {
         [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
