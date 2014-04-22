@@ -30,7 +30,7 @@
     self.slider2.maximumValue = 255.0;
     [self.slider2 setMaxFractionDigitsDisplayed:0];
     self.slider2.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
-    self.slider2.font = [UIFont fontWithName:@"Menlo-Bold" size:22];
+    self.slider2.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider2.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
 
     
