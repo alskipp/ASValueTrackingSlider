@@ -18,7 +18,6 @@
 #define MIN_POPUPVIEW_HEIGHT 27.0
 #define POPUPVIEW_WIDTH_INSET 10.0
 
-NSString *const AnimationLayer = @"animationLayer";
 NSString *const FillColorAnimation = @"fillColor";
 
 @implementation ASValuePopUpView
