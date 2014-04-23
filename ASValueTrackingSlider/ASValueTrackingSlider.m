@@ -274,9 +274,7 @@
 - (void)didMoveToWindow
 {
     if (!self.window) { // removed from window - cancel notifications
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIApplicationDidBecomeActiveNotification
-                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     else { // added to window - register notifications and reset animated colors if needed
         [[NSNotificationCenter defaultCenter] addObserver:self
