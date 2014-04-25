@@ -42,6 +42,12 @@
 // take full control of the format dispayed with a custom NSNumberFormatter
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
 
+// if set to YES popUpView will not dissapper after touch event
+@property (nonatomic) BOOL popUpViewAlwaysOn; // (defualt is NO)
+
+// present the popupview, without touch event.
+- (void)showPopUpView;
+
 @end
 
 // when embedding an ASValueTrackingSlider inside a TableView or CollectionView

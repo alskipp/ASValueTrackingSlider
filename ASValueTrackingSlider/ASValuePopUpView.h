@@ -22,6 +22,7 @@
 @interface ASValuePopUpView : UIView
 
 @property (weak, nonatomic) id <ASValuePopUpViewDelegate> delegate;
+@property (nonatomic) BOOL showAlways;
 
 - (UIColor *)color;
 - (void)setColor:(UIColor *)color;

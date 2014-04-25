@@ -44,6 +44,10 @@
 
 #pragma mark - public
 
+- (void)setPopUpViewAlwaysOn:(BOOL)popUpViewAlwaysOn {
+    self.popUpView.showAlways = popUpViewAlwaysOn;
+}
+
 - (void)setAutoAdjustTrackColor:(BOOL)autoAdjust
 {
     if (_autoAdjustTrackColor == autoAdjust) return;
@@ -183,6 +187,7 @@
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpView.alpha = 0.0;
+    self.popUpView.showAlways = NO;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
 
@@ -292,11 +297,7 @@
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
     if (begin) {
-        if (self.delegate) {
-            [self.delegate sliderWillDisplayPopUpView:self];
-        }
-        [self positionAndUpdatePopUpView];
-        [self.popUpView show];
+        [self showPopUpView];
     }
     return begin;
 }
@@ -319,6 +320,14 @@
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
     [self.popUpView hide];
+}
+
+- (void)showPopUpView {
+    if (self.delegate) {
+        [self.delegate sliderWillDisplayPopUpView:self];
+    }
+    [self positionAndUpdatePopUpView];
+    [self.popUpView show];
 }
 
 @end
