@@ -9,6 +9,8 @@
 #import "ASValueTrackingSlider.h"
 #import "ASValuePopUpView.h"
 
+static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsContext;
+
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
@@ -292,12 +294,18 @@
 {
     if (!self.window) { // removed from window - cancel notifications
         [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self removeObserver:self forKeyPath:@"bounds"];
     }
     else { // added to window - register notifications and reset animated colors if needed
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
+        
+        [self addObserver:self forKeyPath:@"bounds"
+                  options:NSKeyValueObservingOptionNew
+                  context:ASValueTrackingSliderBoundsContext];
+        
         if (self.popUpViewAnimatedColors) {
             [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
         }
@@ -335,6 +343,17 @@
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
     if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == ASValueTrackingSliderBoundsContext) {
+        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 @end
