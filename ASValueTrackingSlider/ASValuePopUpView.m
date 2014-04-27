@@ -124,15 +124,13 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)setArrowCenterOffset:(CGFloat)offset
 {
-    // only redraw if the offset has changed
-    if (_arrowCenterOffset != offset) {
-        _arrowCenterOffset = offset;
-        
-        // the arrow tip should be the origin of any scale animations
-        // to achieve this, position the anchorPoint at the tip of the arrow
-        self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
-        [self drawPath];
-    }
+    if (_arrowCenterOffset == offset) return; // only redraw if the offset has changed
+    _arrowCenterOffset = offset;
+    
+    // the arrow tip should be the origin of any scale animations
+    // to achieve this, position the anchorPoint at the tip of the arrow
+    self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
+    [self drawPath];
 }
 
 - (CGSize)popUpSizeForString:(NSString *)string
