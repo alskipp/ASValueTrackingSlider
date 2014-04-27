@@ -136,11 +136,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FNS-05-Bp6" customClass="ASValueTrackingSlider">
+                                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FNS-05-Bp6" customClass="ASValueTrackingSlider">
                                             <rect key="frame" x="18" y="12" width="284" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </slider>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="FNS-05-Bp6" firstAttribute="leading" secondItem="JAO-5n-ma0" secondAttribute="leading" constant="20" symbolic="YES" id="2RN-jy-yJX"/>
+                                        <constraint firstItem="FNS-05-Bp6" firstAttribute="centerY" secondItem="JAO-5n-ma0" secondAttribute="centerY" id="2zh-7S-c9J"/>
+                                        <constraint firstAttribute="trailing" secondItem="FNS-05-Bp6" secondAttribute="trailing" constant="20" symbolic="YES" id="8qp-ZT-5Vs"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="slider" destination="FNS-05-Bp6" id="s85-PO-aTd"/>
