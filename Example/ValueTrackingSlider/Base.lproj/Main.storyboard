@@ -60,6 +60,11 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="I3p-Pd-LZ1">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="Min" id="EPP-BM-adL">
+                            <connections>
+                                <action selector="moveSlidersToMinimum:" destination="vXZ-lx-hvc" id="GXW-jX-rZ1"/>
+                            </connections>
+                        </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XHT-ry-B7b">
                             <rect key="frame" x="96" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

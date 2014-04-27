@@ -77,6 +77,13 @@
     }
 }
 
+- (IBAction)moveSlidersToMinimum:(UIButton *)sender
+{
+    for (ASValueTrackingSlider *slider in _sliders) {
+        slider.value = slider.minimumValue;
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
