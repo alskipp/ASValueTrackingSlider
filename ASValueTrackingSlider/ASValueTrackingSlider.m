@@ -171,7 +171,8 @@
 {
     _autoAdjustTrackColor = YES;
     _valueRange = self.maximumValue - self.minimumValue;
-    
+    _popUpViewAlwaysOn = NO;
+
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
@@ -183,7 +184,6 @@
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpView.alpha = 0.0;
-    self.popUpView.showAlways = NO;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
 
