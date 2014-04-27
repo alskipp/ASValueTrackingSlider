@@ -313,6 +313,12 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     }
 }
 
+- (void)setValue:(float)value
+{
+    [super setValue:value];
+    if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+}
+
 - (void)setMinimumTrackTintColor:(UIColor *)color
 {
     self.autoAdjustTrackColor = NO; // if a custom value is set then prevent auto coloring
