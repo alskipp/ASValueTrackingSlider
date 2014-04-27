@@ -44,10 +44,6 @@
 
 #pragma mark - public
 
-- (void)setPopUpViewAlwaysOn:(BOOL)popUpViewAlwaysOn {
-    self.popUpView.showAlways = popUpViewAlwaysOn;
-}
-
 - (void)setAutoAdjustTrackColor:(BOOL)autoAdjust
 {
     if (_autoAdjustTrackColor == autoAdjust) return;
