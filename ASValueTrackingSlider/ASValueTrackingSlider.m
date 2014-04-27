@@ -308,14 +308,14 @@
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    [self.popUpView hide];
+    if (!self.popUpViewAlwaysOn) [self.popUpView hide];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
-    [self.popUpView hide];
+    if (!self.popUpViewAlwaysOn) [self.popUpView hide];
 }
 
 - (void)showPopUpView {
