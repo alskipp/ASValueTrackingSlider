@@ -77,6 +77,11 @@
                                 <action selector="toggleShowHide:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="cFz-2q-rYu"/>
                             </connections>
                         </button>
+                        <barButtonItem key="rightBarButtonItem" title="Max" id="2oc-f4-uKm">
+                            <connections>
+                                <action selector="moveSlidersToMaximum:" destination="vXZ-lx-hvc" id="AJN-8u-AKM"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="slider1" destination="dlN-b3-P3n" id="u2E-Pc-UmR"/>

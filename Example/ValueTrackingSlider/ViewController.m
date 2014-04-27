@@ -84,6 +84,15 @@
     }
 }
 
+- (IBAction)moveSlidersToMaximum:(UIButton *)sender
+{
+    for (ASValueTrackingSlider *slider in _sliders) {
+        [UIView animateWithDuration:1.0 animations:^{
+            [slider setValue:slider.maximumValue animated:YES];
+        }];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
