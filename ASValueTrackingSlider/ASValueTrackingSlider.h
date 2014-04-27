@@ -42,11 +42,10 @@
 // take full control of the format dispayed with a custom NSNumberFormatter
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
 
-// if set to YES popUpView will not dissapper after touch event
-@property (nonatomic) BOOL popUpViewAlwaysOn; // (defualt is NO)
-
-// present the popupview, without touch event.
+// present the popupview manually, without touch event.
 - (void)showPopUpView;
+// The popupview will not hide again until you call 'hidePopUpView'
+- (void)hidePopUpView;
 
 @end
 

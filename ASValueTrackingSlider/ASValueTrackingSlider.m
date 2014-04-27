@@ -12,6 +12,7 @@
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
+@property (nonatomic) BOOL popUpViewAlwaysOn; // (default is NO)
 @end
 
 @implementation ASValueTrackingSlider
@@ -145,6 +146,18 @@
     [self calculatePopUpViewSize];
 }
 
+- (void)showPopUpView
+{
+    self.popUpViewAlwaysOn = YES;
+    [self _showPopUpView];
+}
+
+- (void)hidePopUpView;
+{
+    self.popUpViewAlwaysOn = NO;
+    [self.popUpView hide];
+}
+
 #pragma mark - ASValuePopUpViewDelegate
 
 - (void)colorAnimationDidStart;
@@ -265,6 +278,14 @@
                               value:self.value];
 }
 
+- (void)_showPopUpView {
+    if (self.delegate) {
+        [self.delegate sliderWillDisplayPopUpView:self];
+    }
+    [self positionAndUpdatePopUpView];
+    [self.popUpView show];
+}
+
 #pragma mark - subclassed
 
 - (void)didMoveToWindow
@@ -292,9 +313,7 @@
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin) {
-        [self showPopUpView];
-    }
+    if (begin) [self _showPopUpView];
     return begin;
 }
 
@@ -308,22 +327,14 @@
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    if (!self.popUpViewAlwaysOn) [self.popUpView hide];
+    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
-    if (!self.popUpViewAlwaysOn) [self.popUpView hide];
-}
-
-- (void)showPopUpView {
-    if (self.delegate) {
-        [self.delegate sliderWillDisplayPopUpView:self];
-    }
-    [self positionAndUpdatePopUpView];
-    [self.popUpView show];
+    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
 }
 
 @end
