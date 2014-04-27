@@ -319,10 +319,20 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
 }
 
+// the behaviour of setValue:animated: is different between iOS6 and iOS7
+// wrap iOS6 version in animation block to animate popUpView with slider
 - (void)setValue:(float)value animated:(BOOL)animated
 {
-    [super setValue:value animated:animated];
-    if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        [super setValue:value animated:animated];
+        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+    }
+    else {
+        [UIView animateWithDuration:0.25 animations:^{
+            [super setValue:value animated:animated];
+            if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+        }];
+    }
 }
 
 - (void)setMinimumTrackTintColor:(UIColor *)color

@@ -84,12 +84,19 @@
     }
 }
 
+// the behaviour of setValue:animated: is different between iOS6 and iOS7
+// need to use animation block on iOS7
 - (IBAction)moveSlidersToMaximum:(UIButton *)sender
 {
     for (ASValueTrackingSlider *slider in _sliders) {
-        [UIView animateWithDuration:1.0 animations:^{
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+            [UIView animateWithDuration:1.0 animations:^{
+                [slider setValue:slider.maximumValue animated:YES];
+            }];
+        }
+        else {
             [slider setValue:slider.maximumValue animated:YES];
-        }];
+        }
     }
 }
 
