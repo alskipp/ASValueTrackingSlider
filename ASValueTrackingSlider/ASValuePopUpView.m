@@ -171,27 +171,28 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)hide
 {
-    if(!_showAlways) {
-        [CATransaction begin]; {
-            [CATransaction setCompletionBlock:^{ [self.delegate popUpViewDidHide]; }];
-            
-            CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-            scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
-            scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-            scaleAnim.duration = 0.6;
-            scaleAnim.removedOnCompletion = NO;
-            scaleAnim.fillMode = kCAFillModeForwards;
-            [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
-            [self.layer addAnimation:scaleAnim forKey:@"transform"];
-            
-            CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-            fadeOutAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
-            fadeOutAnim.toValue = @0.0;
-            fadeOutAnim.duration = 0.8;
-            [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
-            self.layer.opacity = 0.0;
-        } [CATransaction commit];
-    }
+    [CATransaction begin]; {
+        [CATransaction setCompletionBlock:^{
+            [self.layer removeAnimationForKey:@"transform"];
+            [self.delegate popUpViewDidHide];
+        }];
+        
+        CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+        scaleAnim.fromValue = [self.layer.presentationLayer valueForKey:@"transform"];
+        scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
+        scaleAnim.duration = 0.6;
+        scaleAnim.removedOnCompletion = NO;
+        scaleAnim.fillMode = kCAFillModeForwards;
+        [scaleAnim setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3]];
+        [self.layer addAnimation:scaleAnim forKey:@"transform"];
+        
+        CABasicAnimation* fadeOutAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeOutAnim.fromValue = [self.layer.presentationLayer valueForKey:@"opacity"];
+        fadeOutAnim.toValue = @0.0;
+        fadeOutAnim.duration = 0.8;
+        [self.layer addAnimation:fadeOutAnim forKey:@"opacity"];
+        self.layer.opacity = 0.0;
+    } [CATransaction commit];
 }
 
 #pragma mark - CAAnimation delegate
