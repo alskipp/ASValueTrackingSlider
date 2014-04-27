@@ -17,6 +17,9 @@
 @end
 
 @implementation ViewController
+{
+    NSArray *_sliders;
+}
 
 - (void)viewDidLoad
 {
@@ -24,7 +27,6 @@
     
     // customize slider 1
     self.slider1.maximumValue = 2.0;
-    [self.slider1 showPopUpView];
 
     
     // customize slider 2
@@ -63,6 +65,16 @@
 
     [self.slider4 setPopUpViewAnimatedColors:@[coldBlue, blue, green, yellow, red]
                                withPositions:@[@-20, @0, @5, @25, @60]];
+    
+    _sliders = @[_slider1, _slider2, _slider3, _slider4];
+}
+
+- (IBAction)toggleShowHide:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    for (ASValueTrackingSlider *slider in _sliders) {
+        sender.selected ? [slider showPopUpView] : [slider hidePopUpView];
+    }
 }
 
 - (void)didReceiveMemoryWarning
