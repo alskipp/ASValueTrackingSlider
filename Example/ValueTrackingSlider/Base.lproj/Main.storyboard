@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="VHl-EN-mqE">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
@@ -16,36 +17,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dlN-b3-P3n" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="114" width="284" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NLb-U4-kLt" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="204" width="284" height="31"/>
+                                <rect key="frame" x="18" y="158" width="284" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rqf-uQ-zqb" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="294" width="284" height="31"/>
+                                <rect key="frame" x="18" y="248" width="284" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="X8N-TI-Vxa" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="384" width="284" height="31"/>
+                                <rect key="frame" x="18" y="338" width="284" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </slider>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeE-h1-T4c">
+                                <rect key="frame" x="251" y="72" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate slider min/max movement" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CV3-tI-nan">
+                                <rect key="frame" x="18" y="77" width="225" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="X8N-TI-Vxa" secondAttribute="trailing" constant="20" symbolic="YES" id="0go-JM-EXF"/>
-                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="dlN-b3-P3n" secondAttribute="bottom" constant="60" id="1tG-uh-wsk"/>
-                            <constraint firstAttribute="trailing" secondItem="dlN-b3-P3n" secondAttribute="trailing" constant="20" symbolic="YES" id="BMb-tW-EOw"/>
+                            <constraint firstAttribute="trailing" secondItem="NeE-h1-T4c" secondAttribute="trailing" constant="20" symbolic="YES" id="2rL-Uv-D0o"/>
+                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="NeE-h1-T4c" secondAttribute="bottom" constant="55" id="8Rk-75-8fl"/>
                             <constraint firstAttribute="trailing" secondItem="NLb-U4-kLt" secondAttribute="trailing" constant="20" symbolic="YES" id="BUV-ed-N1Z"/>
-                            <constraint firstItem="dlN-b3-P3n" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="EVF-Kb-toL"/>
+                            <constraint firstItem="NeE-h1-T4c" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="20" symbolic="YES" id="GnC-rw-HzB"/>
                             <constraint firstItem="rqf-uQ-zqb" firstAttribute="top" secondItem="NLb-U4-kLt" secondAttribute="bottom" constant="60" id="Hze-oe-8k7"/>
+                            <constraint firstItem="NeE-h1-T4c" firstAttribute="leading" secondItem="CV3-tI-nan" secondAttribute="trailing" constant="8" symbolic="YES" id="J9P-9M-41r"/>
                             <constraint firstItem="rqf-uQ-zqb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Jth-3T-KdA"/>
+                            <constraint firstItem="CV3-tI-nan" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" priority="750" constant="18" id="VVa-We-W3f"/>
+                            <constraint firstItem="CV3-tI-nan" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="13" id="X1A-HW-3uo"/>
+                            <constraint firstItem="CV3-tI-nan" firstAttribute="centerY" secondItem="NeE-h1-T4c" secondAttribute="centerY" id="Xhq-ES-fso"/>
                             <constraint firstItem="NLb-U4-kLt" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="bDz-Sx-QdW"/>
                             <constraint firstItem="X8N-TI-Vxa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="cdj-Cz-bCK"/>
                             <constraint firstAttribute="trailing" secondItem="rqf-uQ-zqb" secondAttribute="trailing" constant="20" symbolic="YES" id="eWt-c4-Heh"/>
-                            <constraint firstItem="dlN-b3-P3n" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="50" id="kOR-iA-pqQ"/>
                             <constraint firstItem="X8N-TI-Vxa" firstAttribute="top" secondItem="rqf-uQ-zqb" secondAttribute="bottom" constant="60" id="nsu-uI-c8b"/>
                         </constraints>
                     </view>
@@ -84,10 +95,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="slider1" destination="dlN-b3-P3n" id="u2E-Pc-UmR"/>
-                        <outlet property="slider2" destination="NLb-U4-kLt" id="9gi-2d-zaJ"/>
-                        <outlet property="slider3" destination="rqf-uQ-zqb" id="QPf-il-Cxb"/>
-                        <outlet property="slider4" destination="X8N-TI-Vxa" id="Wjo-hp-1Eb"/>
+                        <outlet property="animateSwitch" destination="NeE-h1-T4c" id="ui9-g3-b8L"/>
+                        <outlet property="slider1" destination="NLb-U4-kLt" id="SfJ-gY-gqq"/>
+                        <outlet property="slider2" destination="rqf-uQ-zqb" id="3A1-Oq-Gb7"/>
+                        <outlet property="slider3" destination="X8N-TI-Vxa" id="j6t-VA-JPp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
