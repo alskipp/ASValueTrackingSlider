@@ -24,6 +24,7 @@
     
     // customize slider 1
     self.slider1.maximumValue = 2.0;
+    self.slider1.popUpViewAlwaysOn = YES;
 
     
     // customize slider 2
