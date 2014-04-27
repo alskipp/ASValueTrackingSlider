@@ -75,15 +75,15 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)setTextColor:(UIColor *)color
 {
     [_attributedString addAttribute:NSForegroundColorAttributeName
-                                  value:(id)color.CGColor
-                                  range:NSMakeRange(0, [_attributedString length])];
+                              value:(id)color.CGColor
+                              range:NSMakeRange(0, [_attributedString length])];
 }
 
 - (void)setFont:(UIFont *)font
 {
     [_attributedString addAttribute:NSFontAttributeName
-                                  value:font
-                                  range:NSMakeRange(0, [_attributedString length])];
+                              value:font
+                              range:NSMakeRange(0, [_attributedString length])];
 }
 
 - (void)setString:(NSString *)string
