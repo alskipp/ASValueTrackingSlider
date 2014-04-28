@@ -304,7 +304,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self removeObserver:self forKeyPath:@"bounds"];
     }
-    else { // added to window - register notifications and reset animated colors if needed
+    else { // added to window - register notifications and observers
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
@@ -313,10 +313,6 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
         [self addObserver:self forKeyPath:@"bounds"
                   options:NSKeyValueObservingOptionNew
                   context:ASValueTrackingSliderBoundsContext];
-        
-        if (self.popUpViewAnimatedColors) {
-            [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
-        }
     }
 }
 
@@ -380,7 +376,12 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == ASValueTrackingSliderBoundsContext) {
-        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+        if (self.popUpViewAlwaysOn) {
+            [self positionAndUpdatePopUpView];
+            if (self.popUpViewAnimatedColors) {
+                [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+            }
+        }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
