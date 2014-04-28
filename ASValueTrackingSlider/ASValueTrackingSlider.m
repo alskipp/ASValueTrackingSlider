@@ -9,9 +9,12 @@
 #import "ASValueTrackingSlider.h"
 #import "ASValuePopUpView.h"
 
+static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsContext;
+
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
+@property (nonatomic) BOOL popUpViewAlwaysOn; // (default is NO)
 @end
 
 @implementation ASValueTrackingSlider
@@ -116,6 +119,12 @@
     }
 }
 
+- (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
+{
+    _popUpViewCornerRadius = popUpViewCornerRadius;
+    [self.popUpView setPopUpViewCornerRadius:popUpViewCornerRadius];
+}
+
 // when either the min/max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
@@ -145,6 +154,18 @@
     [self calculatePopUpViewSize];
 }
 
+- (void)showPopUpView
+{
+    self.popUpViewAlwaysOn = YES;
+    [self _showPopUpView];
+}
+
+- (void)hidePopUpView;
+{
+    self.popUpViewAlwaysOn = NO;
+    [self.popUpView hide];
+}
+
 #pragma mark - ASValuePopUpViewDelegate
 
 - (void)colorAnimationDidStart;
@@ -171,7 +192,8 @@
 {
     _autoAdjustTrackColor = YES;
     _valueRange = self.maximumValue - self.minimumValue;
-    
+    _popUpViewAlwaysOn = NO;
+
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
@@ -182,12 +204,14 @@
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
+    self.popUpViewCornerRadius = 4.0;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
 
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
+    [self positionAndUpdatePopUpView];
 }
 
 // ensure animation restarts if app is closed then becomes active again
@@ -264,21 +288,53 @@
                               value:self.value];
 }
 
+- (void)_showPopUpView {
+    if (self.delegate) {
+        [self.delegate sliderWillDisplayPopUpView:self];
+    }
+    [self positionAndUpdatePopUpView];
+    [self.popUpView show];
+}
+
 #pragma mark - subclassed
 
 - (void)didMoveToWindow
 {
     if (!self.window) { // removed from window - cancel notifications
         [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self removeObserver:self forKeyPath:@"bounds"];
     }
-    else { // added to window - register notifications and reset animated colors if needed
+    else { // added to window - register notifications and observers
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
-        if (self.popUpViewAnimatedColors) {
-            [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
-        }
+        
+        [self addObserver:self forKeyPath:@"bounds"
+                  options:NSKeyValueObservingOptionNew
+                  context:ASValueTrackingSliderBoundsContext];
+    }
+}
+
+- (void)setValue:(float)value
+{
+    [super setValue:value];
+    if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+}
+
+// the behaviour of setValue:animated: is different between iOS6 and iOS7
+// wrap iOS6 version in animation block to animate popUpView with slider
+- (void)setValue:(float)value animated:(BOOL)animated
+{
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        [super setValue:value animated:animated];
+        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+    }
+    else {
+        [UIView animateWithDuration:0.25 animations:^{
+            [super setValue:value animated:animated];
+            if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+        }];
     }
 }
 
@@ -291,13 +347,7 @@
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin) {
-        if (self.delegate) {
-            [self.delegate sliderWillDisplayPopUpView:self];
-        }
-        [self positionAndUpdatePopUpView];
-        [self.popUpView show];
-    }
+    if (begin) [self _showPopUpView];
     return begin;
 }
 
@@ -311,14 +361,30 @@
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    [self.popUpView hide];
+    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
     [self positionAndUpdatePopUpView];
-    [self.popUpView hide];
+    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == ASValueTrackingSliderBoundsContext) {
+        if (self.popUpViewAlwaysOn) {
+            [self positionAndUpdatePopUpView];
+            if (self.popUpViewAnimatedColors) {
+                [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+            }
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 @end

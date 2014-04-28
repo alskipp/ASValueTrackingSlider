@@ -56,6 +56,13 @@ NSString *const FillColorAnimation = @"fillColor";
     return self;
 }
 
+- (void)setPopUpViewCornerRadius:(CGFloat)radius
+{
+    if (_popUpViewCornerRadius == radius) return;
+    _popUpViewCornerRadius = radius;
+    [self drawPath];
+}
+
 - (UIColor *)color
 {
     return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
@@ -75,15 +82,15 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)setTextColor:(UIColor *)color
 {
     [_attributedString addAttribute:NSForegroundColorAttributeName
-                                  value:(id)color.CGColor
-                                  range:NSMakeRange(0, [_attributedString length])];
+                              value:(id)color.CGColor
+                              range:NSMakeRange(0, [_attributedString length])];
 }
 
 - (void)setFont:(UIFont *)font
 {
     [_attributedString addAttribute:NSFontAttributeName
-                                  value:font
-                                  range:NSMakeRange(0, [_attributedString length])];
+                              value:font
+                              range:NSMakeRange(0, [_attributedString length])];
 }
 
 - (void)setString:(NSString *)string
@@ -124,15 +131,13 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)setArrowCenterOffset:(CGFloat)offset
 {
-    // only redraw if the offset has changed
-    if (_arrowCenterOffset != offset) {
-        _arrowCenterOffset = offset;
-        
-        // the arrow tip should be the origin of any scale animations
-        // to achieve this, position the anchorPoint at the tip of the arrow
-        self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
-        [self drawPath];
-    }
+    if (_arrowCenterOffset == offset) return; // only redraw if the offset has changed
+    _arrowCenterOffset = offset;
+    
+    // the arrow tip should be the origin of any scale animations
+    // to achieve this, position the anchorPoint at the tip of the arrow
+    self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
+    [self drawPath];
 }
 
 - (CGSize)popUpSizeForString:(NSString *)string
@@ -173,7 +178,8 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [CATransaction begin]; {
         [CATransaction setCompletionBlock:^{
-            [self.layer removeAnimationForKey:@"transform"];
+            // remove the transform animation if the animation finished and wasn't interrupted
+            if (self.layer.opacity == 0.0) [self.layer removeAnimationForKey:@"transform"];
             [self.delegate popUpViewDidHide];
         }];
         
@@ -213,15 +219,15 @@ NSString *const FillColorAnimation = @"fillColor";
     // Create rounded rect
     CGRect roundedRect = self.bounds;
     roundedRect.size.height -= ARROW_LENGTH;
-    UIBezierPath *roundedRectPath = [UIBezierPath bezierPathWithRoundedRect:roundedRect cornerRadius:4.0];
+    UIBezierPath *roundedRectPath = [UIBezierPath bezierPathWithRoundedRect:roundedRect cornerRadius:_popUpViewCornerRadius];
     
     // Create arrow path
     UIBezierPath *arrowPath = [UIBezierPath bezierPath];
     CGFloat arrowX = CGRectGetMidX(self.bounds) + _arrowCenterOffset;
     CGPoint p0 = CGPointMake(arrowX, CGRectGetMaxY(self.bounds));
     [arrowPath moveToPoint:p0];
-    [arrowPath addLineToPoint:CGPointMake((arrowX - 6.0), CGRectGetMaxY(roundedRect))];
-    [arrowPath addLineToPoint:CGPointMake((arrowX + 6.0), CGRectGetMaxY(roundedRect))];
+    [arrowPath addLineToPoint:CGPointMake((arrowX - 8.0), CGRectGetMaxY(roundedRect)-4)];
+    [arrowPath addLineToPoint:CGPointMake((arrowX + 8.0), CGRectGetMaxY(roundedRect)-4)];
     [arrowPath closePath];
     
     // combine arrow path and rounded rect
@@ -234,18 +240,17 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [super layoutSubviews];
     
-    // only redraw if the view size has changed
-    if (!CGSizeEqualToSize(self.bounds.size, _oldSize)) {
-        _oldSize = self.bounds.size;
-        _backgroundLayer.bounds = self.bounds;
-        
-        CGFloat textHeight = [_textLayer.string size].height;
-        CGRect textRect = CGRectMake(self.bounds.origin.x,
-                                     (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
-                                     self.bounds.size.width, textHeight);
-        _textLayer.frame = textRect;
-        [self drawPath];
-    }
+    if (CGSizeEqualToSize(self.bounds.size, _oldSize)) return; // return if view size hasn't changed
+
+    _oldSize = self.bounds.size;
+    _backgroundLayer.bounds = self.bounds;
+    
+    CGFloat textHeight = [_textLayer.string size].height;
+    CGRect textRect = CGRectMake(self.bounds.origin.x,
+                                 (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
+                                 self.bounds.size.width, textHeight);
+    _textLayer.frame = textRect;
+    [self drawPath];
 }
 
 static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
