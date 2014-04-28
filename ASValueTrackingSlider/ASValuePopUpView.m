@@ -56,6 +56,13 @@ NSString *const FillColorAnimation = @"fillColor";
     return self;
 }
 
+- (void)setPopUpViewCornerRadius:(CGFloat)radius
+{
+    if (_popUpViewCornerRadius == radius) return;
+    _popUpViewCornerRadius = radius;
+    [self drawPath];
+}
+
 - (UIColor *)color
 {
     return [UIColor colorWithCGColor:[_backgroundLayer.presentationLayer fillColor]];
