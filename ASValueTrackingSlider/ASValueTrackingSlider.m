@@ -77,6 +77,11 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [self calculatePopUpViewSize];
 }
 
+- (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
+{
+    [self.popUpView setPopUpViewCornerRadius:popUpViewCornerRadius];
+}
+
 // return the currently displayed color if possible, otherwise return _popUpViewColor
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
@@ -187,6 +192,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     _autoAdjustTrackColor = YES;
     _valueRange = self.maximumValue - self.minimumValue;
     _popUpViewAlwaysOn = NO;
+    _popUpViewCornerRadius = 4.0;
 
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
