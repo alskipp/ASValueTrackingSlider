@@ -121,6 +121,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 - (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
 {
+    _popUpViewCornerRadius = popUpViewCornerRadius;
     [self.popUpView setPopUpViewCornerRadius:popUpViewCornerRadius];
 }
 
