@@ -36,7 +36,7 @@
 @property (nonatomic) BOOL autoAdjustTrackColor; // (default is YES)
 
 // radius of the popUpView, default is 4.0
-@property (nonatomic) float radius;
+@property (nonatomic) CGFloat popUpViewCornerRadius;
 
 // when setting max FractionDigits the min value is automatically set to the same value
 // this ensures that the PopUpView frame maintains a consistent width
