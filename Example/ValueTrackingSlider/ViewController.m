@@ -41,7 +41,6 @@
     [self.slider2 setNumberFormatter:formatter];
     self.slider2.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider2.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
-    self.slider2.popUpViewCornerRadius = 16.0;
     
     // customize slider 3
     NSNumberFormatter *tempFormatter = [[NSNumberFormatter alloc] init];
@@ -51,7 +50,8 @@
     [self.slider3 setNumberFormatter:tempFormatter];
     self.slider3.minimumValue = -20.0;
     self.slider3.maximumValue = 60.0;
-    
+    self.slider3.popUpViewCornerRadius = 16.0;
+
     self.slider3.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:26];
     self.slider3.textColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
