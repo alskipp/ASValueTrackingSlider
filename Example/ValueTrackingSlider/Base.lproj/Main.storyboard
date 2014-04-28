@@ -118,7 +118,7 @@
                             <rect key="frame" x="0.0" y="64" width="320" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Example With TableView" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nU1-kf-3Gz">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example With TableView" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nU1-kf-3Gz">
                                     <rect key="frame" x="20" y="29" width="280" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -127,6 +127,11 @@
                                 </label>
                             </subviews>
                             <color key="backgroundColor" red="0.65133106708526611" green="0.73197644948959351" blue="0.78764909505844116" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="nU1-kf-3Gz" firstAttribute="leading" secondItem="LXL-ma-sqx" secondAttribute="leading" constant="20" symbolic="YES" id="FW8-cc-bvn"/>
+                                <constraint firstAttribute="trailing" secondItem="nU1-kf-3Gz" secondAttribute="trailing" constant="20" symbolic="YES" id="T7W-wK-zEa"/>
+                                <constraint firstAttribute="bottom" secondItem="nU1-kf-3Gz" secondAttribute="bottom" constant="20" symbolic="YES" id="qzp-ZH-HRa"/>
+                            </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SliderCell" rowHeight="55" id="bue-0I-k1M" customClass="SliderCell">
