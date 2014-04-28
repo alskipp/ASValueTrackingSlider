@@ -240,18 +240,17 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [super layoutSubviews];
     
-    // only redraw if the view size has changed
-    if (!CGSizeEqualToSize(self.bounds.size, _oldSize)) {
-        _oldSize = self.bounds.size;
-        _backgroundLayer.bounds = self.bounds;
-        
-        CGFloat textHeight = [_textLayer.string size].height;
-        CGRect textRect = CGRectMake(self.bounds.origin.x,
-                                     (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
-                                     self.bounds.size.width, textHeight);
-        _textLayer.frame = textRect;
-        [self drawPath];
-    }
+    if (CGSizeEqualToSize(self.bounds.size, _oldSize)) return; // return if view size hasn't changed
+
+    _oldSize = self.bounds.size;
+    _backgroundLayer.bounds = self.bounds;
+    
+    CGFloat textHeight = [_textLayer.string size].height;
+    CGRect textRect = CGRectMake(self.bounds.origin.x,
+                                 (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
+                                 self.bounds.size.width, textHeight);
+    _textLayer.frame = textRect;
+    [self drawPath];
 }
 
 static UIColor* opaqueUIColorFromCGColor(CGColorRef col)
