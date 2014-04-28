@@ -31,12 +31,12 @@
 // to specify the exact position of colors on the slider scale, pass an NSArray of NSNumbers
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions;
 
+// radius of the popUpView, default is 4.0
+@property (nonatomic) CGFloat popUpViewCornerRadius;
+
 // changes the left handside of the UISlider track to match current popUpView color
 // the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
 @property (nonatomic) BOOL autoAdjustTrackColor; // (default is YES)
-
-// radius of the popUpView, default is 4.0
-@property (nonatomic) CGFloat popUpViewCornerRadius;
 
 // when setting max FractionDigits the min value is automatically set to the same value
 // this ensures that the PopUpView frame maintains a consistent width
