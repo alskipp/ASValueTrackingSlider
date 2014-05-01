@@ -19,6 +19,7 @@ Features
   * font
   * popUpViewColor
   * popUpViewAnimatedColors - popUpView and UISlider track color animate as value changes
+  * popUpViewCornerRadius
 * Set your own NSNumberFormatter to control the displayed values
 * Wholesome springy animation
 
@@ -42,6 +43,7 @@ The examples below demonstrate how to customize the appearance and value display
 
 ```objective-c
 self.slider.maximumValue = 255.0;
+self.slider.popUpViewCornerRadius = 12.0;
 [self.slider setMaxFractionDigitsDisplayed:0];
 self.slider.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
 self.slider.font = [UIFont fontWithName:@"Menlo-Bold" size:22];
