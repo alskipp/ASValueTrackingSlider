@@ -136,7 +136,9 @@ NSString *const FillColorAnimation = @"fillColor";
     
     // the arrow tip should be the origin of any scale animations
     // to achieve this, position the anchorPoint at the tip of the arrow
+    CGRect f = self.layer.frame;
     self.layer.anchorPoint = CGPointMake(0.5+(offset/self.bounds.size.width), 1);
+    self.layer.frame = f; // changing anchor repositions layer, so must reset frame afterwards
     [self drawPath];
 }
 
