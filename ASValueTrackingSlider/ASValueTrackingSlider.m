@@ -211,7 +211,6 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-    [self positionAndUpdatePopUpView];
 }
 
 // ensure animation restarts if app is closed then becomes active again
