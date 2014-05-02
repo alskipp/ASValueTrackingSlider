@@ -56,10 +56,10 @@ NSString *const FillColorAnimation = @"fillColor";
     return self;
 }
 
-- (void)setPopUpViewCornerRadius:(CGFloat)radius
+- (void)setCornerRadius:(CGFloat)radius
 {
-    if (_popUpViewCornerRadius == radius) return;
-    _popUpViewCornerRadius = radius;
+    if (_cornerRadius == radius) return;
+    _cornerRadius = radius;
     [self drawPath];
 }
 
@@ -219,7 +219,7 @@ NSString *const FillColorAnimation = @"fillColor";
     // Create rounded rect
     CGRect roundedRect = self.bounds;
     roundedRect.size.height -= ARROW_LENGTH;
-    UIBezierPath *roundedRectPath = [UIBezierPath bezierPathWithRoundedRect:roundedRect cornerRadius:_popUpViewCornerRadius];
+    UIBezierPath *roundedRectPath = [UIBezierPath bezierPathWithRoundedRect:roundedRect cornerRadius:_cornerRadius];
     
     // Create arrow path
     UIBezierPath *arrowPath = [UIBezierPath bezierPath];

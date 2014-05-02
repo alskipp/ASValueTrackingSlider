@@ -122,7 +122,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 - (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
 {
     _popUpViewCornerRadius = popUpViewCornerRadius;
-    [self.popUpView setPopUpViewCornerRadius:popUpViewCornerRadius];
+    [self.popUpView setCornerRadius:popUpViewCornerRadius];
 }
 
 // when either the min/max value or number formatter changes, recalculate the popUpView width
