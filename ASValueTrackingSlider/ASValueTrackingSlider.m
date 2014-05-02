@@ -141,7 +141,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 }
 
 // set max and min digits to same value to keep string length consistent
-- (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
+- (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits
 {
     [self.numberFormatter setMaximumFractionDigits:maxDigits];
     [self.numberFormatter setMinimumFractionDigits:maxDigits];
@@ -160,7 +160,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [self _showPopUpView];
 }
 
-- (void)hidePopUpView;
+- (void)hidePopUpView
 {
     self.popUpViewAlwaysOn = NO;
     [self.popUpView hide];
@@ -168,7 +168,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 #pragma mark - ASValuePopUpViewDelegate
 
-- (void)colorAnimationDidStart;
+- (void)colorAnimationDidStart
 {
     [self autoColorTrack];
 }
