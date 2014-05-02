@@ -251,7 +251,7 @@ NSString *const FillColorAnimation = @"fillColor";
     CGRect textRect = CGRectMake(self.bounds.origin.x,
                                  (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
                                  self.bounds.size.width, textHeight);
-    _textLayer.frame = textRect;
+    _textLayer.frame = CGRectIntegral(textRect);
     [self drawPath];
 }
 
