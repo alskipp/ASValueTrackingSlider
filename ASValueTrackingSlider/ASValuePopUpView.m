@@ -13,10 +13,11 @@
 
 #import "ASValuePopUpView.h"
 
-#define ARROW_LENGTH 13
-#define MIN_POPUPVIEW_WIDTH 36.0
-#define MIN_POPUPVIEW_HEIGHT 27.0
-#define POPUPVIEW_WIDTH_INSET 10.0
+const float ARROW_LENGTH = 13.0;
+const float MIN_POPUPVIEW_WIDTH = 36.0;
+const float MIN_POPUPVIEW_HEIGHT = 27.0;
+const float POPUPVIEW_WIDTH_PAD = 1.15;
+const float POPUPVIEW_HEIGHT_PAD = 1.1;
 
 NSString *const FillColorAnimation = @"fillColor";
 
@@ -146,8 +147,8 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [[_attributedString mutableString] setString:string];
     CGFloat w, h;
-    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH)+POPUPVIEW_WIDTH_INSET);
-    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT)+ARROW_LENGTH);
+    w = ceilf(MAX([_attributedString size].width, MIN_POPUPVIEW_WIDTH) * POPUPVIEW_WIDTH_PAD);
+    h = ceilf(MAX([_attributedString size].height, MIN_POPUPVIEW_HEIGHT) * POPUPVIEW_HEIGHT_PAD + ARROW_LENGTH);
     return CGSizeMake(w, h);
 }
 
