@@ -305,6 +305,11 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
         [self removeObserver:self forKeyPath:@"bounds"];
     }
     else { // added to window - register notifications and observers
+        
+        if (self.popUpViewAnimatedColors) { // restart color animation if needed
+            [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+        }
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
