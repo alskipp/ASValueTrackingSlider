@@ -27,7 +27,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 #pragma mark - initialization
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -36,7 +36,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
@@ -305,6 +305,11 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
         [self removeObserver:self forKeyPath:@"bounds"];
     }
     else { // added to window - register notifications and observers
+        
+        if (self.popUpViewAnimatedColors) { // restart color animation if needed
+            [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
+        }
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
