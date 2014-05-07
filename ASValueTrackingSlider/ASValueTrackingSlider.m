@@ -224,8 +224,13 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 - (void)positionAndUpdatePopUpView
 {
+    NSString *valueString; // ask dataSource for string, if nil get string from _numberFormatter
+    valueString = [self.dataSource slider:self stringForValue:self.value] ?: [_numberFormatter stringFromNumber:@(self.value)];
+    
+    _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+    
     [self adjustPopUpViewFrame];
-    [self.popUpView setString:[_numberFormatter stringFromNumber:@(self.value)]];
+    [self.popUpView setString:valueString];
     [self.popUpView setAnimationOffset:[self currentValueOffset]];
     
     [self autoColorTrack];
@@ -333,12 +338,12 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 {
     if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
         [super setValue:value animated:animated];
-        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+        [self positionAndUpdatePopUpView];
     }
     else {
         [UIView animateWithDuration:0.25 animations:^{
             [super setValue:value animated:animated];
-            if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+            [self positionAndUpdatePopUpView];
         }];
     }
 }

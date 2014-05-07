@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "ASValueTrackingSlider.h"
 
-@interface ViewController ()
+@interface ViewController () <ASValueTrackingSliderDataSource>
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider1;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider2;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider3;
@@ -33,6 +33,7 @@
     self.slider1.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
     self.slider1.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider1.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
+    self.slider1.dataSource = self;
 
     
     // customize slider 2
@@ -65,6 +66,12 @@
                                withPositions:@[@-20, @0, @5, @25, @60]];
     
     _sliders = @[_slider1, _slider2, _slider3];
+}
+
+- (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
+{
+    return value > 100.0 ? @"Lots!" : nil;
+    
 }
 
 - (IBAction)toggleShowHide:(UIButton *)sender
