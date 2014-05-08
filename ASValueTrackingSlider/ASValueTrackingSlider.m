@@ -18,8 +18,9 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 @implementation ASValueTrackingSlider
 {
-    CGSize _popUpViewSize;
     NSNumberFormatter *_numberFormatter;
+    CGSize _defaultPopUpViewSize; // size that fits largest string from _numberFormatter
+    CGSize _popUpViewSize; // usually == _defaultPopUpViewSize, but can vary if dataSource is used
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
@@ -230,9 +231,13 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 - (void)positionAndUpdatePopUpView
 {
     NSString *valueString; // ask dataSource for string, if nil get string from _numberFormatter
-    valueString = [self.dataSource slider:self stringForValue:self.value] ?: [_numberFormatter stringFromNumber:@(self.value)];
-    
-    _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+
+    if ((valueString = [self.dataSource slider:self stringForValue:self.value])) {
+        _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+    } else {
+        valueString = [_numberFormatter stringFromNumber:@(self.value)];
+        _popUpViewSize = _defaultPopUpViewSize;
+    }
     
     [self adjustPopUpViewFrame];
     [self.popUpView setString:valueString];
@@ -275,7 +280,8 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     CGSize minValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.minimumValue)]];
     CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
 
-    _popUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+    _defaultPopUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+    _popUpViewSize = _defaultPopUpViewSize;
 }
 
 // takes an array of NSNumbers in the range self.minimumValue - self.maximumValue
