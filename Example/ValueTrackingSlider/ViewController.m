@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "ASValueTrackingSlider.h"
 
-@interface ViewController ()
+@interface ViewController () <ASValueTrackingSliderDataSource>
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider1;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider2;
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider3;
@@ -42,11 +42,13 @@
     self.slider2.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider2.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
     
+    
     // customize slider 3
     NSNumberFormatter *tempFormatter = [[NSNumberFormatter alloc] init];
     [tempFormatter setPositiveSuffix:@"°C"];
     [tempFormatter setNegativeSuffix:@"°C"];
     
+    self.slider3.dataSource = self;
     [self.slider3 setNumberFormatter:tempFormatter];
     self.slider3.minimumValue = -20.0;
     self.slider3.maximumValue = 60.0;
@@ -66,6 +68,24 @@
     
     _sliders = @[_slider1, _slider2, _slider3];
 }
+
+#pragma mark - ASValueTrackingSliderDataSource
+
+- (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
+{
+    value = roundf(value);
+    NSString *s;
+    if (value < -10.0) {
+        s = @"❄️Brrr!⛄️";
+    } else if (value > 29.0 && value < 50.0) {
+        s = [NSString stringWithFormat:@"😎 %@ 😎", [slider.numberFormatter stringFromNumber:@(value)]];
+    } else if (value >= 50.0) {
+        s = @"I’m Melting!";
+    }
+    return s;
+}
+
+#pragma mark - IBActions
 
 - (IBAction)toggleShowHide:(UIButton *)sender
 {

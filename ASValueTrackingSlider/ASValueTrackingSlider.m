@@ -12,14 +12,15 @@
 static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsContext;
 
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
-@property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
 @property (nonatomic) BOOL popUpViewAlwaysOn; // (default is NO)
 @end
 
 @implementation ASValueTrackingSlider
 {
-    CGSize _popUpViewSize;
+    NSNumberFormatter *_numberFormatter;
+    CGSize _defaultPopUpViewSize; // size that fits largest string from _numberFormatter
+    CGSize _popUpViewSize; // usually == _defaultPopUpViewSize, but can vary if dataSource is used
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
@@ -143,15 +144,20 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 // set max and min digits to same value to keep string length consistent
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits
 {
-    [self.numberFormatter setMaximumFractionDigits:maxDigits];
-    [self.numberFormatter setMinimumFractionDigits:maxDigits];
+    [_numberFormatter setMaximumFractionDigits:maxDigits];
+    [_numberFormatter setMinimumFractionDigits:maxDigits];
     [self calculatePopUpViewSize];
 }
 
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
 {
-    _numberFormatter = numberFormatter;
+    _numberFormatter = [numberFormatter copy];
     [self calculatePopUpViewSize];
+}
+
+- (NSNumberFormatter *)numberFormatter
+{
+    return [_numberFormatter copy]; // return a copy to prevent formatter properties changing and causing mayhem
 }
 
 - (void)showPopUpView
@@ -201,7 +207,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [formatter setMinimumFractionDigits:2];
     _numberFormatter = formatter;
 
-    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
+    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpViewCornerRadius = 4.0;
@@ -224,8 +230,17 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 
 - (void)positionAndUpdatePopUpView
 {
+    NSString *valueString; // ask dataSource for string, if nil get string from _numberFormatter
+
+    if ((valueString = [self.dataSource slider:self stringForValue:self.value])) {
+        _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+    } else {
+        valueString = [_numberFormatter stringFromNumber:@(self.value)];
+        _popUpViewSize = _defaultPopUpViewSize;
+    }
+    
     [self adjustPopUpViewFrame];
-    [self.popUpView setString:[_numberFormatter stringFromNumber:@(self.value)]];
+    [self.popUpView setString:valueString];
     [self.popUpView setAnimationOffset:[self currentValueOffset]];
     
     [self autoColorTrack];
@@ -265,7 +280,8 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     CGSize minValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.minimumValue)]];
     CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
 
-    _popUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+    _defaultPopUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
+    _popUpViewSize = _defaultPopUpViewSize;
 }
 
 // takes an array of NSNumbers in the range self.minimumValue - self.maximumValue
@@ -333,12 +349,12 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 {
     if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
         [super setValue:value animated:animated];
-        if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+        [self positionAndUpdatePopUpView];
     }
     else {
         [UIView animateWithDuration:0.25 animations:^{
             [super setValue:value animated:animated];
-            if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+            [self positionAndUpdatePopUpView];
         }];
     }
 }

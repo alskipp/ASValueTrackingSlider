@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol ASValueTrackingSliderDelegate;
+@protocol ASValueTrackingSliderDataSource;
 
 @interface ASValueTrackingSlider : UISlider
 
@@ -43,13 +44,21 @@
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
 
 // take full control of the format dispayed with a custom NSNumberFormatter
-- (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
+@property (copy, nonatomic) NSNumberFormatter *numberFormatter;
 
 // present the popupview manually, without touch event.
 - (void)showPopUpView;
 // The popupview will not hide again until you call 'hidePopUpView'
 - (void)hidePopUpView;
 
+@property (weak, nonatomic) id<ASValueTrackingSliderDataSource> dataSource;
+
+@end
+
+// to supply custom text to the popUpView label, implement <ASProgressPopUpViewDataSource>
+// the dataSource will be messaged each time the progress changes
+@protocol ASValueTrackingSliderDataSource <NSObject>
+- (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
 @end
 
 // when embedding an ASValueTrackingSlider inside a TableView or CollectionView
