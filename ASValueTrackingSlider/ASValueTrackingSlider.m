@@ -12,7 +12,6 @@
 static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsContext;
 
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
-@property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
 @property (nonatomic) BOOL popUpViewAlwaysOn; // (default is NO)
 @end
@@ -20,6 +19,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 @implementation ASValueTrackingSlider
 {
     CGSize _popUpViewSize;
+    NSNumberFormatter *_numberFormatter;
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
@@ -143,15 +143,20 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 // set max and min digits to same value to keep string length consistent
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits
 {
-    [self.numberFormatter setMaximumFractionDigits:maxDigits];
-    [self.numberFormatter setMinimumFractionDigits:maxDigits];
+    [_numberFormatter setMaximumFractionDigits:maxDigits];
+    [_numberFormatter setMinimumFractionDigits:maxDigits];
     [self calculatePopUpViewSize];
 }
 
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
 {
-    _numberFormatter = numberFormatter;
+    _numberFormatter = [numberFormatter copy];
     [self calculatePopUpViewSize];
+}
+
+- (NSNumberFormatter *)numberFormatter
+{
+    return [_numberFormatter copy]; // return a copy to prevent formatter properties changing and causing mayhem
 }
 
 - (void)showPopUpView

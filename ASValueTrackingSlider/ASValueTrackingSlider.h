@@ -44,7 +44,7 @@
 - (void)setMaxFractionDigitsDisplayed:(NSUInteger)maxDigits;
 
 // take full control of the format dispayed with a custom NSNumberFormatter
-- (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter;
+@property (copy, nonatomic) NSNumberFormatter *numberFormatter;
 
 // present the popupview manually, without touch event.
 - (void)showPopUpView;
