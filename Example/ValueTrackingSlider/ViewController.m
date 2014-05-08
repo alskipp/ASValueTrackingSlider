@@ -33,7 +33,6 @@
     self.slider1.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
     self.slider1.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider1.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
-    self.slider1.dataSource = self;
 
     
     // customize slider 2
@@ -43,11 +42,13 @@
     self.slider2.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider2.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
     
+    
     // customize slider 3
     NSNumberFormatter *tempFormatter = [[NSNumberFormatter alloc] init];
     [tempFormatter setPositiveSuffix:@"°C"];
     [tempFormatter setNegativeSuffix:@"°C"];
     
+    self.slider3.dataSource = self;
     [self.slider3 setNumberFormatter:tempFormatter];
     self.slider3.minimumValue = -20.0;
     self.slider3.maximumValue = 60.0;
@@ -68,11 +69,23 @@
     _sliders = @[_slider1, _slider2, _slider3];
 }
 
+#pragma mark - ASValueTrackingSliderDataSource
+
 - (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
 {
-    return value > 100.0 ? @"Lots!" : nil;
-    
+    value = roundf(value);
+    NSString *s;
+    if (value < -10.0) {
+        s = @"❄️Brrr!⛄️";
+    } else if (value > 29.0 && value < 50.0) {
+        s = [NSString stringWithFormat:@"😎 %@ 😎", [slider.numberFormatter stringFromNumber:@(value)]];
+    } else if (value >= 50.0) {
+        s = @"I’m Melting!";
+    }
+    return s;
 }
+
+#pragma mark - IBActions
 
 - (IBAction)toggleShowHide:(UIButton *)sender
 {
