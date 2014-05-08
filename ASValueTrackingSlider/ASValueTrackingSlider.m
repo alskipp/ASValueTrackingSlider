@@ -206,7 +206,7 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [formatter setMinimumFractionDigits:2];
     _numberFormatter = formatter;
 
-    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
+    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpViewCornerRadius = 4.0;
