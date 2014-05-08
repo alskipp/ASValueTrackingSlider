@@ -12,8 +12,11 @@
 
 @interface ASValueTrackingSlider : UISlider
 
-// delegate is only needed when used with a TableView or CollectionView - see below
-@property (weak, nonatomic) id<ASValueTrackingSliderDelegate> delegate;
+// present the popupview manually, without touch event.
+- (void)showPopUpView;
+// the popupview will not hide again until you call 'hidePopUpView'
+- (void)hidePopUpView;
+
 @property (strong, nonatomic) UIColor *textColor;
 
 // font can not be nil, it must be a valid UIFont
@@ -25,14 +28,14 @@
 // this will vary if 'popUpViewAnimatedColors' is set (see below)
 @property (strong, nonatomic) UIColor *popUpViewColor;
 
-// pass an array of  2 or more UIColors to animate the color change as the slider moves
+// pass an array of 2 or more UIColors to animate the color change as the slider moves
 @property (strong, nonatomic) NSArray *popUpViewAnimatedColors;
 
 // the above @property distributes the colors evenly across the slider
 // to specify the exact position of colors on the slider scale, pass an NSArray of NSNumbers
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions;
 
-// radius of the popUpView, default is 4.0
+// cornerRadius of the popUpView, default is 4.0
 @property (nonatomic) CGFloat popUpViewCornerRadius;
 
 // changes the left handside of the UISlider track to match current popUpView color
@@ -46,17 +49,17 @@
 // take full control of the format dispayed with a custom NSNumberFormatter
 @property (copy, nonatomic) NSNumberFormatter *numberFormatter;
 
-// present the popupview manually, without touch event.
-- (void)showPopUpView;
-// The popupview will not hide again until you call 'hidePopUpView'
-- (void)hidePopUpView;
-
+// supply entirely customized strings for slider values using the datasource protocol - see below
 @property (weak, nonatomic) id<ASValueTrackingSliderDataSource> dataSource;
 
+// delegate is only needed when used with a TableView or CollectionView - see below
+@property (weak, nonatomic) id<ASValueTrackingSliderDelegate> delegate;
 @end
 
-// to supply custom text to the popUpView label, implement <ASProgressPopUpViewDataSource>
-// the dataSource will be messaged each time the progress changes
+
+
+// to supply custom text to the popUpView label, implement <ASValueTrackingSliderDataSource>
+// the dataSource will be messaged each time the slider value changes
 @protocol ASValueTrackingSliderDataSource <NSObject>
 - (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
 @end
