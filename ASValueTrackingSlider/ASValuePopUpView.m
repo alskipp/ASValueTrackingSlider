@@ -89,9 +89,9 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)setFont:(UIFont *)font
 {
-    [_attributedString addAttribute:NSFontAttributeName
-                              value:font
-                              range:NSMakeRange(0, [_attributedString length])];
+     //iOS 8 friendly method to change the font
+     [_attributedString setAttributes:@{NSFontAttributeName:font} range:NSMakeRange(0, [_attributedString length])];
+
 }
 
 - (void)setString:(NSString *)string
