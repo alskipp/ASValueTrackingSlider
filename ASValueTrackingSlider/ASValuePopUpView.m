@@ -83,7 +83,7 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)setTextColor:(UIColor *)color
 {
     [_attributedString addAttribute:NSForegroundColorAttributeName
-                              value:(id)color.CGColor
+                              value:color
                               range:NSMakeRange(0, [_attributedString length])];
 }
 
