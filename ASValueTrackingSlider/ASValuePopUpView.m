@@ -82,9 +82,7 @@ NSString *const FillColorAnimation = @"fillColor";
 
 - (void)setTextColor:(UIColor *)color
 {
-    [_attributedString addAttribute:NSForegroundColorAttributeName
-                              value:(id)color.CGColor
-                              range:NSMakeRange(0, [_attributedString length])];
+    _textLayer.foregroundColor = color.CGColor;
 }
 
 - (void)setFont:(UIFont *)font
@@ -92,12 +90,15 @@ NSString *const FillColorAnimation = @"fillColor";
     [_attributedString addAttribute:NSFontAttributeName
                               value:font
                               range:NSMakeRange(0, [_attributedString length])];
+    
+    _textLayer.font = (__bridge CFTypeRef)(font.fontName);
+    _textLayer.fontSize = font.pointSize;
 }
 
 - (void)setString:(NSString *)string
 {
     [[_attributedString mutableString] setString:string];
-    _textLayer.string = _attributedString;
+    _textLayer.string = string;
 }
 
 // set up an animation, but prevent it from running automatically
@@ -253,7 +254,7 @@ NSString *const FillColorAnimation = @"fillColor";
     _oldSize = self.bounds.size;
     _backgroundLayer.bounds = self.bounds;
     
-    CGFloat textHeight = [_textLayer.string size].height;
+    CGFloat textHeight = [_attributedString size].height;
     CGRect textRect = CGRectMake(self.bounds.origin.x,
                                  (self.bounds.size.height-ARROW_LENGTH-textHeight)/2,
                                  self.bounds.size.width, textHeight);
