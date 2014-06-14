@@ -241,26 +241,27 @@ NSString *const FillColorAnimation = @"fillColor";
     } [CATransaction commit];
 }
 
-- (void)hideAnimated:(BOOL)animated
+- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block
 {
-    if (!animated) {
-        self.layer.opacity = 0.0;
-        return;
-    }
-    
     [CATransaction begin]; {
-        [CATransaction setCompletionBlock:^{ [self.delegate popUpViewDidHide]; }];
-        
-        [self.layer animateKey:@"transform" fromValue:nil
-                       toValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)]
-                     customize:^(CABasicAnimation *animation) {
-                         animation.duration = 0.6;
-                         animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3];
-         }];
-        
-        [self.layer animateKey:@"opacity" fromValue:nil toValue:@0.0 customize:^(CABasicAnimation *animation) {
-            animation.duration = 0.8;
+        [CATransaction setCompletionBlock:^{
+            block();
+            self.layer.transform = CATransform3DIdentity;
         }];
+        if (animated) {
+            [self.layer animateKey:@"transform" fromValue:nil
+                           toValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)]
+                         customize:^(CABasicAnimation *animation) {
+                             animation.duration = 0.6;
+                             animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3];
+                         }];
+            
+            [self.layer animateKey:@"opacity" fromValue:nil toValue:@0.0 customize:^(CABasicAnimation *animation) {
+                animation.duration = 0.8;
+            }];
+        } else { // not animated - just set opacity to 0.0
+            self.layer.opacity = 0.0;
+        }
     } [CATransaction commit];
 }
 

@@ -158,16 +158,16 @@
     return [_numberFormatter copy]; // return a copy to prevent formatter properties changing and causing mayhem
 }
 
-- (void)showPopUpView
+- (void)showPopUpViewAnimated:(BOOL)animated
 {
     self.popUpViewAlwaysOn = YES;
-    [self _showPopUpView];
+    [self _showPopUpViewAnimated:animated];
 }
 
-- (void)hidePopUpView
+- (void)hidePopUpViewAnimated:(BOOL)animated
 {
     self.popUpViewAlwaysOn = NO;
-    [self.popUpView hideAnimated:YES];
+    [self _hidePopUpViewAnimated:animated];
 }
 
 #pragma mark - ASValuePopUpViewDelegate
@@ -175,13 +175,6 @@
 - (void)colorDidUpdate:(UIColor *)opaqueColor
 {
     super.minimumTrackTintColor = opaqueColor;
-}
-
-- (void)popUpViewDidHide;
-{
-    if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
-        [self.delegate sliderDidHidePopUpView:self];
-    }
 }
 
 // returns the current offset of UISlider value in the range 0.0 – 1.0
@@ -285,11 +278,19 @@
                               value:self.value];
 }
 
-- (void)_showPopUpView {
-    if (self.delegate) {
-        [self.delegate sliderWillDisplayPopUpView:self];
-    }
-    [self.popUpView showAnimated:YES];
+- (void)_showPopUpViewAnimated:(BOOL)animated
+{
+    if (self.delegate) [self.delegate sliderWillDisplayPopUpView:self];
+    [self.popUpView showAnimated:animated];
+}
+
+- (void)_hidePopUpViewAnimated:(BOOL)animated
+{
+    [self.popUpView hideAnimated:animated completionBlock:^{
+        if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
+            [self.delegate sliderDidHidePopUpView:self];
+        }
+    }];
 }
 
 #pragma mark - subclassed
@@ -352,7 +353,7 @@
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin && !self.popUpViewAlwaysOn) [self _showPopUpView];
+    if (begin && !self.popUpViewAlwaysOn) [self _showPopUpViewAnimated:YES];
     return begin;
 }
 
@@ -370,13 +371,13 @@
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    if (self.popUpViewAlwaysOn == NO) [self.popUpView hideAnimated:YES];
+    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
-    if (self.popUpViewAlwaysOn == NO) [self.popUpView hideAnimated:YES];
+    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
 }
 
 @end

@@ -16,7 +16,6 @@
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
 - (void)colorDidUpdate:(UIColor *)opaqueColor;
-- (void)popUpViewDidHide;
 @end
 
 @interface ASValuePopUpView : UIView
@@ -43,6 +42,6 @@
 - (CGSize)popUpSizeForString:(NSString *)string;
 
 - (void)showAnimated:(BOOL)animated;
-- (void)hideAnimated:(BOOL)animated;
+- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block;
 
 @end

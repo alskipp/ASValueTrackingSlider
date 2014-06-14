@@ -91,7 +91,7 @@
 {
     sender.selected = !sender.selected;
     for (ASValueTrackingSlider *slider in _sliders) {
-        sender.selected ? [slider showPopUpView] : [slider hidePopUpView];
+        sender.selected ? [slider showPopUpViewAnimated:YES] : [slider hidePopUpViewAnimated:YES];
     }
 }
 
