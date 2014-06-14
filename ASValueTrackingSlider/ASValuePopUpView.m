@@ -252,12 +252,12 @@ NSString *const FillColorAnimation = @"fillColor";
             [self.layer animateKey:@"transform" fromValue:nil
                            toValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)]
                          customize:^(CABasicAnimation *animation) {
-                             animation.duration = 0.6;
+                             animation.duration = 0.55;
                              animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3];
                          }];
             
             [self.layer animateKey:@"opacity" fromValue:nil toValue:@0.0 customize:^(CABasicAnimation *animation) {
-                animation.duration = 0.8;
+                animation.duration = 0.75;
             }];
         } else { // not animated - just set opacity to 0.0
             self.layer.opacity = 0.0;
