@@ -332,10 +332,10 @@
         [self.popUpView animateBlock:^(CFTimeInterval duration) {
             [UIView animateWithDuration:duration animations:^{
                 [super setValue:value animated:animated];
-                [self layoutIfNeeded];
                 [self.popUpView setAnimationOffset:[self currentValueOffset] returnColor:^(UIColor *opaqueReturnColor) {
                     super.minimumTrackTintColor = opaqueReturnColor;
                 }];
+                [self layoutIfNeeded];
             }];
         }];
     } else {
