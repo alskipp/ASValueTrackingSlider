@@ -180,7 +180,7 @@
 // returns the current offset of UISlider value in the range 0.0 – 1.0
 - (CGFloat)currentValueOffset
 {
-    return (self.value + ABS(self.minimumValue)) / _valueRange;
+    return (self.value - self.minimumValue) / _valueRange;
 }
 
 #pragma mark - private
@@ -266,7 +266,7 @@
     
     NSMutableArray *keyTimes = [NSMutableArray array];
     for (NSNumber *num in [positions sortedArrayUsingSelector:@selector(compare:)]) {
-        [keyTimes addObject:@((num.floatValue + ABS(self.minimumValue)) / _valueRange)];
+        [keyTimes addObject:@((num.floatValue - self.minimumValue) / _valueRange)];
     }
     return keyTimes;
 }
