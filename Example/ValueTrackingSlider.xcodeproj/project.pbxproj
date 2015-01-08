@@ -17,23 +17,10 @@
 		E742B0971812EC4E005B188F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B0961812EC4E005B188F /* AppDelegate.m */; };
 		E742B09D1812EC4E005B188F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E742B09C1812EC4E005B188F /* ViewController.m */; };
 		E742B09F1812EC4E005B188F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E742B09E1812EC4E005B188F /* Images.xcassets */; };
-		E742B0A61812EC4E005B188F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0A51812EC4E005B188F /* XCTest.framework */; };
-		E742B0A71812EC4E005B188F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B0861812EC4E005B188F /* Foundation.framework */; };
-		E742B0A81812EC4E005B188F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E742B08A1812EC4E005B188F /* UIKit.framework */; };
 		E748CA1118E9DE0F00062047 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E748CA0F18E9DE0F00062047 /* Main.storyboard */; };
 		E752716C18F2C50D009E6B8A /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E752716B18F2C50D009E6B8A /* TableViewController.m */; };
 		E752716F18F2D622009E6B8A /* SliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E752716E18F2D622009E6B8A /* SliderCell.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E742B0A91812EC4E005B188F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E742B07B1812EC4E005B188F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E742B0821812EC4E005B188F;
-			remoteInfo = ValueTrackingSlider;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		E72E05D718E9EA430082D173 /* ASValuePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValuePopUpView.h; sourceTree = "<group>"; };
@@ -53,7 +40,6 @@
 		E742B09B1812EC4E005B188F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		E742B09C1812EC4E005B188F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E742B09E1812EC4E005B188F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E742B0A41812EC4E005B188F /* ValueTrackingSliderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ValueTrackingSliderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E742B0A51812EC4E005B188F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E748CA1018E9DE0F00062047 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E752716A18F2C50D009E6B8A /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
@@ -70,16 +56,6 @@
 				E742B0891812EC4E005B188F /* CoreGraphics.framework in Frameworks */,
 				E742B08B1812EC4E005B188F /* UIKit.framework in Frameworks */,
 				E742B0871812EC4E005B188F /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E742B0A11812EC4E005B188F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E742B0A61812EC4E005B188F /* XCTest.framework in Frameworks */,
-				E742B0A81812EC4E005B188F /* UIKit.framework in Frameworks */,
-				E742B0A71812EC4E005B188F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				E742B0831812EC4E005B188F /* ValueTrackingSlider.app */,
-				E742B0A41812EC4E005B188F /* ValueTrackingSliderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,24 +169,6 @@
 			productReference = E742B0831812EC4E005B188F /* ValueTrackingSlider.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E742B0A31812EC4E005B188F /* ValueTrackingSliderTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E742B0B81812EC4E005B188F /* Build configuration list for PBXNativeTarget "ValueTrackingSliderTests" */;
-			buildPhases = (
-				E742B0A01812EC4E005B188F /* Sources */,
-				E742B0A11812EC4E005B188F /* Frameworks */,
-				E742B0A21812EC4E005B188F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E742B0AA1812EC4E005B188F /* PBXTargetDependency */,
-			);
-			name = ValueTrackingSliderTests;
-			productName = ValueTrackingSliderTests;
-			productReference = E742B0A41812EC4E005B188F /* ValueTrackingSliderTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -221,11 +178,6 @@
 				CLASSPREFIX = AS;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Alan Skipp";
-				TargetAttributes = {
-					E742B0A31812EC4E005B188F = {
-						TestTargetID = E742B0821812EC4E005B188F;
-					};
-				};
 			};
 			buildConfigurationList = E742B07E1812EC4E005B188F /* Build configuration list for PBXProject "ValueTrackingSlider" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -241,7 +193,6 @@
 			projectRoot = "";
 			targets = (
 				E742B0821812EC4E005B188F /* ValueTrackingSlider */,
-				E742B0A31812EC4E005B188F /* ValueTrackingSliderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -254,13 +205,6 @@
 				E748CA1118E9DE0F00062047 /* Main.storyboard in Resources */,
 				E742B09F1812EC4E005B188F /* Images.xcassets in Resources */,
 				E742B0911812EC4E005B188F /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E742B0A21812EC4E005B188F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,22 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E742B0A01812EC4E005B188F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E742B0AA1812EC4E005B188F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E742B0821812EC4E005B188F /* ValueTrackingSlider */;
-			targetProxy = E742B0A91812EC4E005B188F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E742B08F1812EC4E005B188F /* InfoPlist.strings */ = {
@@ -424,46 +353,6 @@
 			};
 			name = Release;
 		};
-		E742B0B91812EC4E005B188F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ValueTrackingSlider.app/ValueTrackingSlider";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ValueTrackingSlider/ValueTrackingSlider-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "ValueTrackingSliderTests/ValueTrackingSliderTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		E742B0BA1812EC4E005B188F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ValueTrackingSlider.app/ValueTrackingSlider";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ValueTrackingSlider/ValueTrackingSlider-Prefix.pch";
-				INFOPLIST_FILE = "ValueTrackingSliderTests/ValueTrackingSliderTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -481,15 +370,6 @@
 			buildConfigurations = (
 				E742B0B61812EC4E005B188F /* Debug */,
 				E742B0B71812EC4E005B188F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E742B0B81812EC4E005B188F /* Build configuration list for PBXNativeTarget "ValueTrackingSliderTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E742B0B91812EC4E005B188F /* Debug */,
-				E742B0BA1812EC4E005B188F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
