@@ -25,6 +25,7 @@
 @property (nonatomic) CGFloat arrowLength;
 @property (nonatomic) CGFloat popUpViewWidthPaddingFactor;
 @property (nonatomic) CGFloat popUpViewHeightPaddingFactor;
+@property (nonatomic) CGFloat positionYOffset;
 
 - (UIColor *)color;
 - (void)setColor:(UIColor *)color;

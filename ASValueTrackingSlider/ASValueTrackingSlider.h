@@ -45,6 +45,9 @@
 // height padding factor of the popUpView, default is 1.1
 @property (nonatomic) CGFloat popUpViewHeightPaddingFactor;
 
+// offset between UISlider thumb and popUpView arrow, default is 0
+@property (nonatomic) CGFloat popUpViewYOffset;
+
 // changes the left handside of the UISlider track to match current popUpView color
 // the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
 @property (nonatomic) BOOL autoAdjustTrackColor; // (default is YES)

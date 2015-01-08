@@ -79,6 +79,8 @@ NSString *const FillColorAnimation = @"fillColor";
         _popUpViewWidthPaddingFactor = 1.15;
         _popUpViewHeightPaddingFactor = 1.1;
         
+        _positionYOffset = 0;
+        
         _textLayer = [CATextLayer layer];
         _textLayer.alignmentMode = kCAAlignmentCenter;
         _textLayer.anchorPoint = CGPointMake(0, 0);
@@ -186,7 +188,7 @@ NSString *const FillColorAnimation = @"fillColor";
     
     CGFloat anchorX = 0.5+(arrowOffset/CGRectGetWidth(frame));
     self.layer.anchorPoint = CGPointMake(anchorX, 1);
-    self.layer.position = CGPointMake(CGRectGetMinX(frame) + CGRectGetWidth(frame)*anchorX, 0);
+    self.layer.position = CGPointMake(CGRectGetMinX(frame) + CGRectGetWidth(frame)*anchorX, -_positionYOffset);
     self.layer.bounds = (CGRect){CGPointZero, frame.size};
     
     [self setText:text];

@@ -151,6 +151,14 @@
     [self updatePopUpView];
 }
 
+- (void)setPopUpViewYOffset:(CGFloat)popUpViewYOffset
+{
+    if (_popUpViewYOffset == popUpViewYOffset) return;
+    _popUpViewYOffset = popUpViewYOffset;
+    [self.popUpView setPositionYOffset:popUpViewYOffset];
+    [self updatePopUpView];
+}
+
 // when either the min/max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
@@ -232,6 +240,7 @@
     self.popUpViewArrowLength = 13.0;
     self.popUpViewWidthPaddingFactor = 1.15;
     self.popUpViewHeightPaddingFactor = 1.1;
+    self.popUpViewYOffset = 0;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
