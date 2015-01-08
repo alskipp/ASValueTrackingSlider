@@ -12,10 +12,10 @@
 
 @interface ASValueTrackingSlider : UISlider
 
-// present the popupview manually, without touch event.
-- (void)showPopUpView;
-// the popupview will not hide again until you call 'hidePopUpView'
-- (void)hidePopUpView;
+// present the popUpView manually, without touch event.
+- (void)showPopUpViewAnimated:(BOOL)animated;
+// the popUpView will not hide again until you call 'hidePopUpViewAnimated:'
+- (void)hidePopUpViewAnimated:(BOOL)animated;
 
 @property (strong, nonatomic) UIColor *textColor;
 
@@ -37,6 +37,16 @@
 
 // cornerRadius of the popUpView, default is 4.0
 @property (nonatomic) CGFloat popUpViewCornerRadius;
+
+// arrow height of the popUpView, default is 13.0
+@property (nonatomic) CGFloat popUpViewArrowLength;
+// width padding factor of the popUpView, default is 1.15
+@property (nonatomic) CGFloat popUpViewWidthPaddingFactor;
+// height padding factor of the popUpView, default is 1.1
+@property (nonatomic) CGFloat popUpViewHeightPaddingFactor;
+
+// offset between UISlider thumb and popUpView arrow, default is 0
+@property (nonatomic) CGFloat popUpViewYOffset;
 
 // changes the left handside of the UISlider track to match current popUpView color
 // the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
@@ -71,6 +81,7 @@
 - (void)sliderWillDisplayPopUpView:(ASValueTrackingSlider *)slider;
 
 @optional
+- (void)sliderWillHidePopUpView:(ASValueTrackingSlider *)slider;
 - (void)sliderDidHidePopUpView:(ASValueTrackingSlider *)slider;
 @end
 

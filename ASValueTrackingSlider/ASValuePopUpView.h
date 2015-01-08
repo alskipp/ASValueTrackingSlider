@@ -15,14 +15,17 @@
 
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
-- (void)colorAnimationDidStart;
-- (void)popUpViewDidHide;
+- (void)colorDidUpdate:(UIColor *)opaqueColor;
 @end
 
 @interface ASValuePopUpView : UIView
 
 @property (weak, nonatomic) id <ASValuePopUpViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
+@property (nonatomic) CGFloat arrowLength;
+@property (nonatomic) CGFloat popUpViewWidthPaddingFactor;
+@property (nonatomic) CGFloat popUpViewHeightPaddingFactor;
+@property (nonatomic) CGFloat positionYOffset;
 
 - (UIColor *)color;
 - (void)setColor:(UIColor *)color;
@@ -30,16 +33,19 @@
 
 - (void)setTextColor:(UIColor *)textColor;
 - (void)setFont:(UIFont *)font;
-- (void)setString:(NSString *)string;
+- (void)setText:(NSString *)text;
 
 - (void)setAnimatedColors:(NSArray *)animatedColors withKeyTimes:(NSArray *)keyTimes;
 
-- (void)setAnimationOffset:(CGFloat)offset;
-- (void)setArrowCenterOffset:(CGFloat)offset;
+- (void)setAnimationOffset:(CGFloat)animOffset returnColor:(void (^)(UIColor *opaqueReturnColor))block;
+
+- (void)setFrame:(CGRect)frame arrowOffset:(CGFloat)arrowOffset text:(NSString *)text;
+
+- (void)animateBlock:(void (^)(CFTimeInterval duration))block;
 
 - (CGSize)popUpSizeForString:(NSString *)string;
 
-- (void)show;
-- (void)hide;
+- (void)showAnimated:(BOOL)animated;
+- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block;
 
 @end
