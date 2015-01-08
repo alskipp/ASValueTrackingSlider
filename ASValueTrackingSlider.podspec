@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/ChromophoreApp'
   
   s.platform         = :ios, '6.0'
-  s.source           = { :git => "https://github.com/vince4/ASValueTrackingSlider", :tag => "0.9.5" }
+  s.source           = { :git => "https://github.com/vince4/ASValueTrackingSlider.git", :tag => "0.9.5" }
   s.source_files     = 'ASValueTrackingSlider'
   s.requires_arc     = true
 
