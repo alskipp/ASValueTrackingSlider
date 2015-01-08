@@ -75,6 +75,10 @@ NSString *const FillColorAnimation = @"fillColor";
         self.userInteractionEnabled = NO;
         _pathLayer = (CAShapeLayer *)self.layer; // ivar can now be accessed without casting to CAShapeLayer every time
         
+        _arrowLength = 13.0;
+        _popUpViewWidthPaddingFactor = 1.15;
+        _popUpViewHeightPaddingFactor = 1.1;
+        
         _textLayer = [CATextLayer layer];
         _textLayer.alignmentMode = kCAAlignmentCenter;
         _textLayer.anchorPoint = CGPointMake(0, 0);
