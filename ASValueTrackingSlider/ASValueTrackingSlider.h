@@ -71,6 +71,7 @@
 - (void)sliderWillDisplayPopUpView:(ASValueTrackingSlider *)slider;
 
 @optional
+- (void)sliderWillHidePopUpView:(ASValueTrackingSlider *)slider;
 - (void)sliderDidHidePopUpView:(ASValueTrackingSlider *)slider;
 @end
 

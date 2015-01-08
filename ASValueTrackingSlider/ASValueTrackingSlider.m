@@ -286,6 +286,9 @@
 
 - (void)_hidePopUpViewAnimated:(BOOL)animated
 {
+    if ([self.delegate respondsToSelector:@selector(sliderWillHidePopUpView:)]) {
+        [self.delegate sliderWillHidePopUpView:self];
+    }
     [self.popUpView hideAnimated:animated completionBlock:^{
         if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
             [self.delegate sliderDidHidePopUpView:self];
