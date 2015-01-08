@@ -124,6 +124,33 @@
     [self.popUpView setCornerRadius:popUpViewCornerRadius];
 }
 
+- (void)setPopUpViewArrowLength:(CGFloat)popUpViewArrowLength
+{
+    if (_popUpViewArrowLength == popUpViewArrowLength) return;
+    _popUpViewArrowLength = popUpViewArrowLength;
+    [self.popUpView setArrowLength:popUpViewArrowLength];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
+- (void)setPopUpViewWidthPaddingFactor:(CGFloat)popUpViewWidthPaddingFactor
+{
+    if (_popUpViewWidthPaddingFactor == popUpViewWidthPaddingFactor) return;
+    _popUpViewWidthPaddingFactor = popUpViewWidthPaddingFactor;
+    [self.popUpView setPopUpViewWidthPaddingFactor:popUpViewWidthPaddingFactor];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
+- (void)setPopUpViewHeightPaddingFactor:(CGFloat)popUpViewHeightPaddingFactor
+{
+    if (_popUpViewHeightPaddingFactor == popUpViewHeightPaddingFactor) return;
+    _popUpViewHeightPaddingFactor = popUpViewHeightPaddingFactor;
+    [self.popUpView setPopUpViewHeightPaddingFactor:popUpViewHeightPaddingFactor];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
 // when either the min/max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
@@ -202,6 +229,9 @@
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpViewCornerRadius = 4.0;
+    self.popUpViewArrowLength = 13.0;
+    self.popUpViewWidthPaddingFactor = 1.15;
+    self.popUpViewHeightPaddingFactor = 1.1;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];

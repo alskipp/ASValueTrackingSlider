@@ -53,6 +53,8 @@
     self.slider3.minimumValue = -20.0;
     self.slider3.maximumValue = 60.0;
     self.slider3.popUpViewCornerRadius = 16.0;
+    
+    self.slider3.popUpViewArrowLength = 29.0;
 
     self.slider3.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:26];
     self.slider3.textColor = [UIColor colorWithWhite:0.0 alpha:0.5];
@@ -78,6 +80,7 @@
     if (value < -10.0) {
         s = @"❄️Brrr!⛄️";
     } else if (value > 29.0 && value < 50.0) {
+        self.slider3.popUpViewArrowLength = value;
         s = [NSString stringWithFormat:@"😎 %@ 😎", [slider.numberFormatter stringFromNumber:@(value)]];
     } else if (value >= 50.0) {
         s = @"I’m Melting!";
