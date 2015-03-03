@@ -439,7 +439,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "ValueTrackingSliderTests/ValueTrackingSliderTests-Info.plist";
+				INFOPLIST_FILE = "ValueTrackingSlider/ValueTrackingSlider-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -457,7 +457,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ValueTrackingSlider/ValueTrackingSlider-Prefix.pch";
-				INFOPLIST_FILE = "ValueTrackingSliderTests/ValueTrackingSliderTests-Info.plist";
+				INFOPLIST_FILE = "ValueTrackingSlider/ValueTrackingSlider-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
