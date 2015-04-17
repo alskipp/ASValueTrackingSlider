@@ -91,7 +91,7 @@
 {
     sender.selected = !sender.selected;
     for (ASValueTrackingSlider *slider in _sliders) {
-        sender.selected ? [slider showPopUpView] : [slider hidePopUpView];
+        sender.selected ? [slider showPopUpViewAnimated:YES] : [slider hidePopUpViewAnimated:YES];
     }
 }
 
@@ -119,18 +119,9 @@
     }
 }
 
-// the behaviour of setValue:animated: is different between iOS6 and iOS7
-// need to use animation block on iOS7
 - (void)animateSlider:(ASValueTrackingSlider*)slider toValue:(float)value
 {
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [slider setValue:value animated:YES];
-        }];
-    }
-    else {
-        [slider setValue:value animated:YES];
-    }
+    [slider setValue:value animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

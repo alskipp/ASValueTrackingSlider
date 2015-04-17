@@ -15,8 +15,7 @@
 
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
-- (void)colorAnimationDidStart;
-- (void)popUpViewDidHide;
+- (void)colorDidUpdate:(UIColor *)opaqueColor;
 @end
 
 @interface ASValuePopUpView : UIView
@@ -30,16 +29,19 @@
 
 - (void)setTextColor:(UIColor *)textColor;
 - (void)setFont:(UIFont *)font;
-- (void)setString:(NSString *)string;
+- (void)setText:(NSString *)text;
 
 - (void)setAnimatedColors:(NSArray *)animatedColors withKeyTimes:(NSArray *)keyTimes;
 
-- (void)setAnimationOffset:(CGFloat)offset;
-- (void)setArrowCenterOffset:(CGFloat)offset;
+- (void)setAnimationOffset:(CGFloat)animOffset returnColor:(void (^)(UIColor *opaqueReturnColor))block;
+
+- (void)setFrame:(CGRect)frame arrowOffset:(CGFloat)arrowOffset text:(NSString *)text;
+
+- (void)animateBlock:(void (^)(CFTimeInterval duration))block;
 
 - (CGSize)popUpSizeForString:(NSString *)string;
 
-- (void)show;
-- (void)hide;
+- (void)showAnimated:(BOOL)animated;
+- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block;
 
 @end

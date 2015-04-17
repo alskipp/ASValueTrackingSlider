@@ -12,10 +12,10 @@
 
 @interface ASValueTrackingSlider : UISlider
 
-// present the popupview manually, without touch event.
-- (void)showPopUpView;
-// the popupview will not hide again until you call 'hidePopUpView'
-- (void)hidePopUpView;
+// present the popUpView manually, without touch event.
+- (void)showPopUpViewAnimated:(BOOL)animated;
+// the popUpView will not hide again until you call 'hidePopUpViewAnimated:'
+- (void)hidePopUpViewAnimated:(BOOL)animated;
 
 @property (strong, nonatomic) UIColor *textColor;
 
