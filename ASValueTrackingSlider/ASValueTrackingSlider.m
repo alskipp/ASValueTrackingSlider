@@ -116,8 +116,42 @@
 
 - (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
 {
-    _popUpViewCornerRadius = popUpViewCornerRadius;
-    [self.popUpView setCornerRadius:popUpViewCornerRadius];
+    self.popUpView.cornerRadius = popUpViewCornerRadius;
+}
+
+- (CGFloat)setPopUpViewCornerRadius
+{
+    return self.popUpView.cornerRadius;
+}
+
+- (void)setPopUpViewArrowLength:(CGFloat)popUpViewArrowLength
+{
+    self.popUpView.arrowLength = popUpViewArrowLength;
+}
+
+- (CGFloat)setPopUpViewArrowLength
+{
+    return self.popUpView.arrowLength;
+}
+
+- (void)setPopUpViewWidthPaddingFactor:(CGFloat)popUpViewWidthPaddingFactor
+{
+    self.popUpView.popUpViewWidthPaddingFactor = popUpViewWidthPaddingFactor;
+}
+
+- (CGFloat)popUpViewWidthPaddingFactor
+{
+    return self.popUpView.popUpViewWidthPaddingFactor;
+}
+
+- (void)setPopUpViewHeightPaddingFactor:(CGFloat)popUpViewHeightPaddingFactor
+{
+    self.popUpView.popUpViewHeightPaddingFactor = popUpViewHeightPaddingFactor;
+}
+
+- (CGFloat)popUpViewHeightPaddingFactor
+{
+    return self.popUpView.popUpViewHeightPaddingFactor;
 }
 
 // when either the min/max value or number formatter changes, recalculate the popUpView width
@@ -193,7 +227,6 @@
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
-    self.popUpViewCornerRadius = 4.0;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
@@ -277,6 +310,9 @@
 
 - (void)_hidePopUpViewAnimated:(BOOL)animated
 {
+    if ([self.delegate respondsToSelector:@selector(sliderWillHidePopUpView:)]) {
+        [self.delegate sliderWillHidePopUpView:self];
+    }
     [self.popUpView hideAnimated:animated completionBlock:^{
         if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
             [self.delegate sliderDidHidePopUpView:self];
