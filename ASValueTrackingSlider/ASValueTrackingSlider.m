@@ -119,7 +119,7 @@
     self.popUpView.cornerRadius = popUpViewCornerRadius;
 }
 
-- (CGFloat)setPopUpViewCornerRadius
+- (CGFloat)popUpViewCornerRadius
 {
     return self.popUpView.cornerRadius;
 }
@@ -129,7 +129,7 @@
     self.popUpView.arrowLength = popUpViewArrowLength;
 }
 
-- (CGFloat)setPopUpViewArrowLength
+- (CGFloat)popUpViewArrowLength
 {
     return self.popUpView.arrowLength;
 }
