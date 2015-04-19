@@ -77,8 +77,8 @@ NSString *const FillColorAnimation = @"fillColor";
         
         _cornerRadius = 4.0;
         _arrowLength = 13.0;
-        _popUpViewWidthPaddingFactor = 1.15;
-        _popUpViewHeightPaddingFactor = 1.1;
+        _widthPaddingFactor = 1.15;
+        _heightPaddingFactor = 1.1;
         
         _textLayer = [CATextLayer layer];
         _textLayer.alignmentMode = kCAAlignmentCenter;
@@ -211,8 +211,8 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [[_attributedString mutableString] setString:string];
     CGFloat w, h;
-    w = ceilf([_attributedString size].width * _popUpViewWidthPaddingFactor);
-    h = ceilf(([_attributedString size].height * _popUpViewHeightPaddingFactor) + _arrowLength);
+    w = ceilf([_attributedString size].width * _widthPaddingFactor);
+    h = ceilf(([_attributedString size].height * _heightPaddingFactor) + _arrowLength);
     return CGSizeMake(w, h);
 }
 

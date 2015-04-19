@@ -76,47 +76,47 @@
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [self.popUpView color] ?: _popUpViewColor;
+    return self.popUpView.color ?: _popUpViewColor;
 }
 
-- (void)setPopUpViewColor:(UIColor *)popUpViewColor
+- (void)setPopUpViewColor:(UIColor *)color
 {
-    _popUpViewColor = popUpViewColor;
+    _popUpViewColor = color;
     _popUpViewAnimatedColors = nil; // animated colors should be discarded
-    [self.popUpView setColor:popUpViewColor];
+    [self.popUpView setColor:color];
 
     if (_autoAdjustTrackColor) {
         super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
-- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
+- (void)setPopUpViewAnimatedColors:(NSArray *)colors
 {
-    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withPositions:nil];
+    [self setPopUpViewAnimatedColors:colors withPositions:nil];
 }
 
 // if 2 or more colors are present, set animated colors
 // if only 1 color is present then call 'setPopUpViewColor:'
 // if arg is nil then restore previous _popUpViewColor
-- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions
+- (void)setPopUpViewAnimatedColors:(NSArray *)colors withPositions:(NSArray *)positions
 {
     if (positions) {
-        NSAssert([popUpViewAnimatedColors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
+        NSAssert([colors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
     }
     
-    _popUpViewAnimatedColors = popUpViewAnimatedColors;
+    _popUpViewAnimatedColors = colors;
     _keyTimes = [self keyTimesFromSliderPositions:positions];
     
-    if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:_keyTimes];
+    if ([colors count] >= 2) {
+        [self.popUpView setAnimatedColors:colors withKeyTimes:_keyTimes];
     } else {
-        [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
+        [self setPopUpViewColor:[colors lastObject] ?: _popUpViewColor];
     }
 }
 
-- (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
+- (void)setPopUpViewCornerRadius:(CGFloat)radius
 {
-    self.popUpView.cornerRadius = popUpViewCornerRadius;
+    self.popUpView.cornerRadius = radius;
 }
 
 - (CGFloat)popUpViewCornerRadius
@@ -124,9 +124,9 @@
     return self.popUpView.cornerRadius;
 }
 
-- (void)setPopUpViewArrowLength:(CGFloat)popUpViewArrowLength
+- (void)setPopUpViewArrowLength:(CGFloat)length
 {
-    self.popUpView.arrowLength = popUpViewArrowLength;
+    self.popUpView.arrowLength = length;
 }
 
 - (CGFloat)popUpViewArrowLength
@@ -134,24 +134,24 @@
     return self.popUpView.arrowLength;
 }
 
-- (void)setPopUpViewWidthPaddingFactor:(CGFloat)popUpViewWidthPaddingFactor
+- (void)setPopUpViewWidthPaddingFactor:(CGFloat)factor
 {
-    self.popUpView.popUpViewWidthPaddingFactor = popUpViewWidthPaddingFactor;
+    self.popUpView.widthPaddingFactor = factor;
 }
 
 - (CGFloat)popUpViewWidthPaddingFactor
 {
-    return self.popUpView.popUpViewWidthPaddingFactor;
+    return self.popUpView.widthPaddingFactor;
 }
 
-- (void)setPopUpViewHeightPaddingFactor:(CGFloat)popUpViewHeightPaddingFactor
+- (void)setPopUpViewHeightPaddingFactor:(CGFloat)factor
 {
-    self.popUpView.popUpViewHeightPaddingFactor = popUpViewHeightPaddingFactor;
+    self.popUpView.heightPaddingFactor = factor;
 }
 
 - (CGFloat)popUpViewHeightPaddingFactor
 {
-    return self.popUpView.popUpViewHeightPaddingFactor;
+    return self.popUpView.heightPaddingFactor;
 }
 
 // when either the min/max value or number formatter changes, recalculate the popUpView width
