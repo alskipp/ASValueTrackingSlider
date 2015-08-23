@@ -20,6 +20,8 @@ Features
   * popUpViewColor
   * popUpViewAnimatedColors - popUpView and UISlider track color animate as value changes
   * popUpViewCornerRadius
+  * popUpViewArrowLength
+  
 * Set your own NSNumberFormatter to control the displayed values
 * Optional dataSource - supply your own custom text to the popUpView label
 * Wholesome springy animation
