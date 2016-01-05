@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="VHl-EN-mqE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="VHl-EN-mqE">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,27 +17,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wC9-u8-mm0">
+                                <rect key="frame" x="16" y="106" width="288" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="9z7-ym-TA9"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Bounce"/>
+                                    <segment title="Fade"/>
+                                    <segment title="None"/>
+                                </segments>
+                                <connections>
+                                    <action selector="animationTypeChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="1vk-QP-5rd"/>
+                                </connections>
+                            </segmentedControl>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NLb-U4-kLt" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="158" width="284" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="18" y="189" width="284" height="31"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rqf-uQ-zqb" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="248" width="284" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="18" y="279" width="284" height="31"/>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="X8N-TI-Vxa" customClass="ASValueTrackingSlider">
-                                <rect key="frame" x="18" y="338" width="284" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="18" y="369" width="284" height="31"/>
                             </slider>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeE-h1-T4c">
                                 <rect key="frame" x="251" y="72" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate slider min/max movement" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CV3-tI-nan">
                                 <rect key="frame" x="18" y="77" width="225" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -45,18 +54,21 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="X8N-TI-Vxa" secondAttribute="trailing" constant="20" symbolic="YES" id="0go-JM-EXF"/>
                             <constraint firstAttribute="trailing" secondItem="NeE-h1-T4c" secondAttribute="trailing" constant="20" symbolic="YES" id="2rL-Uv-D0o"/>
-                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="NeE-h1-T4c" secondAttribute="bottom" constant="55" id="8Rk-75-8fl"/>
+                            <constraint firstItem="wC9-u8-mm0" firstAttribute="top" secondItem="NeE-h1-T4c" secondAttribute="bottom" constant="3" id="67n-C2-xyI"/>
                             <constraint firstAttribute="trailing" secondItem="NLb-U4-kLt" secondAttribute="trailing" constant="20" symbolic="YES" id="BUV-ed-N1Z"/>
-                            <constraint firstItem="NeE-h1-T4c" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="20" symbolic="YES" id="GnC-rw-HzB"/>
+                            <constraint firstItem="NLb-U4-kLt" firstAttribute="top" secondItem="wC9-u8-mm0" secondAttribute="bottom" constant="55" id="FNm-OR-r7y"/>
+                            <constraint firstItem="NeE-h1-T4c" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="8" symbolic="YES" id="GnC-rw-HzB"/>
                             <constraint firstItem="rqf-uQ-zqb" firstAttribute="top" secondItem="NLb-U4-kLt" secondAttribute="bottom" constant="60" id="Hze-oe-8k7"/>
                             <constraint firstItem="NeE-h1-T4c" firstAttribute="leading" secondItem="CV3-tI-nan" secondAttribute="trailing" constant="8" symbolic="YES" id="J9P-9M-41r"/>
                             <constraint firstItem="rqf-uQ-zqb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Jth-3T-KdA"/>
                             <constraint firstItem="CV3-tI-nan" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" priority="750" constant="18" id="VVa-We-W3f"/>
                             <constraint firstItem="CV3-tI-nan" firstAttribute="top" secondItem="cDN-XZ-9uH" secondAttribute="bottom" constant="13" id="X1A-HW-3uo"/>
                             <constraint firstItem="CV3-tI-nan" firstAttribute="centerY" secondItem="NeE-h1-T4c" secondAttribute="centerY" id="Xhq-ES-fso"/>
+                            <constraint firstItem="wC9-u8-mm0" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="YeS-Ki-n8h"/>
                             <constraint firstItem="NLb-U4-kLt" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="bDz-Sx-QdW"/>
                             <constraint firstItem="X8N-TI-Vxa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="cdj-Cz-bCK"/>
                             <constraint firstAttribute="trailing" secondItem="rqf-uQ-zqb" secondAttribute="trailing" constant="20" symbolic="YES" id="eWt-c4-Heh"/>
+                            <constraint firstItem="wC9-u8-mm0" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="lQV-94-xXg"/>
                             <constraint firstItem="X8N-TI-Vxa" firstAttribute="top" secondItem="rqf-uQ-zqb" secondAttribute="bottom" constant="60" id="nsu-uI-c8b"/>
                         </constraints>
                     </view>
@@ -96,6 +108,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="animateSwitch" destination="NeE-h1-T4c" id="ui9-g3-b8L"/>
+                        <outlet property="animationTypeControl" destination="wC9-u8-mm0" id="IbL-y2-jdj"/>
                         <outlet property="slider1" destination="NLb-U4-kLt" id="SfJ-gY-gqq"/>
                         <outlet property="slider2" destination="rqf-uQ-zqb" id="3A1-Oq-Gb7"/>
                         <outlet property="slider3" destination="X8N-TI-Vxa" id="j6t-VA-JPp"/>
@@ -120,7 +133,6 @@
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example With TableView" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nU1-kf-3Gz">
                                     <rect key="frame" x="20" y="29" width="280" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -143,7 +155,6 @@
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FNS-05-Bp6" customClass="ASValueTrackingSlider">
                                             <rect key="frame" x="18" y="12" width="284" height="31"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </slider>
                                     </subviews>
                                     <constraints>

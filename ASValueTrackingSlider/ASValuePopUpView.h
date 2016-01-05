@@ -13,6 +13,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, ASValuePopUpViewPresentationAnimationType) {
+    ASValuePopUpViewPresentationAnimationTypeBounce,
+    ASValuePopUpViewPresentationAnimationTypeFade,
+    ASValuePopUpViewPresentationAnimationTypeNone,
+};
+
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
 - (void)colorDidUpdate:(UIColor *)opaqueColor;
@@ -44,7 +50,7 @@
 
 - (CGSize)popUpSizeForString:(NSString *)string;
 
-- (void)showAnimated:(BOOL)animated;
-- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block;
+- (void)showWithAnimation:(ASValuePopUpViewPresentationAnimationType)animationType;
+- (void)hideWithanimation:(ASValuePopUpViewPresentationAnimationType)animationType completionBlock:(void (^)())block;
 
 @end

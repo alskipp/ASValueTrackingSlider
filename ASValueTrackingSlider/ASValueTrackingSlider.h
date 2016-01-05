@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASValuePopUpView.h"
 @protocol ASValueTrackingSliderDelegate;
 @protocol ASValueTrackingSliderDataSource;
 
 @interface ASValueTrackingSlider : UISlider
 
 // present the popUpView manually, without touch event.
-- (void)showPopUpViewAnimated:(BOOL)animated;
+- (void)showPopUpView;
 // the popUpView will not hide again until you call 'hidePopUpViewAnimated:'
-- (void)hidePopUpViewAnimated:(BOOL)animated;
+- (void)hidePopUpView;
 
 @property (strong, nonatomic) UIColor *textColor;
 
@@ -48,6 +49,12 @@
 // changes the left handside of the UISlider track to match current popUpView color
 // the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
 @property (nonatomic) BOOL autoAdjustTrackColor; // (default is YES)
+
+// set this flag to disable the popUp from showing when the slider is touched.
+@property (nonatomic) BOOL popUpViewEnabled; // (defaults to YES)
+
+// use this enum to change the animation style when the popup view shows and hides
+@property (nonatomic) ASValuePopUpViewPresentationAnimationType popUpViewPresentationAnimationType; // defaults to "bounce"
 
 // when setting max FractionDigits the min value is automatically set to the same value
 // this ensures that the PopUpView frame maintains a consistent width
