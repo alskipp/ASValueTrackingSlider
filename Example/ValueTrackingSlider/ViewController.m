@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet ASValueTrackingSlider *slider3;
 
 @property (weak, nonatomic) IBOutlet UISwitch *animateSwitch;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *animationTypeControl;
 @end
 
 @implementation ViewController
@@ -34,8 +35,8 @@
     self.slider1.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider1.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
     self.slider1.popUpViewWidthPaddingFactor = 1.7;
+    self.slider1.popUpViewPresentationAnimationType = _animationTypeControl.selectedSegmentIndex;
 
-    
     // customize slider 2
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
@@ -43,7 +44,7 @@
     self.slider2.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider2.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
     self.slider2.popUpViewArrowLength = 20.0;
-    
+    self.slider2.popUpViewPresentationAnimationType = _animationTypeControl.selectedSegmentIndex;
     
     // customize slider 3
     NSNumberFormatter *tempFormatter = [[NSNumberFormatter alloc] init];
@@ -55,7 +56,7 @@
     self.slider3.minimumValue = -20.0;
     self.slider3.maximumValue = 60.0;
     self.slider3.popUpViewCornerRadius = 16.0;
-
+    self.slider3.popUpViewPresentationAnimationType = _animationTypeControl.selectedSegmentIndex;
     self.slider3.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:26];
     self.slider3.textColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
@@ -93,7 +94,14 @@
 {
     sender.selected = !sender.selected;
     for (ASValueTrackingSlider *slider in _sliders) {
-        sender.selected ? [slider showPopUpViewAnimated:YES] : [slider hidePopUpViewAnimated:YES];
+        sender.selected ? [slider showPopUpView] : [slider hidePopUpView];
+    }
+}
+
+- (IBAction)animationTypeChanged:(id)sender
+{
+    for (ASValueTrackingSlider *slider in _sliders) {
+        slider.popUpViewPresentationAnimationType = _animationTypeControl.selectedSegmentIndex;
     }
 }
 
