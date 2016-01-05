@@ -217,6 +217,7 @@
     _valueRange = self.maximumValue - self.minimumValue;
     _popUpViewAlwaysOn = NO;
     _popUpViewPresentationAnimationType = ASValuePopUpViewPresentationAnimationTypeBounce;
+    _popUpViewEnabled = YES;
 
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -381,7 +382,7 @@
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin && !self.popUpViewAlwaysOn) [self _showPopUpView];
+    if (begin && !self.popUpViewAlwaysOn && self.popUpViewEnabled) [self _showPopUpView];
     return begin;
 }
 

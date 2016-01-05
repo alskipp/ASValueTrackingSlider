@@ -50,6 +50,9 @@
 // the track color alpha is always set to 1.0, even if popUpView color is less than 1.0
 @property (nonatomic) BOOL autoAdjustTrackColor; // (default is YES)
 
+// set this flag to disable the popUp from showing when the slider is touched.
+@property (nonatomic) BOOL popUpViewEnabled; // (defaults to YES)
+
 // use this enum to change the animation style when the popup view shows and hides
 @property (nonatomic) ASValuePopUpViewPresentationAnimationType popUpViewPresentationAnimationType; // defaults to "bounce"
 
