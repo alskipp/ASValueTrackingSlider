@@ -49,19 +49,6 @@ NSString *const SliderFillColorAnim = @"fillColor";
     return [CAShapeLayer class];
 }
 
-// if ivar _shouldAnimate) is YES then return an animation
-// otherwise return NSNull (no animation)
-- (id <CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
-{
-    if (_shouldAnimate) {
-        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:key];
-        anim.beginTime = CACurrentMediaTime();
-        anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        anim.fromValue = [layer.presentationLayer valueForKey:key];
-        anim.duration = _animDuration;
-        return anim;
-    } else return (id <CAAction>)[NSNull null];
-}
 
 #pragma mark - public
 
@@ -216,51 +203,57 @@ NSString *const SliderFillColorAnim = @"fillColor";
     return CGSizeMake(w, h);
 }
 
-- (void)showAnimated:(BOOL)animated
+- (void)showWithAnimation:(ASValuePopUpViewPresentationAnimationType)animationType
 {
-    if (!animated) {
-        self.layer.opacity = 1.0;
-        return;
+    void(^fadeAnimation)() = ^{ self.alpha = 1.0; };
+    void (^expandAnimation)() = ^{ self.transform = CGAffineTransformIdentity; };
+
+    switch (animationType) {
+        case ASValuePopUpViewPresentationAnimationTypeBounce:
+            self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+            [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:0 animations:expandAnimation completion:nil];
+            // Don't break here because we'll fall through to run the fade along with the bounce
+
+        case ASValuePopUpViewPresentationAnimationTypeFade:
+            [UIView animateWithDuration:0.4 animations:fadeAnimation];
+            break;
+
+        case ASValuePopUpViewPresentationAnimationTypeNone:
+        default:
+            fadeAnimation();
+            expandAnimation();
+            break;
     }
-    
-    [CATransaction begin]; {
-        // start the transform animation from scale 0.5, or its current value if it's already running
-        NSValue *fromValue = [self.layer animationForKey:@"transform"] ? [self.layer.presentationLayer valueForKey:@"transform"] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
-        
-        [self.layer animateKey:@"transform" fromValue:fromValue toValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]
-                     customize:^(CABasicAnimation *animation) {
-                         animation.duration = 0.4;
-                         animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.8 :2.5 :0.35 :0.5];
-         }];
-        
-        [self.layer animateKey:@"opacity" fromValue:nil toValue:@1.0 customize:^(CABasicAnimation *animation) {
-            animation.duration = 0.1;
-        }];
-    } [CATransaction commit];
 }
 
-- (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block
+- (void)hideWithanimation:(ASValuePopUpViewPresentationAnimationType)animationType completionBlock:(void (^)())block
 {
-    [CATransaction begin]; {
-        [CATransaction setCompletionBlock:^{
+    void(^fadeAnimation)() = ^{ self.alpha = 0.0; };
+    void (^shrinkAnimation)() = ^{ self.transform = CGAffineTransformMakeScale(0.2, 0.2); };
+    void (^shrinkCompletion)(BOOL) = ^(BOOL finished) {
+        self.transform = CGAffineTransformIdentity;
+        if (block) {
             block();
-            self.layer.transform = CATransform3DIdentity;
-        }];
-        if (animated) {
-            [self.layer animateKey:@"transform" fromValue:nil
-                           toValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)]
-                         customize:^(CABasicAnimation *animation) {
-                             animation.duration = 0.55;
-                             animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.1 :-2 :0.3 :3];
-                         }];
-            
-            [self.layer animateKey:@"opacity" fromValue:nil toValue:@0.0 customize:^(CABasicAnimation *animation) {
-                animation.duration = 0.75;
-            }];
-        } else { // not animated - just set opacity to 0.0
-            self.layer.opacity = 0.0;
         }
-    } [CATransaction commit];
+    };
+
+    switch (animationType) {
+        case ASValuePopUpViewPresentationAnimationTypeBounce:
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:-5 options:0 animations:shrinkAnimation completion:shrinkCompletion];
+            [UIView animateWithDuration:0.3 animations:fadeAnimation];
+            break;
+
+        case ASValuePopUpViewPresentationAnimationTypeFade:
+            [UIView animateWithDuration:0.3 animations:fadeAnimation completion:shrinkCompletion];
+            break;
+
+        case ASValuePopUpViewPresentationAnimationTypeNone:
+        default:
+            fadeAnimation();
+            shrinkAnimation();
+            shrinkCompletion(YES);
+            break;
+    }
 }
 
 #pragma mark - CAAnimation delegate
