@@ -9,11 +9,9 @@
 #import "ASValueTrackingSlider.h"
 #import "ASValuePopUpView.h"
 
-static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsContext;
-
 @interface ASValueTrackingSlider() <ASValuePopUpViewDelegate>
 @property (strong, nonatomic) ASValuePopUpView *popUpView;
-@property (nonatomic) BOOL popUpViewAlwaysOn; // (default is NO)
+@property (nonatomic) BOOL popUpViewAlwaysOn; // default is NO
 @end
 
 @implementation ASValueTrackingSlider
@@ -126,6 +124,41 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [self.popUpView setCornerRadius:popUpViewCornerRadius];
 }
 
+- (void)setPopUpViewArrowLength:(CGFloat)popUpViewArrowLength
+{
+    if (_popUpViewArrowLength == popUpViewArrowLength) return;
+    _popUpViewArrowLength = popUpViewArrowLength;
+    [self.popUpView setArrowLength:popUpViewArrowLength];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
+- (void)setPopUpViewWidthPaddingFactor:(CGFloat)popUpViewWidthPaddingFactor
+{
+    if (_popUpViewWidthPaddingFactor == popUpViewWidthPaddingFactor) return;
+    _popUpViewWidthPaddingFactor = popUpViewWidthPaddingFactor;
+    [self.popUpView setPopUpViewWidthPaddingFactor:popUpViewWidthPaddingFactor];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
+- (void)setPopUpViewHeightPaddingFactor:(CGFloat)popUpViewHeightPaddingFactor
+{
+    if (_popUpViewHeightPaddingFactor == popUpViewHeightPaddingFactor) return;
+    _popUpViewHeightPaddingFactor = popUpViewHeightPaddingFactor;
+    [self.popUpView setPopUpViewHeightPaddingFactor:popUpViewHeightPaddingFactor];
+    [self calculatePopUpViewSize];
+    [self updatePopUpView];
+}
+
+- (void)setPopUpViewYOffset:(CGFloat)popUpViewYOffset
+{
+    if (_popUpViewYOffset == popUpViewYOffset) return;
+    _popUpViewYOffset = popUpViewYOffset;
+    [self.popUpView setPositionYOffset:popUpViewYOffset];
+    [self updatePopUpView];
+}
+
 // when either the min/max value or number formatter changes, recalculate the popUpView width
 - (void)setMaximumValue:(float)maximumValue
 {
@@ -160,30 +193,23 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     return [_numberFormatter copy]; // return a copy to prevent formatter properties changing and causing mayhem
 }
 
-- (void)showPopUpView
+- (void)showPopUpViewAnimated:(BOOL)animated
 {
     self.popUpViewAlwaysOn = YES;
-    [self _showPopUpView];
+    [self _showPopUpViewAnimated:animated];
 }
 
-- (void)hidePopUpView
+- (void)hidePopUpViewAnimated:(BOOL)animated
 {
     self.popUpViewAlwaysOn = NO;
-    [self.popUpView hide];
+    [self _hidePopUpViewAnimated:animated];
 }
 
 #pragma mark - ASValuePopUpViewDelegate
 
-- (void)colorAnimationDidStart
+- (void)colorDidUpdate:(UIColor *)opaqueColor
 {
-    [self autoColorTrack];
-}
-
-- (void)popUpViewDidHide;
-{
-    if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
-        [self.delegate sliderDidHidePopUpView:self];
-    }
+    super.minimumTrackTintColor = opaqueColor;
 }
 
 // returns the current offset of UISlider value in the range 0.0 – 1.0
@@ -207,17 +233,20 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     [formatter setMinimumFractionDigits:2];
     _numberFormatter = formatter;
 
-    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpViewCornerRadius = 4.0;
+    self.popUpViewArrowLength = 13.0;
+    self.popUpViewWidthPaddingFactor = 1.15;
+    self.popUpViewHeightPaddingFactor = 1.1;
+    self.popUpViewYOffset = 0;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
 
     self.textColor = [UIColor whiteColor];
     self.font = [UIFont boldSystemFontOfSize:22.0f];
-    [self positionAndUpdatePopUpView];
 }
 
 // ensure animation restarts if app is closed then becomes active again
@@ -228,26 +257,18 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     }
 }
 
-- (void)positionAndUpdatePopUpView
+- (void)updatePopUpView
 {
-    NSString *valueString; // ask dataSource for string, if nil get string from _numberFormatter
-
-    if ((valueString = [self.dataSource slider:self stringForValue:self.value])) {
+    NSString *valueString; // ask dataSource for string, if nil or blank, get string from _numberFormatter
+    
+    if ((valueString = [self.dataSource slider:self stringForValue:self.value]) && valueString.length != 0) {
         _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
     } else {
         valueString = [_numberFormatter stringFromNumber:@(self.value)];
         _popUpViewSize = _defaultPopUpViewSize;
     }
     
-    [self adjustPopUpViewFrame];
-    [self.popUpView setString:valueString];
-    [self.popUpView setAnimationOffset:[self currentValueOffset]];
-    
-    [self autoColorTrack];
-}
-
-- (void)adjustPopUpViewFrame
-{
+    // calculate the popUpView frame
     CGRect thumbRect = [self thumbRect];
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
@@ -255,23 +276,15 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
     CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewSize.width)/2, (thumbH - _popUpViewSize.height)/2);
     popUpRect.origin.y = thumbRect.origin.y - _popUpViewSize.height;
     
-    // determine if popUpRect extends beyond the frame of the UISlider
+    // determine if popUpRect extends beyond the frame of the progress view
     // if so adjust frame and set the center offset of the PopUpView's arrow
     CGFloat minOffsetX = CGRectGetMinX(popUpRect);
-    CGFloat maxOffsetX = CGRectGetMaxX(popUpRect) - self.bounds.size.width;
+    CGFloat maxOffsetX = CGRectGetMaxX(popUpRect) - CGRectGetWidth(self.bounds);
     
     CGFloat offset = minOffsetX < 0.0 ? minOffsetX : (maxOffsetX > 0.0 ? maxOffsetX : 0.0);
     popUpRect.origin.x -= offset;
-
-    [self.popUpView setArrowCenterOffset:offset];
-    self.popUpView.frame = CGRectIntegral(popUpRect);
-}
-
-- (void)autoColorTrack
-{
-    if (_autoAdjustTrackColor == NO || !_popUpViewAnimatedColors) return;
-
-    super.minimumTrackTintColor = [self.popUpView opaqueColor];
+    
+    [self.popUpView setFrame:popUpRect arrowOffset:offset text:valueString];
 }
 
 - (void)calculatePopUpViewSize
@@ -304,23 +317,38 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
                               value:self.value];
 }
 
-- (void)_showPopUpView {
-    if (self.delegate) {
-        [self.delegate sliderWillDisplayPopUpView:self];
+- (void)_showPopUpViewAnimated:(BOOL)animated
+{
+    if (self.delegate) [self.delegate sliderWillDisplayPopUpView:self];
+    [self.popUpView showAnimated:animated];
+}
+
+- (void)_hidePopUpViewAnimated:(BOOL)animated
+{
+    if ([self.delegate respondsToSelector:@selector(sliderWillHidePopUpView:)]) {
+        [self.delegate sliderWillHidePopUpView:self];
     }
-    [self positionAndUpdatePopUpView];
-    [self.popUpView show];
+    [self.popUpView hideAnimated:animated completionBlock:^{
+        if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
+            [self.delegate sliderDidHidePopUpView:self];
+        }
+    }];
 }
 
 #pragma mark - subclassed
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updatePopUpView];
+}
 
 - (void)didMoveToWindow
 {
     if (!self.window) { // removed from window - cancel notifications
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self removeObserver:self forKeyPath:@"bounds"];
     }
-    else { // added to window - register notifications and observers
+    else { // added to window - register notifications
         
         if (self.popUpViewAnimatedColors) { // restart color animation if needed
             [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
@@ -330,32 +358,31 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
                                                  selector:@selector(didBecomeActiveNotification:)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
-        
-        [self addObserver:self forKeyPath:@"bounds"
-                  options:NSKeyValueObservingOptionNew
-                  context:ASValueTrackingSliderBoundsContext];
     }
 }
 
 - (void)setValue:(float)value
 {
     [super setValue:value];
-    if (self.popUpViewAlwaysOn) [self positionAndUpdatePopUpView];
+    [self.popUpView setAnimationOffset:[self currentValueOffset] returnColor:^(UIColor *opaqueReturnColor) {
+        super.minimumTrackTintColor = opaqueReturnColor;
+    }];
 }
 
-// the behaviour of setValue:animated: is different between iOS6 and iOS7
-// wrap iOS6 version in animation block to animate popUpView with slider
 - (void)setValue:(float)value animated:(BOOL)animated
 {
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        [super setValue:value animated:animated];
-        [self positionAndUpdatePopUpView];
-    }
-    else {
-        [UIView animateWithDuration:0.25 animations:^{
-            [super setValue:value animated:animated];
-            [self positionAndUpdatePopUpView];
+    if (animated) {
+        [self.popUpView animateBlock:^(CFTimeInterval duration) {
+            [UIView animateWithDuration:duration animations:^{
+                [super setValue:value animated:animated];
+                [self.popUpView setAnimationOffset:[self currentValueOffset] returnColor:^(UIColor *opaqueReturnColor) {
+                    super.minimumTrackTintColor = opaqueReturnColor;
+                }];
+                [self layoutIfNeeded];
+            }];
         }];
+    } else {
+        [super setValue:value animated:animated];
     }
 }
 
@@ -368,44 +395,31 @@ static void * ASValueTrackingSliderBoundsContext = &ASValueTrackingSliderBoundsC
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin) [self _showPopUpView];
+    if (begin && !self.popUpViewAlwaysOn) [self _showPopUpViewAnimated:YES];
     return begin;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL continueTrack = [super continueTrackingWithTouch:touch withEvent:event];
-    if (continueTrack) [self positionAndUpdatePopUpView];
+    if (continueTrack) {
+        [self.popUpView setAnimationOffset:[self currentValueOffset] returnColor:^(UIColor *opaqueReturnColor) {
+            super.minimumTrackTintColor = opaqueReturnColor;
+        }];
+    }
     return continueTrack;
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event
 {
     [super cancelTrackingWithEvent:event];
-    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
+    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super endTrackingWithTouch:touch withEvent:event];
-    [self positionAndUpdatePopUpView];
-    if (self.popUpViewAlwaysOn == NO) [self.popUpView hide];
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context == ASValueTrackingSliderBoundsContext) {
-        if (self.popUpViewAlwaysOn) {
-            [self positionAndUpdatePopUpView];
-            if (self.popUpViewAnimatedColors) {
-                [self.popUpView setAnimatedColors:_popUpViewAnimatedColors withKeyTimes:_keyTimes];
-            }
-        }
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
+    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
 }
 
 @end
