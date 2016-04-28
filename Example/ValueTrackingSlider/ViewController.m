@@ -76,11 +76,6 @@
 - (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
 {
     value = roundf(value);
-    
-    if (value > 13.0) {
-        self.slider3.popUpViewArrowLength = value;
-    }
-    
     NSString *s;
     if (value < -10.0) {
         s = @"❄️Brrr!⛄️";
