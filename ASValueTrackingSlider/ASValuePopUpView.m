@@ -27,7 +27,7 @@
 }
 @end
 
-NSString *const FillColorAnimation = @"fillColor";
+NSString *const SliderFillColorAnim = @"fillColor";
 
 @implementation ASValuePopUpView
 {
@@ -75,20 +75,17 @@ NSString *const FillColorAnimation = @"fillColor";
         self.userInteractionEnabled = NO;
         _pathLayer = (CAShapeLayer *)self.layer; // ivar can now be accessed without casting to CAShapeLayer every time
         
+        _cornerRadius = 4.0;
         _arrowLength = 13.0;
-        _popUpViewWidthPaddingFactor = 1.15;
-        _popUpViewHeightPaddingFactor = 1.1;
-        
+        _widthPaddingFactor = 1.15;
+        _heightPaddingFactor = 1.1;
         _positionYOffset = 0;
         
         _textLayer = [CATextLayer layer];
         _textLayer.alignmentMode = kCAAlignmentCenter;
         _textLayer.anchorPoint = CGPointMake(0, 0);
         _textLayer.contentsScale = [UIScreen mainScreen].scale;
-        
-        CABasicAnimation *defaultTextLayerAnim = [CABasicAnimation animation];
-        defaultTextLayerAnim.duration = 0.25;
-        _textLayer.actions = @{@"contents" : defaultTextLayerAnim};
+        _textLayer.actions = @{@"contents" : [NSNull null]};
         
         _colorAnimLayer = [CAShapeLayer layer];
         
@@ -115,7 +112,7 @@ NSString *const FillColorAnimation = @"fillColor";
 - (void)setColor:(UIColor *)color
 {
     _pathLayer.fillColor = color.CGColor;
-    [_colorAnimLayer removeAnimationForKey:FillColorAnimation]; // single color, no animation required
+    [_colorAnimLayer removeAnimationForKey:SliderFillColorAnim]; // single color, no animation required
 }
 
 - (UIColor *)opaqueColor
@@ -153,7 +150,7 @@ NSString *const FillColorAnimation = @"fillColor";
         [cgColors addObject:(id)col.CGColor];
     }
     
-    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:FillColorAnimation];
+    CAKeyframeAnimation *colorAnim = [CAKeyframeAnimation animationWithKeyPath:SliderFillColorAnim];
     colorAnim.keyTimes = keyTimes;
     colorAnim.values = cgColors;
     colorAnim.fillMode = kCAFillModeBoth;
@@ -166,12 +163,12 @@ NSString *const FillColorAnimation = @"fillColor";
     _colorAnimLayer.speed = FLT_MIN;
     _colorAnimLayer.timeOffset = 0.0;
     
-    [_colorAnimLayer addAnimation:colorAnim forKey:FillColorAnimation];
+    [_colorAnimLayer addAnimation:colorAnim forKey:SliderFillColorAnim];
 }
 
 - (void)setAnimationOffset:(CGFloat)animOffset returnColor:(void (^)(UIColor *opaqueReturnColor))block
 {
-    if ([_colorAnimLayer animationForKey:FillColorAnimation]) {
+    if ([_colorAnimLayer animationForKey:SliderFillColorAnim]) {
         _colorAnimLayer.timeOffset = animOffset;
         _pathLayer.fillColor = [_colorAnimLayer.presentationLayer fillColor];
         block([self opaqueColor]);
@@ -215,8 +212,8 @@ NSString *const FillColorAnimation = @"fillColor";
 {
     [[_attributedString mutableString] setString:string];
     CGFloat w, h;
-    w = ceilf([_attributedString size].width * _popUpViewWidthPaddingFactor);
-    h = ceilf(([_attributedString size].height * _popUpViewHeightPaddingFactor) + _arrowLength);
+    w = ceilf([_attributedString size].width * _widthPaddingFactor);
+    h = ceilf(([_attributedString size].height * _heightPaddingFactor) + _arrowLength);
     return CGSizeMake(w, h);
 }
 

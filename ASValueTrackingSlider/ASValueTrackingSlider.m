@@ -17,8 +17,6 @@
 @implementation ASValueTrackingSlider
 {
     NSNumberFormatter *_numberFormatter;
-    CGSize _defaultPopUpViewSize; // size that fits largest string from _numberFormatter
-    CGSize _popUpViewSize; // usually == _defaultPopUpViewSize, but can vary if dataSource is used
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
@@ -72,91 +70,98 @@
     NSAssert(font, @"font can not be nil, it must be a valid UIFont");
     _font = font;
     [self.popUpView setFont:font];
-
-    [self calculatePopUpViewSize];
 }
 
 // return the currently displayed color if possible, otherwise return _popUpViewColor
 // if animated colors are set, the color will change each time the slider value changes
 - (UIColor *)popUpViewColor
 {
-    return [self.popUpView color] ?: _popUpViewColor;
+    return self.popUpView.color ?: _popUpViewColor;
 }
 
-- (void)setPopUpViewColor:(UIColor *)popUpViewColor
+- (void)setPopUpViewColor:(UIColor *)color
 {
-    _popUpViewColor = popUpViewColor;
+    _popUpViewColor = color;
     _popUpViewAnimatedColors = nil; // animated colors should be discarded
-    [self.popUpView setColor:popUpViewColor];
+    [self.popUpView setColor:color];
 
     if (_autoAdjustTrackColor) {
         super.minimumTrackTintColor = [self.popUpView opaqueColor];
     }
 }
 
-- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors
+- (void)setPopUpViewAnimatedColors:(NSArray *)colors
 {
-    [self setPopUpViewAnimatedColors:popUpViewAnimatedColors withPositions:nil];
+    [self setPopUpViewAnimatedColors:colors withPositions:nil];
 }
 
 // if 2 or more colors are present, set animated colors
 // if only 1 color is present then call 'setPopUpViewColor:'
 // if arg is nil then restore previous _popUpViewColor
-- (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions
+- (void)setPopUpViewAnimatedColors:(NSArray *)colors withPositions:(NSArray *)positions
 {
     if (positions) {
-        NSAssert([popUpViewAnimatedColors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
+        NSAssert([colors count] == [positions count], @"popUpViewAnimatedColors and locations should contain the same number of items");
     }
     
-    _popUpViewAnimatedColors = popUpViewAnimatedColors;
+    _popUpViewAnimatedColors = colors;
     _keyTimes = [self keyTimesFromSliderPositions:positions];
     
-    if ([popUpViewAnimatedColors count] >= 2) {
-        [self.popUpView setAnimatedColors:popUpViewAnimatedColors withKeyTimes:_keyTimes];
+    if ([colors count] >= 2) {
+        [self.popUpView setAnimatedColors:colors withKeyTimes:_keyTimes];
     } else {
-        [self setPopUpViewColor:[popUpViewAnimatedColors lastObject] ?: _popUpViewColor];
+        [self setPopUpViewColor:[colors lastObject] ?: _popUpViewColor];
     }
 }
 
-- (void)setPopUpViewCornerRadius:(CGFloat)popUpViewCornerRadius
+- (void)setPopUpViewCornerRadius:(CGFloat)radius
 {
-    _popUpViewCornerRadius = popUpViewCornerRadius;
-    [self.popUpView setCornerRadius:popUpViewCornerRadius];
+    self.popUpView.cornerRadius = radius;
 }
 
-- (void)setPopUpViewArrowLength:(CGFloat)popUpViewArrowLength
+- (CGFloat)popUpViewCornerRadius
 {
-    if (_popUpViewArrowLength == popUpViewArrowLength) return;
-    _popUpViewArrowLength = popUpViewArrowLength;
-    [self.popUpView setArrowLength:popUpViewArrowLength];
-    [self calculatePopUpViewSize];
-    [self updatePopUpView];
+    return self.popUpView.cornerRadius;
 }
 
-- (void)setPopUpViewWidthPaddingFactor:(CGFloat)popUpViewWidthPaddingFactor
+- (void)setPopUpViewArrowLength:(CGFloat)length
 {
-    if (_popUpViewWidthPaddingFactor == popUpViewWidthPaddingFactor) return;
-    _popUpViewWidthPaddingFactor = popUpViewWidthPaddingFactor;
-    [self.popUpView setPopUpViewWidthPaddingFactor:popUpViewWidthPaddingFactor];
-    [self calculatePopUpViewSize];
-    [self updatePopUpView];
+    self.popUpView.arrowLength = length;
 }
 
-- (void)setPopUpViewHeightPaddingFactor:(CGFloat)popUpViewHeightPaddingFactor
+- (CGFloat)popUpViewArrowLength
 {
-    if (_popUpViewHeightPaddingFactor == popUpViewHeightPaddingFactor) return;
-    _popUpViewHeightPaddingFactor = popUpViewHeightPaddingFactor;
-    [self.popUpView setPopUpViewHeightPaddingFactor:popUpViewHeightPaddingFactor];
-    [self calculatePopUpViewSize];
-    [self updatePopUpView];
+    return self.popUpView.arrowLength;
+}
+
+- (void)setPopUpViewWidthPaddingFactor:(CGFloat)factor
+{
+    self.popUpView.widthPaddingFactor = factor;
+}
+
+- (CGFloat)popUpViewWidthPaddingFactor
+{
+    return self.popUpView.widthPaddingFactor;
+}
+
+- (void)setPopUpViewHeightPaddingFactor:(CGFloat)factor
+{
+    self.popUpView.heightPaddingFactor = factor;
+}
+
+- (CGFloat)popUpViewHeightPaddingFactor
+{
+    return self.popUpView.heightPaddingFactor;
 }
 
 - (void)setPopUpViewYOffset:(CGFloat)popUpViewYOffset
 {
-    if (_popUpViewYOffset == popUpViewYOffset) return;
-    _popUpViewYOffset = popUpViewYOffset;
-    [self.popUpView setPositionYOffset:popUpViewYOffset];
-    [self updatePopUpView];
+    self.popUpView.positionYOffset = popUpViewYOffset;
+}
+
+- (CGFloat)popUpViewYOffset
+{
+    return self.popUpView.positionYOffset;
 }
 
 // when either the min/max value or number formatter changes, recalculate the popUpView width
@@ -164,14 +169,12 @@
 {
     [super setMaximumValue:maximumValue];
     _valueRange = self.maximumValue - self.minimumValue;
-    [self calculatePopUpViewSize];
 }
 
 - (void)setMinimumValue:(float)minimumValue
 {
     [super setMinimumValue:minimumValue];
     _valueRange = self.maximumValue - self.minimumValue;
-    [self calculatePopUpViewSize];
 }
 
 // set max and min digits to same value to keep string length consistent
@@ -179,13 +182,11 @@
 {
     [_numberFormatter setMaximumFractionDigits:maxDigits];
     [_numberFormatter setMinimumFractionDigits:maxDigits];
-    [self calculatePopUpViewSize];
 }
 
 - (void)setNumberFormatter:(NSNumberFormatter *)numberFormatter
 {
     _numberFormatter = [numberFormatter copy];
-    [self calculatePopUpViewSize];
 }
 
 - (NSNumberFormatter *)numberFormatter
@@ -236,11 +237,6 @@
     self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
-    self.popUpViewCornerRadius = 4.0;
-    self.popUpViewArrowLength = 13.0;
-    self.popUpViewWidthPaddingFactor = 1.15;
-    self.popUpViewHeightPaddingFactor = 1.1;
-    self.popUpViewYOffset = 0;
     self.popUpView.alpha = 0.0;
     self.popUpView.delegate = self;
     [self addSubview:self.popUpView];
@@ -260,12 +256,12 @@
 - (void)updatePopUpView
 {
     NSString *valueString; // ask dataSource for string, if nil or blank, get string from _numberFormatter
-    
+    CGSize popUpViewSize;
     if ((valueString = [self.dataSource slider:self stringForValue:self.value]) && valueString.length != 0) {
-        _popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+        popUpViewSize = [self.popUpView popUpSizeForString:valueString];
     } else {
         valueString = [_numberFormatter stringFromNumber:@(self.value)];
-        _popUpViewSize = _defaultPopUpViewSize;
+        popUpViewSize = [self calculatePopUpViewSize];
     }
     
     // calculate the popUpView frame
@@ -273,8 +269,8 @@
     CGFloat thumbW = thumbRect.size.width;
     CGFloat thumbH = thumbRect.size.height;
     
-    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - _popUpViewSize.width)/2, (thumbH - _popUpViewSize.height)/2);
-    popUpRect.origin.y = thumbRect.origin.y - _popUpViewSize.height;
+    CGRect popUpRect = CGRectInset(thumbRect, (thumbW - popUpViewSize.width)/2, (thumbH - popUpViewSize.height)/2);
+    popUpRect.origin.y = thumbRect.origin.y - popUpViewSize.height;
     
     // determine if popUpRect extends beyond the frame of the progress view
     // if so adjust frame and set the center offset of the PopUpView's arrow
@@ -287,14 +283,13 @@
     [self.popUpView setFrame:popUpRect arrowOffset:offset text:valueString];
 }
 
-- (void)calculatePopUpViewSize
+- (CGSize)calculatePopUpViewSize
 {
-    // set _popUpViewSize to the maximum size required (negative values need more width than positive values)
+    // negative values need more width than positive values
     CGSize minValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.minimumValue)]];
     CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
 
-    _defaultPopUpViewSize = (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
-    _popUpViewSize = _defaultPopUpViewSize;
+    return (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
 }
 
 // takes an array of NSNumbers in the range self.minimumValue - self.maximumValue
