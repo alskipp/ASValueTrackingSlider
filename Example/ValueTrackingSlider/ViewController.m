@@ -33,6 +33,7 @@
     self.slider1.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
     self.slider1.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider1.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
+    self.slider1.popUpViewWidthPaddingFactor = 1.7;
 
     
     // customize slider 2
@@ -41,6 +42,7 @@
     [self.slider2 setNumberFormatter:formatter];
     self.slider2.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
     self.slider2.popUpViewAnimatedColors = @[[UIColor purpleColor], [UIColor redColor], [UIColor orangeColor]];
+    self.slider2.popUpViewArrowLength = 20.0;
     
     
     // customize slider 3
@@ -74,11 +76,6 @@
 - (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
 {
     value = roundf(value);
-    
-    if (value > 13.0) {
-        self.slider3.popUpViewArrowLength = value;
-    }
-    
     NSString *s;
     if (value < -10.0) {
         s = @"❄️Brrr!⛄️";
