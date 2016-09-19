@@ -29,6 +29,9 @@
 
 NSString *const SliderFillColorAnim = @"fillColor";
 
+@interface ASValuePopUpView () <CAAnimationDelegate>
+@end
+
 @implementation ASValuePopUpView
 {
     BOOL _shouldAnimate;

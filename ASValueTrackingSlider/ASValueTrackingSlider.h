@@ -92,6 +92,7 @@
  @implementation SliderCell
  - (void)awakeFromNib
  {
+    [super awakeFromNib];
     self.slider.delegate = self;
  }
  
