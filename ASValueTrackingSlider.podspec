@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.screenshots      = "http://alskipp.github.io/ASValueTrackingSlider/img/screenshot1.gif",
                        "http://alskipp.github.io/ASValueTrackingSlider/img/screenshot2.png"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { "Al Skipp" => "al@alskipp.com" }
+  s.author           = { "Al Skipp" => "al_skipp@fastmail.fm" }
   s.social_media_url = 'https://twitter.com/al_skipp'
   
   s.platform         = :ios, '8.0'
