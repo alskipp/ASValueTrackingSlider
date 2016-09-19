@@ -29,8 +29,11 @@
 
 NSString *const SliderFillColorAnim = @"fillColor";
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 @interface ASValuePopUpView () <CAAnimationDelegate>
 @end
+#endif
+
 
 @implementation ASValuePopUpView
 {
