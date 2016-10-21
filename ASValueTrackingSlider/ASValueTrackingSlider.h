@@ -7,6 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+
+//! Project version number for ASValueTrackingSlider.
+FOUNDATION_EXPORT double ASValueTrackingSliderVersionNumber;
+
+//! Project version string for ASValueTrackingSlider.
+FOUNDATION_EXPORT const unsigned char ASValueTrackingSliderVersionString[];
+
 @protocol ASValueTrackingSliderDelegate;
 @protocol ASValueTrackingSliderDataSource;
 
