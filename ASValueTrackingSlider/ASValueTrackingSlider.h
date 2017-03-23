@@ -31,6 +31,11 @@
 // pass an array of 2 or more UIColors to animate the color change as the slider moves
 @property (strong, nonatomic) NSArray *popUpViewAnimatedColors;
 
+@property (strong, nonatomic) UIColor *popUpViewShadowColor;
+@property (nonatomic) CGFloat popUpViewShadowRadius;
+@property (nonatomic) CGSize popUpViewShadowOffset;
+@property (nonatomic) CGFloat popUpViewShadowOpacity;
+
 // the above @property distributes the colors evenly across the slider
 // to specify the exact position of colors on the slider scale, pass an NSArray of NSNumbers
 - (void)setPopUpViewAnimatedColors:(NSArray *)popUpViewAnimatedColors withPositions:(NSArray *)positions;

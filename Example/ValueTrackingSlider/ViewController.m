@@ -33,8 +33,11 @@
     self.slider1.popUpViewColor = [UIColor colorWithHue:0.55 saturation:0.8 brightness:0.9 alpha:0.7];
     self.slider1.font = [UIFont fontWithName:@"GillSans-Bold" size:22];
     self.slider1.textColor = [UIColor colorWithHue:0.55 saturation:1.0 brightness:0.5 alpha:1];
+    self.slider1.popUpViewShadowColor = [UIColor blackColor];
+    self.slider1.popUpViewShadowRadius = 3;
+    self.slider1.popUpViewShadowOffset = CGSizeMake(0, 2);
+    self.slider1.popUpViewShadowOpacity = 1;
     self.slider1.popUpViewWidthPaddingFactor = 1.7;
-
     
     // customize slider 2
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
