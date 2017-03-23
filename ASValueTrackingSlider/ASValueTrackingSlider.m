@@ -20,6 +20,11 @@
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
+    
+    UIColor *_popUpViewShadowColor;
+    CGFloat _popUpViewShadowRadius;
+    CGSize _popUpViewShadowOffset;
+    CGFloat _popUpViewShadowOpacity;
 }
 
 #pragma mark - initialization
@@ -93,6 +98,45 @@
 - (void)setPopUpViewAnimatedColors:(NSArray *)colors
 {
     [self setPopUpViewAnimatedColors:colors withPositions:nil];
+}
+
+// return the current shadow attributes if possible, otherwise return _popUpViewShadowColor, _popUpViewShadowRadius, _popUpViewShadowOffset or _popUpViewShadowOpacity
+
+- (UIColor *)popUpViewShadowColor {
+    return [UIColor colorWithCGColor:self.popUpView.layer.shadowColor];
+}
+
+- (void)setPopUpViewShadowColor:(UIColor *)color
+{
+    _popUpViewShadowColor = color;
+    [self.popUpView.layer setShadowColor:color.CGColor];
+}
+
+- (CGFloat)popUpViewShadowRadius {
+    return self.popUpView.layer.shadowRadius;
+}
+
+- (void)setPopUpViewShadowRadius:(CGFloat)radius {
+    _popUpViewShadowRadius = radius;
+    self.popUpView.layer.shadowRadius = radius;
+}
+
+- (CGSize)popUpViewShadowOffset {
+    return self.popUpView.layer.shadowOffset;
+}
+
+- (void)setPopUpViewShadowOffset:(CGSize)offset {
+    _popUpViewShadowOffset = offset;
+    self.popUpView.layer.shadowOffset = offset;
+}
+
+- (CGFloat)popUpViewShadowOpacity {
+    return self.popUpView.layer.shadowOpacity;
+}
+
+- (void)setPopUpViewShadowOpacity:(CGFloat)opacity {
+    _popUpViewShadowOpacity = opacity;
+    self.popUpView.layer.shadowOpacity = opacity;
 }
 
 // if 2 or more colors are present, set animated colors
