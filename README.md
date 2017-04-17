@@ -1,7 +1,7 @@
 ASValueTrackingSlider
 ========
 
-###What is it?
+### What is it?
 
 
 A UISlider subclass that displays live values in an easy to customize popup view.
@@ -69,7 +69,7 @@ self.slider.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:26];
 The popUpView adjusts itself so that it doesn't extend beyond the width of the slider control.
 
 
-###How to use custom strings in popUpView label
+### How to use custom strings in popUpView label
 
 Set your controller as the `dataSource` to `ASValueTrackingSlider` and adopt the `ASValueTrackingSliderDataSource`, then return NSStrings for any values you want to customize.
   
@@ -94,7 +94,7 @@ Set your controller as the `dataSource` to `ASValueTrackingSlider` and adopt the
 ![screenshot] (http://alskipp.github.io/ASValueTrackingSlider/img/screenshot4.png)
 
 
-###How to use with UITableView
+### How to use with UITableView
 
 To use  effectively inside a UITableView you need to implement the `<ASValueTrackingSliderDelegate>` protocol. If you just embed an ASValueTrackingSlider inside a UITableViewCell the popUpView will probably be obscured by the cell above. The delegate method notifies you before the popUpView appears so that you can ensure that your UITableViewCell is rendered above the others.
 
