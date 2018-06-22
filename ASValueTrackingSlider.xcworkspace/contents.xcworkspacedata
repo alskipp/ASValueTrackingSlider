@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <Group
-      location = "group:ASValueTrackingSlider"
-      name = "ASValueTrackingSlider">
-      <FileRef
-         location = "group:ASValueTrackingSlider.h">
-      </FileRef>
-      <FileRef
-         location = "group:ASValueTrackingSlider.m">
-      </FileRef>
-      <FileRef
-         location = "group:ASValuePopUpView.h">
-      </FileRef>
-      <FileRef
-         location = "group:ASValuePopUpView.m">
-      </FileRef>
-   </Group>
    <FileRef
       location = "group:Example/ValueTrackingSlider.xcodeproj">
    </FileRef>
