@@ -136,7 +136,7 @@ NSString *const SliderFillColorAnim = @"fillColor";
                               value:font
                               range:NSMakeRange(0, [_attributedString length])];
     
-    _textLayer.font = (__bridge CFTypeRef)(font.fontName);
+    _textLayer.font = (__bridge CFTypeRef _Nullable)(font);
     _textLayer.fontSize = font.pointSize;
 }
 
